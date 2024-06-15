@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
+import { UserModule } from './components/user/user.module';
+import { User } from './components/user';
 
 @Module({
   imports: [
@@ -13,15 +15,19 @@ import { GraphQLModule } from '@nestjs/graphql';
       port: parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [],
-      database: process.env.POSTGRES_DATABASE,
+      entities: [User],
+      database: 'dev_spot',
       synchronize: false,
       logging: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      buildSchemaOptions: {
+        dateScalarMode: 'timestamp',
+      },
     }),
+    UserModule,
   ],
   controllers: [AppController],
   providers: [AppService],

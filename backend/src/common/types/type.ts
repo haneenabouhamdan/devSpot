@@ -35,14 +35,6 @@ export interface PostgresDatabaseConfig {
   name: string;
 }
 
-export interface MongoDatabaseConfig {
-  host: string;
-  port: number;
-  username: string;
-  password: string;
-  name: string;
-}
-
 export interface IDataLoader<Entity> {
   load(keys: any[]): Promise<Entity[]>;
 }
