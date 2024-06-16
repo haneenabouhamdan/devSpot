@@ -8,10 +8,13 @@ import { UpdateUserInput } from './dtos/update-user.input';
 import { UserRepository } from './user.repository';
 import { User } from './entities';
 import * as argon2 from 'argon2';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class UserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    @InjectRepository(UserRepository) private userRepository: UserRepository,
+  ) {}
 
   findAll(): Promise<User[]> {
     return this.userRepository.find();
@@ -26,6 +29,14 @@ export class UserService {
     phoneNumber: string,
   ): Promise<Nullable<User>> {
     return this.userRepository.findOneBy([{ email }, { phoneNumber }]);
+  }
+
+  async findOneByPhone(phoneNumber: string): Promise<Nullable<User>> {
+    return this.userRepository.findOneBy({ phoneNumber });
+  }
+
+  async findOneByEmail(email: string): Promise<Nullable<User>> {
+    return this.userRepository.findOneBy({ email });
   }
 
   async create(payload: CreateUserInput): Promise<User> {

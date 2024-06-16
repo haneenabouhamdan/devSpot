@@ -1,8 +1,8 @@
-import { AbstractEntity } from 'src/common/entities';
+import { AbstractEntity } from '../../../common/entities';
 import { Column, Entity } from 'typeorm';
 import { AccountStatus } from '../enums';
 
-@Entity()
+@Entity('users')
 export class User extends AbstractEntity {
   @Column() username: string;
 

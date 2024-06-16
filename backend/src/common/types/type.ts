@@ -62,3 +62,8 @@ export type WithRelation<
   K extends keyof T,
   NT = NonNullable<T[K]>,
 > = Exclude<T, K> & { [P in K]-?: NonNullable<NT> };
+
+export type ExcludeMethods<T> = Pick<
+  T,
+  { [K in keyof T]: T[K] extends Function ? never : K }[keyof T]
+>;

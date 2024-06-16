@@ -15,7 +15,7 @@ export class CreateUserInput {
   @IsString()
   @MinLength(3)
   @MaxLength(100)
-  name: string;
+  username: string;
 
   @Field(() => GraphQLEmailAddress, { nullable: true })
   @IsString()

@@ -6,6 +6,7 @@ import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './components/user/user.module';
 import { User } from './components/user';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { User } from './components/user';
       username: process.env.POSTGRES_USER,
       entities: [User],
       database: 'dev_spot',
-      synchronize: false,
+      synchronize: true,
       logging: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -28,6 +29,7 @@ import { User } from './components/user';
       },
     }),
     UserModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

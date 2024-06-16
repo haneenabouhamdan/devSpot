@@ -1,12 +1,12 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { AccountStatus } from '../enums';
 import { GraphQLEmailAddress } from 'graphql-scalars';
-import { EntityDTO } from 'src/common/dtos';
+import { EntityDTO } from '../../../common/dtos';
 
 @ObjectType()
 export class UserDto extends EntityDTO {
   @Field()
-  name: string;
+  username: string;
 
   @Field(() => GraphQLEmailAddress, { nullable: true })
   email?: string;
