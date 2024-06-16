@@ -1,16 +1,19 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UserService } from './user.service';
+import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
 import { CreateUserInput } from './dtos/create-user.input';
 import { UpdateUserInput } from './dtos/update-user.input';
 import { GraphQLUUID } from 'graphql-scalars';
 import { NotFoundException } from '@nestjs/common';
 import { UserDto } from './dtos';
+import { Roles } from '../../common/decorators';
+import { DefaultRoles } from './enums';
 
 @Resolver(() => UserDto)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
 
+  @Roles(DefaultRoles.ADMIN, DefaultRoles.SUPERADMIN)
   @Mutation(() => UserDto)
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
     return this.userService.create(createUserInput);

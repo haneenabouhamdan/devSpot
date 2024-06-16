@@ -1,15 +1,7 @@
 import { CreateUserInput } from './create-user.input';
 import { InputType, Field, PartialType } from '@nestjs/graphql';
 import { GraphQLUUID } from 'graphql-scalars';
-import {
-  IsUUID,
-  IsOptional,
-  IsString,
-  MinLength,
-  IsNotEmpty,
-} from 'class-validator';
-import { GraphQLString } from 'graphql';
-import { AccountStatus } from '../enums';
+import { IsUUID, IsOptional, IsString, MinLength } from 'class-validator';
 
 @InputType()
 export class UpdateUserInput extends PartialType(CreateUserInput) {

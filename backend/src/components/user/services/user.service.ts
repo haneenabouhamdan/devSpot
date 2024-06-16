@@ -3,10 +3,10 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserInput } from './dtos/create-user.input';
-import { UpdateUserInput } from './dtos/update-user.input';
-import { UserRepository } from './user.repository';
-import { User } from './entities';
+import { CreateUserInput } from '../dtos/create-user.input';
+import { UpdateUserInput } from '../dtos/update-user.input';
+import { UserRepository } from '../repositories/user.repository';
+import { User } from '../entities';
 import * as argon2 from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 

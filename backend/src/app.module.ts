@@ -5,8 +5,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
 import { UserModule } from './components/user/user.module';
-import { User } from './components/user';
+import { User, UserRepository, UserService } from './components/user';
 import { AuthModule } from './auth/auth.module';
+import { ChannelModule } from './components/channel/channel.module';
 
 @Module({
   imports: [
@@ -30,8 +31,9 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    ChannelModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserService, UserRepository],
 })
 export class AppModule {}
