@@ -8,6 +8,7 @@ import { UserModule } from './components/user/user.module';
 import { User, UserRepository, UserService } from './components/user';
 import { AuthModule } from './auth/auth.module';
 import { ChannelModule } from './components/channel/channel.module';
+import { Channel } from './components/channel/entities';
 
 @Module({
   imports: [
@@ -17,7 +18,7 @@ import { ChannelModule } from './components/channel/channel.module';
       port: parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [User],
+      entities: [User, Channel],
       database: 'dev_spot',
       synchronize: true,
       logging: true,

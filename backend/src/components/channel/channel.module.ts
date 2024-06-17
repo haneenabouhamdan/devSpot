@@ -3,7 +3,7 @@ import { ChannelService } from './channel.service';
 import { ChannelResolver } from './channel.resolver';
 import { Channel } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserModule, UserRepository } from '../user';
+import { UserModule, UserRepository, UserService } from '../user';
 import { ChannelRepository } from './channel.repository';
 
 @Module({
@@ -11,8 +11,9 @@ import { ChannelRepository } from './channel.repository';
   providers: [
     ChannelResolver,
     ChannelService,
-    UserRepository,
+    UserService,
     ChannelRepository,
+    UserRepository,
   ],
 })
 export class ChannelModule {}

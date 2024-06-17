@@ -1,12 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
-import { GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
 export class CreateChannelInput {
-  @IsUUID(4)
-  @Field(() => GraphQLUUID)
-  name: UUID;
+  @IsString()
+  @Field()
+  name: string;
 
   @Field({ nullable: true })
   @IsOptional()

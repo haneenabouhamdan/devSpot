@@ -23,4 +23,9 @@ export class ChannelResolver {
   findOne(@Args('id') id: UUID) {
     return this.channelService.findOneById(id);
   }
+
+  @Query(() => ChannelDto, { name: 'channel' })
+  getUserChannels(@Args('userId') userId: UUID) {
+    return this.channelService.findByUserId(userId);
+  }
 }
