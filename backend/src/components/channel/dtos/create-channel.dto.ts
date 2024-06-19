@@ -2,7 +2,7 @@ import { InputType, Field } from '@nestjs/graphql';
 import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
 
 @InputType()
-export class CreateChannelInput {
+export class CreateChannelDto {
   @IsString()
   @Field()
   name: string;

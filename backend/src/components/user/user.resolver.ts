@@ -1,8 +1,8 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
-import { CreateUserInput } from './dtos/create-user.input';
-import { UpdateUserInput } from './dtos/update-user.input';
+import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
 import { GraphQLUUID } from 'graphql-scalars';
 import { NotFoundException } from '@nestjs/common';
 import { UserDto } from './dtos';
@@ -15,8 +15,8 @@ export class UserResolver {
 
   @Roles(DefaultRoles.ADMIN, DefaultRoles.SUPERADMIN)
   @Mutation(() => UserDto)
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return this.userService.create(createUserInput);
+  createUser(@Args('CreateUserDto') CreateUserDto: CreateUserDto) {
+    return this.userService.create(CreateUserDto);
   }
 
   @Query(() => [UserDto], { name: 'user' })
@@ -39,9 +39,9 @@ export class UserResolver {
 
   @Mutation(() => UserDto)
   async updateUser(
-    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+    @Args('UpdateUserDto') UpdateUserDto: UpdateUserDto,
   ): Promise<User> {
-    const user = await this.userService.update(updateUserInput);
+    const user = await this.userService.update(UpdateUserDto);
 
     if (!user) {
       throw new NotFoundException('User Not Found');

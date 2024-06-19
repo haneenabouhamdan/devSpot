@@ -1,20 +1,35 @@
-import { Resolver, Mutation, Args, Query } from '@nestjs/graphql';
+import {
+  Resolver,
+  Mutation,
+  Args,
+  Query,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { ChannelService } from './channel.service';
-import { CreateChannelInput } from './dto/create-channel.input';
-import { ChannelDto } from './dto';
+import { CreateChannelDto } from './dtos/create-channel.dto';
+import { ChannelDto, SubscribeChannelDto, UserChannelDto } from './dtos';
+import { User, UserDto } from '../user';
+import { Channel } from './entities';
+import * as DataLoader from 'dataloader';
+import { ChannelBatches } from './batches';
+import { Roles } from 'src/common/decorators';
+import { DefaultRoles } from '../user/enums';
 
 @Resolver(() => ChannelDto)
 export class ChannelResolver {
-  constructor(private readonly channelService: ChannelService) {}
+  constructor(
+    private readonly channelService: ChannelService,
+    private channelBatches: ChannelBatches,
+  ) {}
 
+  @Roles(DefaultRoles.ADMIN, DefaultRoles.SUPERADMIN)
   @Mutation(() => ChannelDto)
-  createChannel(
-    @Args('createChannelInput') createChannelInput: CreateChannelInput,
-  ) {
-    return this.channelService.create(createChannelInput);
+  createChannel(@Args('CreateChannelDto') createChannelDto: CreateChannelDto) {
+    return this.channelService.create(createChannelDto);
   }
 
-  @Query(() => [ChannelDto], { name: 'channel' })
+  @Query(() => [ChannelDto], { name: 'channels' })
   findAll() {
     return this.channelService.findAll();
   }
@@ -24,8 +39,31 @@ export class ChannelResolver {
     return this.channelService.findOneById(id);
   }
 
-  @Query(() => ChannelDto, { name: 'channel' })
-  getUserChannels(@Args('userId') userId: UUID) {
-    return this.channelService.findByUserId(userId);
+  @Query(() => [ChannelDto], { name: 'userChannels' })
+  getUserCreatedChannels(@Args('id') id: UUID) {
+    return this.channelService.findByUserId(id);
+  }
+
+  @Mutation(() => UserChannelDto, { name: 'SubscribeChannel' })
+  async subscribe(
+    @Args('subscribeChannelDto') subscribeDto: SubscribeChannelDto,
+  ): Promise<UserChannelDto> {
+    try {
+      return this.channelService.subscribe(subscribeDto);
+    } catch (error) {
+      console.error('Error subscribing to channel:', error);
+    }
+  }
+
+  @ResolveField(() => [UserDto])
+  async members(@Parent() channel: Channel): Promise<User[]> {
+    const userLoader = new DataLoader<UUID, User[]>(async (channelIds) => {
+      const membersMap = await this.channelBatches.members(
+        channelIds as UUID[],
+      );
+      return channelIds.map((id) => membersMap.get(id) || []);
+    });
+
+    return userLoader.load(channel.id);
   }
 }

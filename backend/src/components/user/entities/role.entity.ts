@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany } from 'typeorm';
 import { RolePermissions } from './rolePermission.entity';
 import { AbstractEntity } from '../../../common/entities';
-import { UserChannels } from '../../channel/entities/userChannels.entity';
+import { UserChannels } from '../../channel/entities/user-channels.entity';
 
 @Entity('roles')
 export class Role extends AbstractEntity {

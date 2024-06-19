@@ -1,4 +1,4 @@
-import { InputType, Int, Field } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import {
   IsString,
   MinLength,
@@ -10,7 +10,7 @@ import { GraphQLString } from 'graphql';
 import { GraphQLEmailAddress } from 'graphql-scalars';
 
 @InputType()
-export class CreateUserInput {
+export class CreateUserDto {
   @Field()
   @IsString()
   @MinLength(3)

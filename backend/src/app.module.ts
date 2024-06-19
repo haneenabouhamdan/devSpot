@@ -1,14 +1,34 @@
+import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
 import { Module } from '@nestjs/common';
+import { GraphQLModule } from '@nestjs/graphql';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { GraphQLModule } from '@nestjs/graphql';
-import { UserModule } from './components/user/user.module';
-import { User, UserRepository, UserService } from './components/user';
 import { AuthModule } from './auth/auth.module';
-import { ChannelModule } from './components/channel/channel.module';
-import { Channel } from './components/channel/entities';
+import {
+  User,
+  Role,
+  Permission,
+  RolePermissions,
+  Message,
+  MessageReaction,
+  PinnedMessage,
+  Submission,
+  Review,
+  SubmissionReview,
+  UserModule,
+  ChannelModule,
+  Challenge,
+  ChallengeModule,
+  UserService,
+  UserRepository,
+  Channel,
+  UserChannels,
+  MessageModule,
+  SubmissionModule,
+} from './components';
+import { AuthGuard } from './common/guards';
+import { APP_GUARD } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -18,7 +38,21 @@ import { Channel } from './components/channel/entities';
       port: parseInt(process.env.POSTGRES_PORT),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
-      entities: [User, Channel],
+      entities: [
+        User,
+        Channel,
+        UserChannels,
+        Role,
+        Permission,
+        RolePermissions,
+        Message,
+        MessageReaction,
+        PinnedMessage,
+        Challenge,
+        Submission,
+        Review,
+        SubmissionReview,
+      ],
       database: 'dev_spot',
       synchronize: true,
       logging: true,
@@ -33,8 +67,19 @@ import { Channel } from './components/channel/entities';
     UserModule,
     AuthModule,
     ChannelModule,
+    MessageModule,
+    ChallengeModule,
+    SubmissionModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserService, UserRepository],
+  providers: [
+    // { provide: APP_GUARD, useClass: JwtAuthGuard },
+
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    AppService,
+  ],
 })
 export class AppModule {}

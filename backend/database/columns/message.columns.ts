@@ -17,6 +17,7 @@ export const messageColumns: IColumn[] = [
     name: 'attachments',
     type: ColumnTypes.text,
     isNullable: true,
+    isArray: true,
   },
 
   {

@@ -3,8 +3,8 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CreateUserInput } from '../dtos/create-user.input';
-import { UpdateUserInput } from '../dtos/update-user.input';
+import { CreateUserDto } from '../dtos/create-user.dto';
+import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserRepository } from '../repositories/user.repository';
 import { User } from '../entities';
 import * as argon2 from 'argon2';
@@ -39,7 +39,7 @@ export class UserService {
     return this.userRepository.findOneBy({ email });
   }
 
-  async create(payload: CreateUserInput): Promise<User> {
+  async create(payload: CreateUserDto): Promise<User> {
     const user = await this.findOneByEmailOrPhone(
       payload.email ?? '',
       payload.phoneNumber ?? '',
@@ -54,18 +54,18 @@ export class UserService {
     return this.userRepository.save(payload);
   }
 
-  async update(updateUserInput: UpdateUserInput): Promise<User> {
-    const user = await this.findOneById(updateUserInput.id);
+  async update(UpdateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOneById(UpdateUserDto.id);
 
     if (!user) {
       throw new NotFoundException('User Not Found');
     }
 
-    if (updateUserInput.password) {
-      updateUserInput.password = await argon2.hash(updateUserInput.password);
+    if (UpdateUserDto.password) {
+      UpdateUserDto.password = await argon2.hash(UpdateUserDto.password);
     }
 
-    this.userRepository.merge(user, updateUserInput);
+    this.userRepository.merge(user, UpdateUserDto);
     return this.userRepository.save(user);
   }
 
@@ -74,10 +74,10 @@ export class UserService {
   }
 
   async getById(id: UUID) {
-    return this.userRepository.findOneById(id);
+    return this.userRepository.findOneBy({ id });
   }
 
-  async updateById(id: UUID, dto: UpdateUserInput) {
+  async updateById(id: UUID, dto: UpdateUserDto) {
     await this.userRepository.update(id, dto);
     return this.getById(id);
   }

@@ -1,10 +1,10 @@
 import { IsUUID } from 'class-validator';
 import { GraphQLUUID } from 'graphql-scalars';
-import { CreateChannelInput } from './create-channel.input';
+import { CreateChannelDto } from './create-channel.dto';
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateChannelInput extends PartialType(CreateChannelInput) {
+export class UpdateChannelDto extends PartialType(CreateChannelDto) {
   @IsUUID(4)
   @Field(() => GraphQLUUID)
   id: UUID;
