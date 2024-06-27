@@ -1,5 +1,4 @@
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { UserService } from './services/user.service';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
@@ -8,6 +7,7 @@ import { NotFoundException } from '@nestjs/common';
 import { UserDto } from './dtos';
 import { Roles } from '../../common/decorators';
 import { DefaultRoles } from './enums';
+import { UserService } from './services';
 
 @Resolver(() => UserDto)
 export class UserResolver {

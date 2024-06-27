@@ -1,6 +1,6 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToMany, OneToMany } from 'typeorm';
 import { AbstractEntity } from '../../../common/entities';
-import { RolePermissions } from './rolePermission.entity';
+import { Role } from './role.entity';
 
 @Entity('permissions')
 export class Permission extends AbstractEntity {
@@ -9,9 +9,6 @@ export class Permission extends AbstractEntity {
 
   @Column({ default: false }) isRevoked: Boolean;
 
-  @OneToMany(
-    () => RolePermissions,
-    (rolePermissions) => rolePermissions.permission,
-  )
-  rolePermissions: RolePermissions[];
+  @ManyToMany(() => Role, (role) => role.permissions)
+  roles: Role[];
 }

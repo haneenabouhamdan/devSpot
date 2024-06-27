@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -13,8 +13,25 @@ import {
   HStack,
 } from "@chakra-ui/react";
 import Logo from "../../assets/logo.png";
+// import { useSigninMutation } from "../../resolvers";
+
 
 const SignIn = () => {
+  // const { signIn, loading } = useSigninMutation();
+  const [identifier, setIdentifier] = useState(""); 
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e:any) => {
+    console.log({password,identifier})
+    e.preventDefault();
+    try {
+      // await signIn({ identifier, password });
+      // Optionally redirect or perform other actions upon successful login
+    } catch (error) {
+      console.error("Sign in error:", error);
+    }
+  };
+
   return (
     <Container
       centerContent
@@ -33,13 +50,15 @@ const SignIn = () => {
         <HStack justifyContent={"center"} pb="3rem">
           <Image src={Logo} w="10rem" />
         </HStack>
-        <VStack direction={"column"} as="form" spacing={4} noValidate>
+        <VStack  onSubmit={handleSubmit} direction={"column"} as="form" spacing={4} noValidate>
           <FormControl id="username" isRequired>
             <FormLabel fontWeight={"400"}>Email or Phone Number</FormLabel>
             <Input
               type="text"
               _focus={{ borderColor: "#4D148C" }}
               autoComplete="username"
+              value={identifier} 
+              onChange={(e) => setIdentifier(e.target.value)} 
               autoFocus
             />
           </FormControl>
@@ -49,6 +68,8 @@ const SignIn = () => {
               type="password"
               _focus={{ borderColor: "#4D148C" }}
               autoComplete="current-password"
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)}
             />
           </FormControl>
           <Link alignSelf="flex-end" fontSize="small" mb={2} href="#">
@@ -59,7 +80,7 @@ const SignIn = () => {
             bgColor={"#f4a261"}
             _hover={{ backgroundColor: "#f7ba8a" }}
             color="#fff"
-            isLoading={false}
+            // isLoading={loading}
             loadingText="Signing In..."
             width="full"
             mt={4}

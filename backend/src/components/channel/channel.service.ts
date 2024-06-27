@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable, forwardRef } from '@nestjs/common';
 import { UserService } from '../user';
 import {
   ChannelDto,
@@ -13,6 +13,7 @@ import { UserChannelSubscriptionStatus } from './enums';
 export class ChannelService {
   constructor(
     private readonly channelRepository: ChannelRepository,
+    @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private userChannelsRepository: UserChannelsRepository,
   ) {}

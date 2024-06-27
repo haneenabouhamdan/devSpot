@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
-import { AuthUserDto } from './auth-user.dto';
 import { AuthResultType } from '../types';
+import { AuthUserDto } from '../../common/dtos';
 
 @ObjectType()
 export class AuthResponseDto {
@@ -13,3 +13,6 @@ export class AuthResponseDto {
   @Field(() => AuthUserDto, { nullable: true })
   user?: AuthUserDto;
 }
+
+@ObjectType()
+export class RegistrationResponseDto extends AuthResponseDto {}

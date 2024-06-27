@@ -7,7 +7,7 @@ export class AuthIdentifierTransformer<T extends AuthIdentifierType>
   implements PipeTransform
 {
   async transform(input: T) {
-    if (input.identifier.includes('@')) {
+    if (input.identifier?.includes('@')) {
       this.#verifyEmail(input.identifier);
     } else {
       this.#verifyPhone(input.identifier);

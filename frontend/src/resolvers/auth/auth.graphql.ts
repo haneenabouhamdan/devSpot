@@ -1,13 +1,25 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
-
-
-
-export const PASSWORD_LOGIN = gql`
- 
+export const SIGN_IN = gql`
+  mutation SignIn($signInInput: SignInInput!) {
+    signIn(signInInput: $signInInput) {
+      token
+      user {
+        email
+        dateOfBirth
+        status
+        username
+        profilePicture
+        phoneNumber
+        notificationPaused
+        jobTitle
+        id
+        createdAt
+        bio
+      }
+    }
+  }
 `;
-
-
 
 export const REGISTER = gql`
   mutation RegisterRetailer($registerInput: RegisterRetailerInput!) {
@@ -19,13 +31,24 @@ export const REGISTER = gql`
         phone
         email
       }
-      retailer {
-        id
-        name
-        status
-      }
     }
   }
 `;
-
-
+export const GET_PROFILE = gql`
+  query GetProfile {
+    getProfile {
+      id
+      username
+      email
+      phoneNumber
+      status
+      bio
+      jobTitle
+      dateOfBirth
+      notificationPaused
+      profilePicture
+      roles
+      permissions
+    }
+  }
+`;

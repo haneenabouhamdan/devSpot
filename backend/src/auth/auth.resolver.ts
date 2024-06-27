@@ -1,13 +1,14 @@
 import { UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../common/guards/auth.guard';
+import { AuthGuard } from './guards/auth.guard';
 import { AuthService } from './auth.service';
 import { Mutation, Args, Query, Resolver } from '@nestjs/graphql';
-import { AuthUserDto } from './dto/auth-user.dto';
-import { AuthResponseDto } from './dto/responses';
+import { AuthResponseDto, RegistrationResponseDto } from './dto/responses';
 import { SignInInput } from './dto/inputs.dto';
-import { AuthIdentifierTransformer } from './transformers';
 import { AuthResultType } from './types';
 import { AuthUser, SkipAuth } from '../common/decorators';
+import { CreateUserDto } from '../components';
+import { LocalAuthGuard } from './guards';
+import { AuthUserDto } from 'src/common/dtos/auth-user.dto';
 
 @Resolver(() => AuthUserDto)
 export class AuthResolver {
@@ -19,13 +20,13 @@ export class AuthResolver {
     return user;
   }
 
-  @SkipAuth()
   @Mutation(() => AuthResponseDto)
+  @SkipAuth()
+  @UseGuards(LocalAuthGuard)
   async signIn(
-    @Args('signInInput', AuthIdentifierTransformer) signInInput: SignInInput,
-    @AuthUser() user: AuthUserDto,
+    @Args('signInInput') signInInput: SignInInput,
   ): Promise<AuthResponseDto> {
-    const { token } = await this.authService.signIn(
+    const { token, user } = await this.authService.signIn(
       signInInput.identifier,
       signInInput.password,
     );
@@ -34,6 +35,20 @@ export class AuthResolver {
       result: AuthResultType.AUTH_SUCCESS,
       token,
       user,
+    };
+  }
+
+  @SkipAuth()
+  @Mutation(() => RegistrationResponseDto)
+  async signUp(
+    @Args('signUpInput') signUpInput: CreateUserDto,
+  ): Promise<RegistrationResponseDto> {
+    console.log({ signUpInput });
+    const { token } = await this.authService.signUp(signUpInput);
+    return {
+      result: AuthResultType.AUTH_SUCCESS,
+      token,
+      user: undefined,
     };
   }
 }

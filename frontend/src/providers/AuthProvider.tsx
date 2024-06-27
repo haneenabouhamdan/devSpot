@@ -1,49 +1,46 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHTTPContext } from './GraphQLProvider';
-import { LoginResponse } from '../resolvers';
+import { LoginResponse, useGetProfileQuery } from '../resolvers';
+import { AuthContext } from '../contexts/AuthContext';
 
-
-export function AuthenticationProvider({ children }: { children: ReactNode }) {
+export function AuthenticationProvider({ children }: Readonly<{ children: ReactNode }>) {
   const { authenticate } = useHTTPContext();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { getCurrentUser, user, loading: isAuthenticating, error } = useAuthUserQuery();
+  const { getCurrentUser, user, loading: isAuthenticating } = useGetProfileQuery();
 
-  const onUserLogin = useCallback((data: LoginResponse) => {
-    authenticate(data.token);
-    getUser();
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('uId', String(data.user.id));
-  }, []);
-
-  function getUser() {
+  const getUser = useCallback(() => {
     void getCurrentUser();
-    setIsAuthenticated(true);
-  }
+  }, [getCurrentUser]);
+
+  const onUserLogin = useCallback(
+    (data: LoginResponse) => {
+      authenticate(data.token);
+      getUser();
+      localStorage.setItem('token', data.token);
+    },
+    [getUser, authenticate]
+  );
 
   const onUserLogout = useCallback(() => {
     localStorage.removeItem('token');
-    localStorage.removeItem('uId');
-    localStorage.removeItem('welcomed');
-
     setIsAuthenticated(false);
   }, []);
 
   useEffect(() => {
+    if (user) {
+      setIsAuthenticated(true);
+    }
+  }, [user]);
+
+  useEffect(() => {
     const existedToken = localStorage.getItem('token');
-    const existedUserId = localStorage.getItem('uId');
-    if (existedToken && existedUserId) {
+    if (existedToken) {
       authenticate(existedToken);
       getUser();
     } else {
       onUserLogout();
     }
-  }, [onUserLogout]);
-
-  useEffect(() => {
-    if (error) {
-      onUserLogout();
-    }
-  }, [error]);
+  }, [authenticate, getUser, onUserLogout]);
 
   const contextValue = useMemo(
     () => ({
@@ -53,7 +50,7 @@ export function AuthenticationProvider({ children }: { children: ReactNode }) {
       isAuthenticated,
       isAuthenticating,
     }),
-    [user,  isAuthenticated, onUserLogin, onUserLogout, isAuthenticating]
+    [user, isAuthenticated, onUserLogin, onUserLogout, isAuthenticating]
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

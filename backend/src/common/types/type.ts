@@ -67,3 +67,11 @@ export type ExcludeMethods<T> = Pick<
   T,
   { [K in keyof T]: T[K] extends Function ? never : K }[keyof T]
 >;
+
+export interface RedisConfig {
+  host: string;
+  port: number;
+  password: string;
+  ttl: number;
+  prefix: string;
+}

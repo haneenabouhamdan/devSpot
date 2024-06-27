@@ -9,7 +9,6 @@ import {
   User,
   Role,
   Permission,
-  RolePermissions,
   Message,
   MessageReaction,
   PinnedMessage,
@@ -20,15 +19,16 @@ import {
   ChannelModule,
   Challenge,
   ChallengeModule,
-  UserService,
-  UserRepository,
   Channel,
   UserChannels,
   MessageModule,
   SubmissionModule,
 } from './components';
-import { AuthGuard } from './common/guards';
+import { AuthGuard } from './auth/guards';
 import { APP_GUARD } from '@nestjs/core';
+import { AppConfigModule } from './config';
+import { JwtService } from '@nestjs/jwt';
+import { JwtAuthGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -44,7 +44,6 @@ import { APP_GUARD } from '@nestjs/core';
         UserChannels,
         Role,
         Permission,
-        RolePermissions,
         Message,
         MessageReaction,
         PinnedMessage,
@@ -64,6 +63,7 @@ import { APP_GUARD } from '@nestjs/core';
         dateScalarMode: 'timestamp',
       },
     }),
+    AppConfigModule,
     UserModule,
     AuthModule,
     ChannelModule,
@@ -73,13 +73,13 @@ import { APP_GUARD } from '@nestjs/core';
   ],
   controllers: [AppController],
   providers: [
-    // { provide: APP_GUARD, useClass: JwtAuthGuard },
-
+    { provide: APP_GUARD, useClass: JwtAuthGuard },
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
     AppService,
+    JwtService,
   ],
 })
 export class AppModule {}

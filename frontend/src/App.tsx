@@ -1,12 +1,14 @@
 
 import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import SignIn from "./components/pages/SignIn";
+import SignUp from "./components/pages/signUp/SignUp";
+// import SignIn from "./components/pages/SignIn";
 
 const App = () => (
   <div className="App">
     <ChakraProvider>
-      <SignIn />
+      {/* <SignIn /> */}
+<SignUp />
     </ChakraProvider>
   </div>
 );
