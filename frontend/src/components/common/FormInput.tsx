@@ -1,27 +1,44 @@
-import React from "react";
 import {
   FormControl,
+  FormControlProps,
+  FormErrorMessage,
   FormLabel,
   Input,
-  FormErrorMessage,
   InputProps,
+  ThemingProps,
 } from "@chakra-ui/react";
-import { useField } from "formik";
+import { forwardRef, LegacyRef, MutableRefObject, ReactNode } from "react";
 
-interface FormInputProps extends InputProps {
-  label: string;
-  name: string;
+interface SBInputProps
+  extends Omit<
+      InputProps,
+      "variant" | "size" | "experimental_spaceX" | "experimental_spaceY"
+    >,
+    ThemingProps {
+  ref?: LegacyRef<HTMLInputElement>;
+  label?: ReactNode;
+  error?: ReactNode;
+  info?: ReactNode;
+  rootProps?: FormControlProps;
+  RefCallBack?: MutableRefObject<undefined>;
 }
 
-const FormInput: React.FC<FormInputProps> = ({ label, ...props }) => {
-  const [field, meta] = useField(props as any);
-  return (
-    <FormControl id={props.id} isRequired isInvalid={!!meta.touched && !!meta.error}>
-      <FormLabel fontWeight="400">{label}</FormLabel>
-      <Input {...field} {...props} _focus={{ borderColor: "#4D148C" }} />
-      <FormErrorMessage>{meta.error}</FormErrorMessage>
-    </FormControl>
-  );
-};
-
-export default FormInput;
+export const FormInput = forwardRef<HTMLInputElement, SBInputProps>(
+  (props, ref) => {
+    const { rootProps, label, error, ...inputProps } = props;
+    return (
+      <FormControl {...rootProps} isInvalid={!!error}>
+        {label && <FormLabel fontWeight={"400"}>{label}</FormLabel>}
+        <Input
+          ref={ref}
+          {...inputProps}
+          _focus={{ borderColor: "#4D148C" }}
+          _invalid={{ borderColor: "#c01b4a" }}
+        />
+        {!!error && (
+          <FormErrorMessage color="#c01b4a">{error}</FormErrorMessage>
+        )}
+      </FormControl>
+    );
+  }
+);

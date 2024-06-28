@@ -1,0 +1,107 @@
+@import "./Variables";
+
+.green {
+    color: $green
+  }
+  
+  // Color classes
+  .pink {
+    color: $pink;
+  }
+  
+  .purple {
+    color: $purple;
+  }
+  
+  .orange {
+    color: $orange;
+  }
+  
+  .blue {
+    color: $blue;
+  }
+  
+  .black {
+    color: $black;
+  }
+  
+  .white {
+    color: $white;
+  }
+  
+  .gray {
+    color: $gray;
+  }
+  
+  // Light color classes
+  .light-pink {
+    color: $light-pink;
+  }
+  
+  .light-orange {
+    color: $light-orange;
+  }
+  
+  .light-purple {
+    color: $light-purple;
+  }
+  
+  .light-blue {
+    color: $light-blue;
+  }
+  
+  .light-green {
+    color: $light-green;
+  }
+  
+  
+  .bg-pink {
+    background-color: $pink;
+    &:hover {
+      background-color: $light-pink;
+    }
+  }
+  
+  .bg-purple {
+    background-color: $purple;
+    &:hover {
+      background-color: $light-purple;
+    }
+  }
+  
+  .bg-orange {
+    background-color: $orange;
+    &:hover {
+      background-color: $light-orange;
+    }
+  }
+  
+  .bg-blue {
+    background-color: $blue;
+    &:hover {
+      background-color: $light-blue;
+    }
+  }
+  
+  .bg-black {
+    background-color: $black;
+    &:hover {
+      background-color: lighten($black, 20%);
+    }
+  }
+  
+  .bg-white {
+    background-color: $white;
+    &:hover {
+      background-color: darken($white, 10%);
+    }
+  }
+  
+  .bg-gray {
+    background-color: $gray;
+    &:hover {
+      background-color: lighten($gray, 20%);
+    }
+  }
+
+  

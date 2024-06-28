@@ -1,7 +1,7 @@
 import SignIn from "../pages/SignIn";
 
 
-export const LoginRoutes = {
+export const SigninRoutes = {
   path: '',
   element: <SignIn />,
 };

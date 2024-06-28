@@ -1,36 +1,42 @@
-import React, { useState } from "react";
 import {
   Box,
   Button,
   Container,
-  FormControl,
-  FormLabel,
   Text,
-  Input,
   Link,
   Image,
   VStack,
   HStack,
 } from "@chakra-ui/react";
 import Logo from "../../assets/logo.png";
-// import { useSigninMutation } from "../../resolvers";
-
+import { FormInput, PasswordInput } from "../common";
+import { getSignInSchema } from "../validations";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { SignInPayload } from "./interface";
+import { useSigninMutation } from "../../resolvers";
 
 const SignIn = () => {
-  // const { signIn, loading } = useSigninMutation();
-  const [identifier, setIdentifier] = useState(""); 
-  const [password, setPassword] = useState("");
+  const { signIn, loading } = useSigninMutation();
 
-  const handleSubmit = async (e:any) => {
-    console.log({password,identifier})
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    formState: { errors, isSubmitting },
+  } = useForm<SignInPayload>({
+    resolver: yupResolver(getSignInSchema()),
+  });
+
+  async function onSubmit(values: SignInPayload) {
+    const identifier = getValues("identifier");
+    const password = getValues("password");
     try {
-      // await signIn({ identifier, password });
-      // Optionally redirect or perform other actions upon successful login
+      await signIn({ identifier, password });
     } catch (error) {
       console.error("Sign in error:", error);
     }
-  };
+  }
 
   return (
     <Container
@@ -50,50 +56,47 @@ const SignIn = () => {
         <HStack justifyContent={"center"} pb="3rem">
           <Image src={Logo} w="10rem" />
         </HStack>
-        <VStack  onSubmit={handleSubmit} direction={"column"} as="form" spacing={4} noValidate>
-          <FormControl id="username" isRequired>
-            <FormLabel fontWeight={"400"}>Email or Phone Number</FormLabel>
-            <Input
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <VStack spacing={6}>
+            <FormInput
+              label="Email Or Phone Number*"
               type="text"
-              _focus={{ borderColor: "#4D148C" }}
-              autoComplete="username"
-              value={identifier} 
-              onChange={(e) => setIdentifier(e.target.value)} 
-              autoFocus
+              {...register("identifier")}
+              error={errors.identifier?.message}
             />
-          </FormControl>
-          <FormControl id="password" isRequired>
-            <FormLabel fontWeight={"400"}>Password</FormLabel>
-            <Input
-              type="password"
-              _focus={{ borderColor: "#4D148C" }}
-              autoComplete="current-password"
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)}
+            <PasswordInput
+              label="Password*"
+              {...register("password")}
+              error={errors.password?.message}
             />
-          </FormControl>
-          <Link alignSelf="flex-end" fontSize="small" mb={2} href="#">
-            Forgot Password?
-          </Link>
-          <Button
-            type="submit"
-            bgColor={"#f4a261"}
-            _hover={{ backgroundColor: "#f7ba8a" }}
-            color="#fff"
-            // isLoading={loading}
-            loadingText="Signing In..."
-            width="full"
-            mt={4}
-          >
-            Sign In
-          </Button>
-          <HStack justifyContent="flex-end" fontSize={"small"} mt="2">
-            <Text> New to DevSpot?</Text>
-            <Link href="#" color="#f4a261" fontWeight={"600"}>
-              Create an account
+            <Link alignSelf="flex-end" fontSize="small" mb={2} href="#">
+              Forgot Password?
             </Link>
-          </HStack>
-        </VStack>
+            <Button
+              type="submit"
+              bgColor={"#f4a261"}
+              _hover={{ backgroundColor: "#f7ba8a" }}
+              color="#fff"
+              isLoading={isSubmitting || loading}
+              loadingText="Signing In..."
+              width="full"
+              mt={4}
+            >
+              Sign In
+            </Button>
+            <HStack justifyContent="flex-end" fontSize={"small"} mt="2">
+              <Text> New to DevSpot?</Text>
+              <Link
+                href="/sign-up"
+                color="#f4a261"
+                textDecoration="underline"
+                fontWeight={"600"}
+              >
+                Create an account
+              </Link>
+            </HStack>
+          </VStack>
+        </form>
       </Box>
     </Container>
   );

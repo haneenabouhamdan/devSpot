@@ -1,14 +1,11 @@
-
-import "./App.css";
 import { ChakraProvider } from "@chakra-ui/react";
-import SignUp from "./components/pages/signUp/SignUp";
-// import SignIn from "./components/pages/SignIn";
+import { Outlet } from "react-router";
+import './App.scss';
 
 const App = () => (
   <div className="App">
     <ChakraProvider>
-      {/* <SignIn /> */}
-<SignUp />
+     <Outlet/>
     </ChakraProvider>
   </div>
 );
