@@ -4,10 +4,10 @@ import { SubmissionStatus } from '../enums';
 
 @Entity('submissions')
 export class Submission extends AbstractEntity {
-  @Column()
+  @Column({ type: 'uuid', nullable: false })
   createdBy: UUID;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   challengeId: UUID;
 
   @Column({ type: 'text' })

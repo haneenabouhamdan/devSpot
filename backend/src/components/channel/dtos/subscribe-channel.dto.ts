@@ -1,17 +1,18 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsUUID } from 'class-validator';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
 export class SubscribeChannelDto {
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   userId: UUID;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   channelId: UUID;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   roleId: UUID;
 }

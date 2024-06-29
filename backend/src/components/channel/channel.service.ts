@@ -1,4 +1,9 @@
-import { Inject, Injectable, forwardRef } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { UserService } from '../user';
 import {
   ChannelDto,
@@ -22,6 +27,9 @@ export class ChannelService {
     const { createdBy, ...channelData } = CreateChannelDto;
     const user = await this.userService.findOneById(createdBy);
 
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
     const newChannel = this.channelRepository.create({
       ...channelData,
       createdBy: user.id,
@@ -39,7 +47,7 @@ export class ChannelService {
     return this.channelRepository.find();
   }
 
-  findOneById(id: UUID): Promise<ChannelDto> {
+  findOneById(id: UUID): Promise<Nullable<ChannelDto>> {
     return this.channelRepository.findOne({ where: { id } });
   }
 

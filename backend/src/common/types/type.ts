@@ -1,6 +1,5 @@
 import { EntityManager, ObjectLiteral, SelectQueryBuilder } from 'typeorm';
 import { FilterArgs } from '../dtos/filter.dto';
-import { RequestMethods } from '../constants';
 
 export type Optional<T> = T | undefined;
 

@@ -3,9 +3,9 @@ import { AbstractEntity } from '../../../common/entities';
 
 @Entity('submission_reviews')
 export class SubmissionReview extends AbstractEntity {
-  @Column()
+  @Column({ type: 'uuid', nullable: false })
   submissionId: UUID;
 
-  @Column()
-  review: UUID;
+  @Column({ type: 'uuid', nullable: false })
+  reviewId: UUID;
 }

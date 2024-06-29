@@ -11,3 +11,12 @@ registerEnumType(AuthResultType, {
 export interface AuthIdentifierType {
   identifier: string;
 }
+
+export interface JWTPayload {
+  sub: UUID;
+  iss: string;
+  aud: string;
+  phoneNumber: string;
+  roles: string[];
+  type?: string;
+}

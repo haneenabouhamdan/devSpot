@@ -29,11 +29,10 @@ export class CreateUserDto {
   @MaxLength(20)
   phoneNumber: string;
 
-  @Field({ nullable: true })
+  @Field()
   @IsString()
-  @IsOptional()
   @MinLength(8)
-  password?: string;
+  password: string;
 
   @Field(() => [GraphQLString], { nullable: true })
   @IsString({ each: true })

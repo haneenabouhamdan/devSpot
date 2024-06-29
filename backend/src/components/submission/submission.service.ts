@@ -30,7 +30,7 @@ export class SubmissionService {
     updateSubmissionDto: UpdateSubmissionDto,
   ): Promise<Submission> {
     await this.submissionsRepository.update(id, updateSubmissionDto);
-    return this.submissionsRepository.findOneBy({ id });
+    return this.submissionsRepository.save({ ...updateSubmissionDto, id });
   }
 
   async findAll(): Promise<Submission[]> {
@@ -39,7 +39,7 @@ export class SubmissionService {
     });
   }
 
-  async findOneById(id: UUID): Promise<Submission> {
+  async findOneById(id: UUID): Promise<Nullable<Submission>> {
     return this.submissionsRepository.findOne({
       where: { id },
       relations: ['created_by', 'submission_reviews'],
@@ -60,6 +60,6 @@ export class SubmissionService {
     const submissionReview = await this.submissionReviewRepository.findOne({
       where: { submissionId: id },
     });
-    return this.reviewRepository.findBy({ id: submissionReview.submissionId });
+    return this.reviewRepository.findBy({ id: submissionReview?.submissionId });
   }
 }

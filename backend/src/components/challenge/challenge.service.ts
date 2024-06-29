@@ -20,7 +20,7 @@ export class ChallengeService {
     return this.challengeRepository.find();
   }
 
-  findOneById(id: UUID): Promise<Challenge> {
+  findOneById(id: UUID): Promise<Nullable<Challenge>> {
     return this.challengeRepository.findOne({ where: { id } });
   }
 
@@ -29,6 +29,6 @@ export class ChallengeService {
     updateChallengeDto: UpdateChallengeDto,
   ): Promise<Challenge> {
     await this.challengeRepository.update(id, updateChallengeDto);
-    return this.challengeRepository.findOneBy({ id });
+    return this.challengeRepository.save({ ...updateChallengeDto, id });
   }
 }

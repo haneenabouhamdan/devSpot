@@ -1,5 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
 export class CreateChannelDto {
@@ -22,7 +23,7 @@ export class CreateChannelDto {
   @IsBoolean()
   isGroupChat?: boolean;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   createdBy: UUID;
 

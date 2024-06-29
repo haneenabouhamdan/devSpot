@@ -2,13 +2,14 @@ import { ObjectType, Field } from '@nestjs/graphql';
 import { IsEnum } from 'class-validator';
 import { EntityDTO } from '../../../common/dtos';
 import { SubmissionStatus } from '../enums';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @ObjectType()
 export class SubmissionDto extends EntityDTO {
-  @Field({ nullable: false })
+  @Field(() => GraphQLUUID, { nullable: false })
   createdBy: UUID;
 
-  @Field({ nullable: false })
+  @Field(() => GraphQLUUID, { nullable: false })
   challengeId: UUID;
 
   @Field({ nullable: false })
@@ -18,6 +19,6 @@ export class SubmissionDto extends EntityDTO {
   @IsEnum(SubmissionStatus)
   status: SubmissionStatus;
 
-  @Field({ nullable: false })
+  @Field(() => GraphQLUUID, { nullable: false })
   submissionReviewId: UUID;
 }

@@ -23,7 +23,7 @@ export class ChannelBatches {
       if (!usersByChannelId.has(userChannel.channelId)) {
         usersByChannelId.set(userChannel.channelId, []);
       }
-      usersByChannelId.get(userChannel.channelId).push(userChannel.user);
+      usersByChannelId!.get(userChannel.channelId)!.push(userChannel.user);
     });
 
     return usersByChannelId;

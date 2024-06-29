@@ -17,7 +17,7 @@ export class Challenge extends AbstractEntity {
   })
   status: ChallengeStatus;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   createdBy: UUID;
 
   @Column('text')

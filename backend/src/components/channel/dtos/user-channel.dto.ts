@@ -2,18 +2,19 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { EntityDTO } from '../../../common/dtos';
 import { IsEnum, IsUUID } from 'class-validator';
 import { UserChannelSubscriptionStatus } from '../enums';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @ObjectType()
 export class UserChannelDto extends EntityDTO {
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   channelId: UUID;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   userId: UUID;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   roleId: UUID;
 

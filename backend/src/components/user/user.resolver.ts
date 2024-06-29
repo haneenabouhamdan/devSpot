@@ -8,6 +8,7 @@ import { UserDto } from './dtos';
 import { Roles } from '../../common/decorators';
 import { DefaultRoles } from './enums';
 import { UserService } from './services';
+import { GeneralResponseDto } from 'src/common/dtos';
 
 @Resolver(() => UserDto)
 export class UserResolver {
@@ -51,7 +52,13 @@ export class UserResolver {
   }
 
   @Mutation(() => UserDto)
-  removeUser(@Args('id') id: UUID) {
-    return this.userService.remove(id);
+  async removeUser(
+    @Args('id', { type: () => GraphQLUUID }) id: UUID,
+  ): Promise<GeneralResponseDto> {
+    await this.userService.remove(id);
+    return {
+      message: 'User removed successfully',
+      success: true,
+    };
   }
 }

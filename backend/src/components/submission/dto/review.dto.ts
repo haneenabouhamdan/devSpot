@@ -1,9 +1,10 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { EntityDTO } from '../../../common/dtos';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @ObjectType()
 export class ReviewDto extends EntityDTO {
-  @Field({ nullable: false })
+  @Field(() => GraphQLUUID, { nullable: false })
   createdBy: UUID;
 
   @Field({ nullable: true })

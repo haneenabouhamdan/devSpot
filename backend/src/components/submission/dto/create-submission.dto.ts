@@ -1,10 +1,11 @@
 import { IsUUID, IsEnum, IsString } from 'class-validator';
 import { SubmissionStatus } from '../enums';
 import { Field, InputType } from '@nestjs/graphql';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
 export class CreateSubmissionDto {
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   challengeId: UUID;
 
@@ -12,11 +13,11 @@ export class CreateSubmissionDto {
   @IsString()
   submissionText: string;
 
-  @Field()
+  @Field(() => SubmissionStatus)
   @IsEnum(SubmissionStatus)
   status: SubmissionStatus;
 
-  @Field()
+  @Field(() => GraphQLUUID)
   @IsUUID()
   createdBy: UUID;
 }

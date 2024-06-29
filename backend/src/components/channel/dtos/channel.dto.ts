@@ -1,5 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { EntityDTO } from '../../../common/dtos';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @ObjectType()
 export class ChannelDto extends EntityDTO {
@@ -15,7 +16,7 @@ export class ChannelDto extends EntityDTO {
   @Field(() => Boolean, { nullable: true })
   isGroupChat: boolean;
 
-  @Field({ nullable: false })
+  @Field(() => GraphQLUUID, { nullable: false })
   createdBy: UUID;
 
   @Field({ nullable: true })

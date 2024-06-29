@@ -15,7 +15,7 @@ export class Channel extends AbstractEntity {
   @Column({ default: false })
   isGroupChat: boolean;
 
-  @Column({ nullable: false })
+  @Column({ type: 'uuid', nullable: false })
   createdBy: UUID;
 
   @Column({ nullable: true })

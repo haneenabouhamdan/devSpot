@@ -24,18 +24,20 @@ import {
   MessageModule,
   SubmissionModule,
 } from './components';
-import { AuthGuard } from './auth/guards';
-import { APP_GUARD } from '@nestjs/core';
+// import { AuthGuard } from './auth/guards';
+// import { APP_GUARD } from '@nestjs/core';
 import { AppConfigModule } from './config';
 import { JwtService } from '@nestjs/jwt';
-import { JwtAuthGuard } from './auth/guards/jwt.guard';
+import { AuthGuard, JwtAuthGuard } from './auth/guards';
+import { APP_GUARD } from '@nestjs/core';
+// import { JwtAuthGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
-      port: parseInt(process.env.POSTGRES_PORT),
+      port: parseInt(process.env.POSTGRES_PORT || '5432'),
       password: process.env.POSTGRES_PASSWORD,
       username: process.env.POSTGRES_USER,
       entities: [
@@ -74,10 +76,10 @@ import { JwtAuthGuard } from './auth/guards/jwt.guard';
   controllers: [AppController],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
     AppService,
     JwtService,
   ],

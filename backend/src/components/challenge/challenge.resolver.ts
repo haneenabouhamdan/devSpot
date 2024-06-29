@@ -2,6 +2,7 @@ import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { ChallengeService } from './challenge.service';
 import { Challenge } from './entities/challenge.entity';
 import { ChallengeDto, CreateChallengeDto, UpdateChallengeDto } from './dto';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @Resolver(() => ChallengeDto)
 export class ChallengeResolver {
@@ -20,7 +21,7 @@ export class ChallengeResolver {
   }
 
   @Query(() => ChallengeDto, { name: 'challenge' })
-  findOne(@Args('id') id: UUID) {
+  findOne(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.challengeService.findOneById(id);
   }
 

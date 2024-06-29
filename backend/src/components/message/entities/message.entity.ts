@@ -4,10 +4,10 @@ import { MessageStatus } from '../enums';
 
 @Entity('messages')
 export class Message extends AbstractEntity {
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   senderId: UUID;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   channelId: UUID;
 
   @Column({ type: 'text', nullable: true })

@@ -1,2 +1,2 @@
-export * from './role-permission.service';
 export * from './user.service';
+export * from './roles-permissions.service';

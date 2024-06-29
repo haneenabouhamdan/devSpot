@@ -1,1 +1,1 @@
-export * from './user-cache.service';
+export * from './user.cache';

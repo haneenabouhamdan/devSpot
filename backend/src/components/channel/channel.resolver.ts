@@ -15,6 +15,7 @@ import * as DataLoader from 'dataloader';
 import { ChannelBatches } from './batches';
 import { Roles } from 'src/common/decorators';
 import { DefaultRoles } from '../user/enums';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @Resolver(() => ChannelDto)
 export class ChannelResolver {
@@ -35,25 +36,25 @@ export class ChannelResolver {
   }
 
   @Query(() => ChannelDto, { name: 'channel' })
-  findOne(@Args('id') id: UUID) {
+  findOne(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.channelService.findOneById(id);
   }
 
   @Query(() => [ChannelDto], { name: 'userChannels' })
-  getUserCreatedChannels(@Args('id') id: UUID) {
+  getUserCreatedChannels(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.channelService.findByUserId(id);
   }
 
-  @Mutation(() => UserChannelDto, { name: 'SubscribeChannel' })
-  async subscribe(
-    @Args('subscribeChannelDto') subscribeDto: SubscribeChannelDto,
-  ): Promise<UserChannelDto> {
-    try {
-      return this.channelService.subscribe(subscribeDto);
-    } catch (error) {
-      console.error('Error subscribing to channel:', error);
-    }
-  }
+  // @Mutation(() => UserChannelDto, { name: 'SubscribeChannel' })
+  // async subscribe(
+  //   @Args('subscribeChannelDto') subscribeDto: SubscribeChannelDto,
+  // ): Promise<UserChannelDto> {
+  //   try {
+  //     return this.channelService.subscribe(subscribeDto);
+  //   } catch (error) {
+  //     console.error('Error subscribing to channel:', error);
+  //   }
+  // }
 
   @ResolveField(() => [UserDto])
   async members(@Parent() channel: Channel): Promise<User[]> {

@@ -6,7 +6,7 @@ import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 config();
 
 const migrationsDir = path.join(__dirname, '/database/migrations');
-console.log(process.env.POSTGRES_PASSWORD);
+
 export default new DataSource({
   type: 'postgres',
   host: process.env.POSTGRES_HOST,

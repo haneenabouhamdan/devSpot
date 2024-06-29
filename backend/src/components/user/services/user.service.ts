@@ -1,5 +1,6 @@
 import {
   BadGatewayException,
+  BadRequestException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -20,7 +21,7 @@ export class UserService {
     return this.userRepository.find();
   }
 
-  findOneById(id: UUID): Promise<User> {
+  findOneById(id: UUID): Promise<Nullable<User>> {
     return this.userRepository.findOne({ where: { id } });
   }
 
@@ -47,6 +48,9 @@ export class UserService {
 
     if (user) {
       throw new BadGatewayException('user already exists');
+    }
+    if (!payload.password) {
+      throw new BadRequestException('Please provide password');
     }
 
     const hashedPassword = await argon2.hash(payload.password);

@@ -5,7 +5,7 @@ import { User } from './entities';
 import { UserRepository } from './repositories/user.repository';
 import { UserResolver } from './user.resolver';
 import { RoleRepository } from './repositories';
-import { UserCache } from './cache';
+// import { UserCache } from './cache';
 import { UserChannelsRepository } from '../channel';
 import { RoleFilter, UserFilter } from './filters';
 
@@ -16,11 +16,11 @@ import { RoleFilter, UserFilter } from './filters';
     UserResolver,
     UserRepository,
     RoleRepository,
-    UserCache,
+    // UserCache,
     UserChannelsRepository,
     UserFilter,
     RoleFilter,
   ],
-  exports: [UserService],
+  exports: [UserService, UserFilter],
 })
 export class UserModule {}

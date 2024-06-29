@@ -6,7 +6,7 @@ import { SubmissionReview } from './submission-review.entity';
 
 @Entity('reviews')
 export class Review extends AbstractEntity {
-  @Column()
+  @Column({ type: 'uuid', nullable: false })
   createdBy: UUID;
 
   @Column({ type: 'text' })

@@ -3,9 +3,9 @@ import { Entity, Column } from 'typeorm';
 
 @Entity('pinned_messages')
 export class PinnedMessage extends AbstractEntity {
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   userId: UUID;
 
-  @Column('uuid')
+  @Column({ type: 'uuid', nullable: false })
   messageId: UUID;
 }

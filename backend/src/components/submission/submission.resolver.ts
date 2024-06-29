@@ -6,6 +6,7 @@ import {
   SubmissionDto,
   UpdateSubmissionDto,
 } from './dto';
+import { GraphQLUUID } from 'graphql-scalars';
 
 @Resolver(() => SubmissionDto)
 export class SubmissionResolver {
@@ -24,12 +25,12 @@ export class SubmissionResolver {
   }
 
   @Query(() => SubmissionDto, { name: 'submission' })
-  findOne(@Args('id') id: UUID) {
+  findOne(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.submissionService.findOneById(id);
   }
 
   @Query(() => [ReviewDto], { name: 'reviewsBySubmissionId' })
-  findSubmissionReviewById(@Args('id') id: UUID) {
+  findSubmissionReviewById(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.submissionService.findSubmissionReviewById(id);
   }
 

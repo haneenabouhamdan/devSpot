@@ -18,7 +18,7 @@ export class MessageService {
     updateMessageDto: UpdateMessageDto,
   ): Promise<MessageDto> {
     await this.messageRepository.update(id, updateMessageDto);
-    return this.messageRepository.findOneBy({ id });
+    return this.messageRepository.save({ ...updateMessageDto, id });
   }
 
   async getChannelMessages(channelId: UUID): Promise<Nullable<MessageDto[]>> {

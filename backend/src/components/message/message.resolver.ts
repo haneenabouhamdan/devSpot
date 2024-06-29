@@ -62,7 +62,7 @@ export class MessageResolver {
 
   @Mutation(() => GeneralResponseDto)
   unpinMessage(
-    @Args('unpinMessage')
+    @Args('unpinMessage', { type: () => GraphQLUUID })
     id: UUID,
   ) {
     return this.pinnedMessageRepository.delete(id);
