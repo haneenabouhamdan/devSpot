@@ -28,27 +28,24 @@ interface HTTPContextValues {
 
 const getApolloLinks = (token?: string) => {
   const errorLink = onError(({ graphQLErrors }) => {
-    if (graphQLErrors)
-      graphQLErrors.forEach(({ message }) =>{
-        if(message === 'Subscribe to request deliveries'){
-         console.log("warning",{message})
-        }else{
-          console.log({message})
-          }
-        })
+    if (graphQLErrors) {
+      graphQLErrors.forEach(({ message }) => {
+        console.log({ message });
+      });
+    }
   });
 
   const httpLink = createHttpLink({
     uri: Config.GRAPHQL_ENDPOINT,
     headers: {
-      ...(token && { Authorization: `Bearer ${token}` }),
+      Authorization: `Bearer ${token}`,
     },
   });
 
   return errorLink.concat(httpLink);
 };
 
-const createGraphQLClient = (token?: string) =>
+  const createGraphQLClient = (token?: string) =>
   new ApolloClient({
     uri: Config.GRAPHQL_ENDPOINT,
     cache: new InMemoryCache(),
@@ -56,7 +53,7 @@ const createGraphQLClient = (token?: string) =>
     link: getApolloLinks(token),
   });
 
-const HTTPContext = createContext<HTTPContextValues>({
+  const HTTPContext = createContext<HTTPContextValues>({
   authenticate: (token) => {
     console.group('[HTTPContext]: authenticate');
     console.log('This method is not implemented yet!');

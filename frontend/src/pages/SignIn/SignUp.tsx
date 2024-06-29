@@ -10,24 +10,44 @@ import {
 } from "@chakra-ui/react";
 import Logo from "../../assets/logo.png";
 import { SignUpPayload } from "./interface";
-import { getSignupSchema } from "../validations";
+import { getSignupSchema } from "../../components/validations";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { FormInput } from "../common";
+import { FormInput } from "../../components/common";
 import "./styles.scss";
+import { AuthUser, useSignUpMutation } from "../../resolvers";
+import { useAuthContext } from "../../contexts";
 
 const SignUp = () => {
+  const { signUp, loading, ...signUpResult } = useSignUpMutation();
+  const { onUserLogin } = useAuthContext();
+
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors, isSubmitting },
   } = useForm<SignUpPayload>({
     resolver: yupResolver(getSignupSchema()),
   });
 
-  function onSubmit(values: SignUpPayload) {
-    // Handle form submission logic here
-    console.log(values);
+  async function onSubmit(values: SignUpPayload) {
+    const phoneNumber = getValues("phoneNumber");
+    const email = getValues("email");
+    const username = getValues("username");
+    const password = getValues("password");
+    try {
+      await signUp({ phoneNumber, email, username, password }).then(() => {
+        if (Boolean(signUpResult.user && signUpResult.token)) {
+          onUserLogin({
+            user: (signUpResult.user ?? signUpResult.user) as AuthUser,
+            token: String(signUpResult.token ?? signUpResult.token),
+          });
+        }
+      });
+    } catch (error) {
+      console.error("Sign Up error:", error);
+    }
   }
 
   return (
@@ -84,6 +104,7 @@ const SignUp = () => {
               type="submit"
               backgroundColor={"#f4a261"}
               color="#fff"
+              _hover={{backgroundColor:'#f7ba8a'}}
               isLoading={isSubmitting}
               loadingText="Signing Up..."
               width="full"

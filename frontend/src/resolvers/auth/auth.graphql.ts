@@ -14,22 +14,19 @@ export const SIGN_IN = gql`
         notificationPaused
         jobTitle
         id
-        createdAt
         bio
       }
     }
   }
 `;
 
-export const REGISTER = gql`
-  mutation RegisterRetailer($registerInput: RegisterRetailerInput!) {
-    registerRetailer(registerInput: $registerInput) {
+export const SIGN_UP = gql`
+  mutation SignUp($signUpInput: CreateUserDto!) {
+    signUp(signUpInput: $signUpInput) {
+      result
       token
       user {
         id
-        name
-        phone
-        email
       }
     }
   }

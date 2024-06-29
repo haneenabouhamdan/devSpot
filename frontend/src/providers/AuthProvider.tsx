@@ -1,6 +1,6 @@
 import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import { useHTTPContext } from './GraphQLProvider';
-import { LoginResponse, useGetProfileQuery } from '../resolvers';
+import { AuthResponse, useGetProfileQuery } from '../resolvers';
 import { AuthContext } from '../contexts/AuthContext';
 
 export function AuthenticationProvider({ children }: Readonly<{ children: ReactNode }>) {
@@ -9,20 +9,22 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
   const { getCurrentUser, user, loading: isAuthenticating } = useGetProfileQuery();
 
   const getUser = useCallback(() => {
-    void getCurrentUser();
+    getCurrentUser();
   }, [getCurrentUser]);
 
   const onUserLogin = useCallback(
-    (data: LoginResponse) => {
+    (data: AuthResponse) => {
       authenticate(data.token);
-      getUser();
       localStorage.setItem('token', data.token);
+      localStorage.setItem('uId', String(data.user.id));
+      getUser();
     },
-    [getUser, authenticate]
+    [authenticate, getUser]
   );
 
   const onUserLogout = useCallback(() => {
     localStorage.removeItem('token');
+    localStorage.removeItem('uId');
     setIsAuthenticated(false);
   }, []);
 
@@ -34,13 +36,14 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
 
   useEffect(() => {
     const existedToken = localStorage.getItem('token');
-    if (existedToken) {
+    const existedUserId = localStorage.getItem('uId');
+    if (existedToken && existedUserId) {
       authenticate(existedToken);
       getUser();
     } else {
       onUserLogout();
     }
-  }, [authenticate, getUser, onUserLogout]);
+  }, [onUserLogout]);
 
   const contextValue = useMemo(
     () => ({
@@ -50,7 +53,7 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
       isAuthenticated,
       isAuthenticating,
     }),
-    [user, isAuthenticated, onUserLogin, onUserLogout, isAuthenticating]
+    [user, onUserLogin, onUserLogout, isAuthenticated, isAuthenticating]
   );
 
   return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

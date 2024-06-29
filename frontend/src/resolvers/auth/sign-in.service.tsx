@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client';
 import { SIGN_IN } from './auth.graphql';
-import { type LoginResponse } from './auth.types';
+import { type AuthResponse } from './auth.types';
 
-export interface LoginPayload {
+export interface SignInPayload {
   identifier: string;
   password: string;
 }
@@ -10,12 +10,12 @@ export interface LoginPayload {
 export function useSigninMutation() {
   const [mutate, { data, loading, error }] = useMutation<
     {
-      signIn: LoginResponse;
+      signIn: AuthResponse;
     },
-    { signInInput: LoginPayload }
+    { signInInput: SignInPayload }
   >(SIGN_IN);
 
-  async function signIn(payload: LoginPayload) {
+  async function signIn(payload: SignInPayload) {
     const result = await mutate({
       variables: {
         signInInput: payload,

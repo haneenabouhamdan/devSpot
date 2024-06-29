@@ -1,4 +1,4 @@
 export * from './auth.types';
-export * from './registration.service';
-export * from './login.service';
+export * from './sign-up.service';
+export * from './sign-in.service'
 export * from './get-profile.service'

@@ -1,10 +1,10 @@
 import { createContext, useContext } from 'react';
-import { AuthUser, LoginResponse } from '../resolvers';
+import { AuthUser, AuthResponse } from '../resolvers';
 
 export interface AuthContextProps {
   isAuthenticated: boolean;
   isAuthenticating: boolean;
-  onUserLogin: (data: LoginResponse) => void;
+  onUserLogin: (data: AuthResponse) => void;
   onUserLogout: () => void;
   user?: AuthUser;
 }
