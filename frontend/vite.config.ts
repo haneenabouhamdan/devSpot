@@ -12,7 +12,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/styling/colors.scss";`, 
+        additionalData: `@import "@/styling/global.scss";`, 
       },
     },
   },

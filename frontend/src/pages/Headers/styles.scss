@@ -1,0 +1,14 @@
+.main-header {
+  top: 0;
+  height: 5vh;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-right: 4vh;
+  background-color: $purple;
+  color: white;
+  border: 0;
+  width: 100;
+  &.mobile {
+    padding-left: 20%;
+  }
+}

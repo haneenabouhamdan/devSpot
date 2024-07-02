@@ -1,0 +1,49 @@
+import React from "react";
+import {
+  Flex,
+  Input,
+  InputGroup,
+  InputProps,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+
+interface SearchInputProps extends InputProps {
+  placeholder?: string;
+  className?: string;
+}
+
+const SearchInput: React.FC<SearchInputProps> = ({
+  placeholder = "Search...",
+  ...props
+}) => {
+  return (
+    <Flex
+      w="70%"
+      height="80%"
+      className={props.className ?? "bg-light-purple"}
+      borderRadius={"5px"}
+    >
+      <InputGroup pl={4} pr={4}>
+        <Input
+          placeholder={placeholder}
+          pl={10}
+          className="bg-light-purple"
+          _focus={{ backgroundColor: "#7b4e7b;", border:'0px' }}
+          width={"100%"}
+          border={0}
+          fontSize={"medium"}
+          fontStyle={"italic"}
+          color="white"
+          _placeholder={{ color: "white" }}
+          {...props}
+        />
+        <InputRightElement pointerEvents="none" pt={8} pr={10}>
+          <SearchIcon color="white" />
+        </InputRightElement>
+      </InputGroup>
+    </Flex>
+  );
+};
+
+export default SearchInput;

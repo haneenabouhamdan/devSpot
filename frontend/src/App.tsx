@@ -1,11 +1,13 @@
 import { ChakraProvider } from "@chakra-ui/react";
 import { Outlet } from "react-router";
-import './App.scss';
+import "./App.scss";
+import { MainHelmet } from "./pages/MainHelmet";
 
 const App = () => (
   <div className="App">
     <ChakraProvider>
-     <Outlet/>
+      <MainHelmet />
+      <Outlet />
     </ChakraProvider>
   </div>
 );

@@ -32,6 +32,7 @@
   .gray {
     color: $gray;
   }
+
   
   // Light color classes
   .light-pink {
@@ -64,16 +65,14 @@
   
   .bg-purple {
     background-color: $purple;
-    &:hover {
-      background-color: $light-purple;
-    }
+  }
+
+  .bg-light-purple {
+    background-color: $light-purple;
   }
   
   .bg-orange {
     background-color: $orange;
-    &:hover {
-      background-color: $light-orange;
-    }
   }
   
   .bg-blue {
@@ -92,16 +91,45 @@
   
   .bg-white {
     background-color: $white;
-    &:hover {
-      background-color: darken($white, 10%);
-    }
   }
   
-  .bg-gray {
-    background-color: $gray;
-    &:hover {
-      background-color: lighten($gray, 20%);
-    }
+  .bg-light-gray {
+      background-color: lighten($gray, 30%);
   }
 
+  .light-gray {
+    color: lighten($gray, 30%);
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  .title {
+    font-size: larger;
+  }
+
+  .normal {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400; /* Normal */
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+  }
+  
+  .slightly-bold {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500; /* Slightly Bold */
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+  }
+  
+  .bold {
+    font-family: "Noto Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700; /* Bold */
+    font-style: normal;
+    font-variation-settings: "wdth" 100;
+  }
   

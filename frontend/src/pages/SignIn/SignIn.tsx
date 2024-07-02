@@ -8,21 +8,16 @@ import {
   VStack,
   HStack,
 } from "@chakra-ui/react";
-import Logo from "../../assets/logo.png"
+import Logo from "../../assets/logo.png";
 import { FormInput, PasswordInput } from "../../components/common";
 import { getSignInSchema } from "../../components/validations";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SignInPayload } from "./interface";
-import { AuthUser, useSigninMutation } from "../../resolvers";
-import { useAuthContext } from "../../contexts";
-import { useNavigate, useLocation } from "react-router";
+import { useSignInMutation } from "../../resolvers";
 
 const SignIn = () => {
-  const { signIn, loading, ...signResult } = useSigninMutation();
-  const { onUserLogin } = useAuthContext();
-  const navigate = useNavigate();
-  const location = useLocation();
+  const { signIn, loading, } = useSignInMutation();
 
   const {
     register,
@@ -37,16 +32,7 @@ const SignIn = () => {
     const identifier = values.identifier || getValues("identifier");
     const password = values.password || getValues("password");
     try {
-      await signIn({ identifier, password }).then(() => {
-        if (Boolean(signResult.user && signResult.token)) {
-          onUserLogin({
-            user: (signResult.user ?? signResult.user) as AuthUser,
-            token: String(signResult.token ?? signResult.token),
-          });
-          const from = location.state?.from || '/';
-          navigate(from);
-        }
-      });
+      await signIn({ identifier, password });
     } catch (error) {
       console.error("Sign in error:", error);
     }

@@ -15,7 +15,7 @@ root.render(
     <GraphQLProvider>
       <AuthenticationProvider>
         <RouterProvider router={router} />
-        <Helmet  defaultTitle="DevSpot" />
+        <Helmet defaultTitle="DevSpot" />
       </AuthenticationProvider>
     </GraphQLProvider>
   </React.StrictMode>

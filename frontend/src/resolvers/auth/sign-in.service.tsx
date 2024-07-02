@@ -7,7 +7,7 @@ export interface SignInPayload {
   password: string;
 }
 
-export function useSigninMutation() {
+export function useSignInMutation() {
   const [mutate, { data, loading, error }] = useMutation<
     {
       signIn: AuthResponse;
