@@ -8,6 +8,8 @@ import {
 } from './repositories';
 import { Message, MessageReaction, PinnedMessage } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserRepository, UserService } from '../user';
+import { UserFilter } from '../user/filters';
 
 @Module({
   imports: [
@@ -18,6 +20,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     MessageService,
     MessageRepository,
     MessageReactionRepository,
+    UserService,
+    UserRepository,
+    UserFilter,
     PinnedMessageRepository,
   ],
 })

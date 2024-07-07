@@ -24,7 +24,6 @@ async function bootstrap() {
       whitelist: true,
       errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
       transform: true,
-      // exceptionFactory: (errors) => new APIValidationException(errors),
     }),
   );
 

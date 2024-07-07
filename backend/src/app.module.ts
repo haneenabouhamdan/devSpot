@@ -24,13 +24,10 @@ import {
   MessageModule,
   SubmissionModule,
 } from './components';
-// import { AuthGuard } from './auth/guards';
-// import { APP_GUARD } from '@nestjs/core';
 import { AppConfigModule } from './config';
 import { JwtService } from '@nestjs/jwt';
-import { AuthGuard, JwtAuthGuard } from './auth/guards';
+import { JwtAuthGuard } from './auth/guards';
 import { APP_GUARD } from '@nestjs/core';
-// import { JwtAuthGuard } from './auth/guards/jwt.guard';
 
 @Module({
   imports: [
@@ -64,6 +61,7 @@ import { APP_GUARD } from '@nestjs/core';
       buildSchemaOptions: {
         dateScalarMode: 'timestamp',
       },
+      context: ({ req, res }) => ({ req, res }),
     }),
     AppConfigModule,
     UserModule,

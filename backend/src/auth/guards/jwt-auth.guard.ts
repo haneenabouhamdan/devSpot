@@ -1,65 +1,31 @@
-import {
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
-import { AuthGuard as PassportAuthGuard } from '@nestjs/passport';
-import { JwtService } from '@nestjs/jwt';
-import { Reflector } from '@nestjs/core';
+import { ExecutionContext, Injectable } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { SKIP_AUTH_KEY } from 'src/common/constants';
-import { Config } from 'src/config';
+import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { Reflector } from '@nestjs/core';
+import { SKIP_AUTH_KEY } from '../../common/constants';
 
 @Injectable()
-export class JwtAuthGuard extends PassportAuthGuard('jwt') {
-  constructor(
-    private readonly jwtService: JwtService,
-    private readonly reflector: Reflector,
-  ) {
+export class JwtAuthGuard extends AuthGuard('jwt') {
+  constructor(private readonly reflector: Reflector) {
     super();
   }
 
-  getRequest(context: ExecutionContext) {
+  getRequest(context: ExecutionContext): Request {
     const ctx = GqlExecutionContext.create(context);
     return ctx.getContext().req;
   }
 
-  async canActivate(context: ExecutionContext): Promise<boolean> {
+  canActivate(context: ExecutionContext) {
     const skipAuth = this.reflector.getAllAndOverride<boolean>(SKIP_AUTH_KEY, [
       context.getHandler(),
       context.getClass(),
     ]);
 
     if (skipAuth) {
-      return true;
+      return true; // Skip authentication
     }
 
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
-    if (!token) {
-      throw new UnauthorizedException();
-    }
-
-    try {
-      const payload = await this.jwtService.verifyAsync(token, {
-        secret: Config().jwtSecret,
-      });
-      request['user'] = payload;
-    } catch {
-      throw new UnauthorizedException();
-    }
-
-    return true;
-  }
-
-  private extractTokenFromHeader(request: Request): string | undefined {
-    const authHeader = request.headers.get('Authorization');
-    if (typeof authHeader === 'string') {
-      const [type, token] = authHeader.split(' ');
-      if (type === 'Bearer' && token) {
-        return token;
-      }
-    }
-    return undefined;
+    return super.canActivate(context);
   }
 }

@@ -1,6 +1,7 @@
 import { GraphQLUUID } from 'graphql-scalars';
 import { EntityDTO } from '../../../../common/dtos';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { MessageDto } from '..';
 
 @ObjectType()
 export class MessageReactionDto extends EntityDTO {
@@ -12,4 +13,7 @@ export class MessageReactionDto extends EntityDTO {
 
   @Field({ nullable: false })
   emoji: string;
+
+  @Field(() => MessageDto, { nullable: false })
+  message: MessageDto;
 }

@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { ChannelService } from './channel.service';
 import { CreateChannelDto } from './dtos/create-channel.dto';
-import { ChannelDto, SubscribeChannelDto, UserChannelDto } from './dtos';
+import { ChannelDto } from './dtos';
 import { User, UserDto } from '../user';
 import { Channel } from './entities';
 import * as DataLoader from 'dataloader';
@@ -16,18 +16,25 @@ import { ChannelBatches } from './batches';
 import { Roles } from 'src/common/decorators';
 import { DefaultRoles } from '../user/enums';
 import { GraphQLUUID } from 'graphql-scalars';
+import { MessageDto } from '../message/dtos';
+import { MessageService } from '../message';
 
 @Resolver(() => ChannelDto)
 export class ChannelResolver {
   constructor(
     private readonly channelService: ChannelService,
     private channelBatches: ChannelBatches,
+    private messageService: MessageService,
   ) {}
 
   @Roles(DefaultRoles.ADMIN, DefaultRoles.SUPERADMIN)
   @Mutation(() => ChannelDto)
   createChannel(@Args('CreateChannelDto') createChannelDto: CreateChannelDto) {
-    return this.channelService.create(createChannelDto);
+    const data = this.channelService.create(createChannelDto);
+    return {
+      message: 'Channel created sucessfully',
+      data,
+    };
   }
 
   @Query(() => [ChannelDto], { name: 'channels' })
@@ -66,5 +73,13 @@ export class ChannelResolver {
     });
 
     return userLoader.load(channel.id);
+  }
+
+  @ResolveField(() => [MessageDto])
+  async messages(@Parent() channel: Channel): Promise<MessageDto[]> {
+    const messagesMap = await this.messageService.getChannelsMessages([
+      channel.id,
+    ]);
+    return messagesMap.get(channel.id) || [];
   }
 }

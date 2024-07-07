@@ -1,4 +1,4 @@
-import { ArgsType, Field, ID, Int, PartialType } from '@nestjs/graphql';
+import { Field, ID, InputType, Int, PartialType } from '@nestjs/graphql';
 import {
   IsDate,
   IsEnum,
@@ -12,7 +12,7 @@ import { OrderSort } from '../types/enums';
 import { EntityId } from '../types/type';
 import { PaginationArgs } from './pagination.dto';
 
-@ArgsType()
+@InputType()
 class FilterArgsBase extends PaginationArgs {
   @IsOptional()
   @Field(() => [ID])
@@ -55,5 +55,5 @@ class FilterArgsBase extends PaginationArgs {
   keyword: string;
 }
 
-@ArgsType()
+@InputType()
 export class FilterArgs extends PartialType(FilterArgsBase) {}

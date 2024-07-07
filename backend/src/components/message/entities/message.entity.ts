@@ -1,6 +1,8 @@
 import { AbstractEntity } from 'src/common/entities';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, OneToMany, JoinColumn, ManyToOne } from 'typeorm';
 import { MessageStatus } from '../enums';
+import { MessageReaction } from './message-reaction.entity';
+import { User } from 'src/components/user';
 
 @Entity('messages')
 export class Message extends AbstractEntity {
@@ -14,7 +16,7 @@ export class Message extends AbstractEntity {
   text?: string;
 
   @Column({ type: 'simple-array', nullable: true })
-  attachments: string[];
+  attachments?: string[];
 
   @Column({
     type: 'enum',
@@ -25,4 +27,11 @@ export class Message extends AbstractEntity {
 
   @Column('uuid', { nullable: true })
   parentMessageId?: UUID;
+
+  @OneToMany(() => MessageReaction, (reaction) => reaction.message)
+  messageReactions?: MessageReaction[];
+
+  @ManyToOne(() => User)
+  @JoinColumn({ name: 'senderId' })
+  sender: User;
 }

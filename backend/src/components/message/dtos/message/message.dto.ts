@@ -3,6 +3,8 @@ import { EntityDTO } from '../../../../common/dtos';
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
 import { GraphQLUUID } from 'graphql-scalars';
+import { MessageReactionDto } from '../messageReaction';
+import { UserDto } from 'src/components/user';
 
 @ObjectType()
 export class MessageDto extends EntityDTO {
@@ -25,6 +27,12 @@ export class MessageDto extends EntityDTO {
 
   @Field(() => GraphQLUUID, { nullable: true })
   parentMessageId?: UUID;
+
+  @Field(() => [MessageReactionDto], { nullable: true })
+  messageReactions?: MessageReactionDto[];
+
+  @Field(() => UserDto, { nullable: false })
+  sender: UserDto;
 }
 
 @ObjectType()

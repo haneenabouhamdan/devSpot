@@ -5,8 +5,9 @@ import { Channel, UserChannels } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChannelRepository, UserChannelsRepository } from './repositories';
 import { ChannelBatches } from './batches';
-import { UserRepository, UserService, UserModule } from '../user';
+import { UserRepository, UserModule } from '../user';
 import { UserFilter } from '../user/filters';
+import { MessageRepository, MessageService } from '../message';
 
 @Module({
   imports: [
@@ -16,11 +17,12 @@ import { UserFilter } from '../user/filters';
   providers: [
     ChannelResolver,
     ChannelService,
-    // UserService,
     ChannelRepository,
     UserRepository,
     ChannelBatches,
     UserChannelsRepository,
+    MessageService,
+    MessageRepository,
     UserFilter,
   ],
   exports: [ChannelService],

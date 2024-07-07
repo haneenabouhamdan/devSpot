@@ -45,13 +45,6 @@ export class MessageResolver {
     return this.messageReactionRepository.save(newReaction);
   }
 
-  @Query(() => [MessageDto], { name: 'channelMessages' })
-  getChannelMessages(
-    @Args('channelId', { type: () => GraphQLUUID }) channelId: UUID,
-  ) {
-    return this.messageService.getChannelMessages(channelId);
-  }
-
   @Mutation(() => PinMessageDto)
   pinMessage(
     @Args('pinMessage', { type: () => CreatePinMessageDto })

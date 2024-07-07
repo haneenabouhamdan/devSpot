@@ -26,7 +26,7 @@ export class AuthService {
       user = await this.userService.findOneByPhone(identifier);
     }
 
-    if (!user?.password) {
+    if (!user?.password || !(await argon2.verify(user.password, pass))) {
       throw new UnauthorizedException();
     }
 

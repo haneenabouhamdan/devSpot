@@ -1,5 +1,6 @@
 import { AbstractEntity } from 'src/common/entities';
-import { Entity, Column } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
+import { Message } from './message.entity';
 
 @Entity('message_reactions')
 export class MessageReaction extends AbstractEntity {
@@ -11,4 +12,7 @@ export class MessageReaction extends AbstractEntity {
 
   @Column({ type: 'text', nullable: false })
   emoji: string;
+
+  @ManyToOne(() => Message, (message: Message) => message.messageReactions)
+  message: Message;
 }
