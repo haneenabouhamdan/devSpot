@@ -35,7 +35,7 @@ import {
   
       return (
         <FormControl {...rootProps} isInvalid={!!error}>
-          {label && <FormLabel fontWeight={"400"}>{label}</FormLabel>}
+          {label && <FormLabel fontWeight={"500"} className="gray">{label}</FormLabel>}
           <InputGroup size="md">
             <Input
               ref={ref}

@@ -28,7 +28,7 @@ export const FormInput = forwardRef<HTMLInputElement, SBInputProps>(
     const { rootProps, label, error, ...inputProps } = props;
     return (
       <FormControl {...rootProps} isInvalid={!!error}>
-        {label && <FormLabel fontWeight={"400"}>{label}</FormLabel>}
+        {label && <FormLabel fontWeight={"500"} className="gray">{label}</FormLabel>}
         <Input
           ref={ref}
           {...inputProps}

@@ -1,15 +1,12 @@
-import { ChakraProvider } from "@chakra-ui/react";
 import { Outlet } from "react-router";
+import { MainHelmet } from "./components/pages/MainHelmet";
 import "./App.scss";
-import { MainHelmet } from "./pages/MainHelmet";
 
 const App = () => (
-  <div className="App">
-    <ChakraProvider>
+    <div className="App">
       <MainHelmet />
       <Outlet />
-    </ChakraProvider>
-  </div>
+    </div>
 );
 
 export default App;

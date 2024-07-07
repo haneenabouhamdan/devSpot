@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Avatar, Box } from "@chakra-ui/react";
 
-const AvatarUploader: React.FC = () => {
+export const AvatarUploader: React.FC = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -42,4 +42,3 @@ const AvatarUploader: React.FC = () => {
   );
 };
 
-export default AvatarUploader;

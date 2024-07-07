@@ -1,5 +1,5 @@
 
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { useAuthContext } from '../contexts';
 import { Flex } from '@chakra-ui/layout';
 import { Spinner } from '@chakra-ui/react';
@@ -7,7 +7,6 @@ import { Spinner } from '@chakra-ui/react';
 
 export function PublicTemplate() {
 	const { isAuthenticated, isAuthenticating } = useAuthContext();
-	const { state: locationState } = useLocation();
 
 	if (isAuthenticating) {
 		return (
@@ -18,7 +17,5 @@ export function PublicTemplate() {
 	}
 
 
-	if (isAuthenticated) return <Navigate to={ locationState?.from || '/' }/>;
-
-	return <Outlet/>;
+  return isAuthenticated ? <Navigate to="/" /> : <Outlet />;
 }

@@ -29,7 +29,9 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
   }, []);
 
   useEffect(() => {
+    console.log({user})
     if (user) {
+    
       setIsAuthenticated(true);
     }
   }, [user]);

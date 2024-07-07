@@ -27,7 +27,8 @@ const SearchInput: React.FC<SearchInputProps> = ({
       <InputGroup pl={4} pr={4}>
         <Input
           placeholder={placeholder}
-          pl={10}
+          pl={5}
+          pb={2}
           className="bg-light-purple"
           _focus={{ backgroundColor: "#7b4e7b;", border:'0px' }}
           width={"100%"}
@@ -38,7 +39,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
           _placeholder={{ color: "white" }}
           {...props}
         />
-        <InputRightElement pointerEvents="none" pt={8} pr={10}>
+        <InputRightElement pointerEvents="none" pb={2} pr={10}>
           <SearchIcon color="white" />
         </InputRightElement>
       </InputGroup>

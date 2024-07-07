@@ -1,4 +1,4 @@
-import SignIn from "../../pages/SignIn/SignIn";
+import SignIn from "../../components/pages/SignIn/SignIn";
 
 
 export const SignInRoutes = {
