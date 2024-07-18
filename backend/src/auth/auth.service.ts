@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
@@ -25,11 +26,11 @@ export class AuthService {
     } else {
       user = await this.userService.findOneByPhone(identifier);
     }
+    if (!user) {
+      throw new NotFoundException();
+    }
 
-    if (
-      !user?.password
-      // || !(await argon2.verify(user.password, pass))
-    ) {
+    if (!user?.password || !(await argon2.verify(user.password, pass))) {
       throw new UnauthorizedException();
     }
 

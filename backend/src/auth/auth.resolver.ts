@@ -42,11 +42,11 @@ export class AuthResolver {
   async signUp(
     @Args('signUpInput') signUpInput: CreateUserDto,
   ): Promise<RegistrationResponseDto> {
-    const { token } = await this.authService.signUp(signUpInput);
+    const { token, user } = await this.authService.signUp(signUpInput);
     return {
       result: AuthResultType.AUTH_SUCCESS,
       token,
-      user: undefined,
+      user,
     };
   }
 }
