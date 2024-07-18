@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client';
-import {  SIGN_UP } from './auth.graphql';
+import { SIGN_UP } from './auth.graphql';
 import { type AuthResponse } from './auth.types';
 
 export interface SignUpPayload {
   phoneNumber: string;
   password: string;
-  email?:string;
-  username:string;
+  email?: string;
+  username: string;
 }
 
 export function useSignUpMutation() {
@@ -23,7 +23,7 @@ export function useSignUpMutation() {
         signUpInput: payload,
       },
     });
-    return result; 
+    return result;
   }
 
   return {

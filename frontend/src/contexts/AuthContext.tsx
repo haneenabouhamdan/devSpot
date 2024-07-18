@@ -12,7 +12,7 @@ export interface AuthContextProps {
 export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
   isAuthenticating: false,
-  onUserLogin: (data) => {
+  onUserLogin: data => {
     console.group('[AuthContext]: onUserLogin');
     console.log('This method is not implemented yet!');
     console.log(data);

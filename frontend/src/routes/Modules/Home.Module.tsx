@@ -1,5 +1,4 @@
-import Home from "../../components/pages/Home";
-
+import Home from '../../components/pages/Home';
 
 export const HomeRoutes = {
   path: '',

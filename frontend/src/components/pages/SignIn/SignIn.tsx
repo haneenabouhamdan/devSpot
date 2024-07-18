@@ -7,21 +7,19 @@ import {
   Image,
   VStack,
   HStack,
-} from "@chakra-ui/react";
-import Logo from "../../../assets/logo.svg";
-import { FormInput, PasswordInput } from "../../common";
-import { getSignInSchema } from "../../validations";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SignInPayload } from "./interface";
-import { AuthUser, useSignInMutation } from "../../../resolvers";
-import { useAuthContext } from "../../../contexts";
-import { useNavigate } from "react-router";
+} from '@chakra-ui/react';
+import Logo from '../../../assets/logo.svg';
+import { FormInput, PasswordInput } from '../../common';
+import { getSignInSchema } from '../../validations';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { SignInPayload } from './interface';
+import { AuthUser, useSignInMutation } from '../../../resolvers';
+import { useAuthContext } from '../../../contexts';
 
 const SignIn = () => {
   const { signIn, loading, user, token } = useSignInMutation();
   const { onUserLogin } = useAuthContext();
-  const navigate = useNavigate();
 
   const {
     register,
@@ -33,24 +31,22 @@ const SignIn = () => {
   });
 
   async function onSubmit(values: SignInPayload) {
-    const identifier = values.identifier || getValues("identifier");
-    const password = values.password || getValues("password");
+    const identifier = values.identifier || getValues('identifier');
+    const password = values.password || getValues('password');
+
     try {
       await signIn({ identifier, password });
     } catch (error) {
-      console.error("Sign in error:", error);
+      console.error('Sign in error:', error);
     }
   }
 
-
-    if (user && token) {
-      onUserLogin({
-        user: user as AuthUser,
-        token: String(token),
-      });
-
-    }
-
+  if (user && token) {
+    onUserLogin({
+      user: user as AuthUser,
+      token: String(token),
+    });
+  }
 
   return (
     <Container
@@ -67,7 +63,7 @@ const SignIn = () => {
         w="100%"
         bg="#fff"
       >
-        <HStack justifyContent={"center"} pb="3rem">
+        <HStack justifyContent={'center'} pb="3rem">
           <Image src={Logo} w="10rem" />
         </HStack>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -75,12 +71,12 @@ const SignIn = () => {
             <FormInput
               label="Email Or Phone Number*"
               type="text"
-              {...register("identifier")}
+              {...register('identifier')}
               error={errors.identifier?.message}
             />
             <PasswordInput
               label="Password*"
-              {...register("password")}
+              {...register('password')}
               error={errors.password?.message}
             />
             <Link alignSelf="flex-end" fontSize="small" mb={2} href="#">
@@ -88,8 +84,8 @@ const SignIn = () => {
             </Link>
             <Button
               type="submit"
-              bgColor={"#542454"}
-              _hover={{ backgroundColor: "#7b4e7b" }}
+              bgColor={'#542454'}
+              _hover={{ backgroundColor: '#7b4e7b' }}
               color="#fff"
               isLoading={isSubmitting || loading}
               loadingText="Signing In..."
@@ -98,13 +94,13 @@ const SignIn = () => {
             >
               Sign In
             </Button>
-            <HStack justifyContent="flex-end" fontSize={"small"} mt="2">
+            <HStack justifyContent="flex-end" fontSize={'small'} mt="2">
               <Text> New to DevSpot?</Text>
               <Link
                 href="/sign-up"
                 color="#e3863f"
                 textDecoration="underline"
-                fontWeight={"600"}
+                fontWeight={'600'}
               >
                 Create an account
               </Link>

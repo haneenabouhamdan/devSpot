@@ -1,1 +1,1 @@
-export * from './Profile.modal'
+export * from './userModals';

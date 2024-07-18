@@ -6,5 +6,10 @@ import {
 } from '@apollo/client';
 
 export type clientOptionType =
-  | BaseMutationOptions<any, OperationVariables, DefaultContext, ApolloCache<any>>
+  | BaseMutationOptions<
+      any,
+      OperationVariables,
+      DefaultContext,
+      ApolloCache<any>
+    >
   | undefined;

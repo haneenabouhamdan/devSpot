@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   Flex,
   Input,
   InputGroup,
   InputProps,
   InputRightElement,
-} from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+} from '@chakra-ui/react';
+import { SearchIcon } from '@chakra-ui/icons';
 
 interface SearchInputProps extends InputProps {
   placeholder?: string;
@@ -14,15 +14,15 @@ interface SearchInputProps extends InputProps {
 }
 
 const SearchInput: React.FC<SearchInputProps> = ({
-  placeholder = "Search...",
+  placeholder = 'Search...',
   ...props
 }) => {
   return (
     <Flex
       w="70%"
       height="80%"
-      className={props.className ?? "bg-light-purple"}
-      borderRadius={"5px"}
+      className={props.className ?? 'bg-light-purple'}
+      borderRadius={'5px'}
     >
       <InputGroup pl={4} pr={4}>
         <Input
@@ -30,13 +30,13 @@ const SearchInput: React.FC<SearchInputProps> = ({
           pl={5}
           pb={2}
           className="bg-light-purple"
-          _focus={{ backgroundColor: "#7b4e7b;", border:'0px' }}
-          width={"100%"}
+          _focus={{ backgroundColor: '#7b4e7b;', border: '0px' }}
+          width={'100%'}
           border={0}
-          fontSize={"medium"}
-          fontStyle={"italic"}
+          fontSize={'medium'}
+          fontStyle={'italic'}
           color="white"
-          _placeholder={{ color: "white" }}
+          _placeholder={{ color: 'white' }}
           {...props}
         />
         <InputRightElement pointerEvents="none" pb={2} pr={10}>

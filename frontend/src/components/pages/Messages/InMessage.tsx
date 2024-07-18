@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Box,
   Avatar,
@@ -7,7 +7,7 @@ import {
   VStack,
   Image,
   useMediaQuery,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react';
 
 interface InMessageCardProps {
   name: string;
@@ -24,16 +24,16 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
   message,
   images,
 }) => {
-  const [isMobile] = useMediaQuery("(max-width: 768px)");
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
 
   return (
     <HStack
-      maxW={isMobile ? "100%" : "42%"}
+      maxW={isMobile ? '100%' : '42%'}
       alignItems="start"
       spacing={1}
-      ml={isMobile ? "0" : "5%"}
-      mt={isMobile ? "20px" : "0"}
-      h={"fit-content"}
+      ml={isMobile ? '0' : '5%'}
+      mt={isMobile ? '20px' : '0'}
+      h={'fit-content'}
       position="relative"
       borderRadius="10px"
       className="bg-light-gray"
@@ -42,20 +42,20 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
         name={name}
         src={avatarUrl}
         position="absolute"
-        borderRadius={"50%"}
+        borderRadius={'50%'}
         width="50px"
         height="50px"
-        top={isMobile ? "-30px" : "-10px"}
-        left={isMobile ? "50%" : "-30px"}
-        transform={isMobile ? "translateX(-50%)" : "none"}
+        top={isMobile ? '-30px' : '-10px'}
+        left={isMobile ? '50%' : '-30px'}
+        transform={isMobile ? 'translateX(-50%)' : 'none'}
         border="2px solid white"
       />
-      <Box pl={"1vw"} pt={0} w="100%" pr="10px">
+      <Box pl={'1vw'} pt={0} w="100%" pr="10px">
         <VStack alignItems="start" spacing={2} w="100%" pl={4}>
           <Text fontWeight="bold" pt={2} m={0}>
             {name}
           </Text>
-          <Text pt={0} pb={2} m={0} fontSize={"14px"}>
+          <Text pt={0} pb={2} m={0} fontSize={'14px'}>
             {message}
           </Text>
           {images && (
@@ -74,10 +74,10 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
         </VStack>
       </Box>
       <Text
-        fontSize={"small"}
+        fontSize={'small'}
         className="gray"
         position="absolute"
-        right={isMobile ? "0" : "-60px"}
+        right={isMobile ? '0' : '-60px'}
         top="10px"
       >
         {time}

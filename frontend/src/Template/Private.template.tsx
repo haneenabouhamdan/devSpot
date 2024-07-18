@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import { PrivateRoute } from "../routes/PrivateRoute";
+import { Outlet } from 'react-router-dom';
+import { PrivateRoute } from '../routes/PrivateRoute';
 export function PrivateTemplate() {
   return (
     <PrivateRoute>

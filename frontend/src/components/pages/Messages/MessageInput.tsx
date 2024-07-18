@@ -1,8 +1,8 @@
-import React from "react";
-import { Box, HStack, Input, IconButton } from "@chakra-ui/react";
-import { ChatFilledIcon } from "../../common";
-import "./styles.scss";
-import { IoMdSend } from "react-icons/io";
+import React from 'react';
+import { Box, HStack, Input, IconButton } from '@chakra-ui/react';
+import { ChatFilledIcon } from '../../common';
+import './styles.scss';
+import { IoMdSend } from 'react-icons/io';
 
 const MessageInput = () => {
   return (
@@ -16,7 +16,7 @@ const MessageInput = () => {
         <IconButton
           aria-label="Home"
           icon={<img src={ChatFilledIcon} alt="chat" className="nav-icon" />}
-          bg={"transparent"}
+          bg={'transparent'}
           border={0}
           size="xl"
           ml="10"
@@ -25,18 +25,18 @@ const MessageInput = () => {
           placeholder="Message Channel..."
           height="80%"
           border={0}
-          borderRadius={"5px"}
-          fontSize={"large"}
-          bgColor={"white"}
+          borderRadius={'5px'}
+          fontSize={'large'}
+          bgColor={'white'}
           pl={5}
-          _placeholder={{ fontStyle: "italic" }}
+          _placeholder={{ fontStyle: 'italic' }}
           _focus={{ border: 'none', boxShadow: 'none' }}
           flex="1"
         />
         <IconButton
           aria-label="Send"
           icon={<IoMdSend className="send-icon" />}
-          bg={"transparent"}
+          bg={'transparent'}
           border={0}
           pr={25}
           borderRadius="full"

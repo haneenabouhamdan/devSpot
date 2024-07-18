@@ -7,6 +7,7 @@ import {
 import { logger } from './common/middlewares';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { middleware as expressCtx } from 'express-ctx';
+import './firebase-admin';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(

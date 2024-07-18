@@ -1,12 +1,24 @@
-import { type ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
 import { useHTTPContext } from './GraphQLProvider';
 import { AuthResponse, useGetProfileQuery } from '../resolvers';
 import { AuthContext } from '../contexts/AuthContext';
 
-export function AuthenticationProvider({ children }: Readonly<{ children: ReactNode }>) {
+export function AuthenticationProvider({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   const { authenticate } = useHTTPContext();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const { getCurrentUser, user, loading: isAuthenticating } = useGetProfileQuery();
+  const {
+    getCurrentUser,
+    user,
+    loading: isAuthenticating,
+  } = useGetProfileQuery();
 
   const getUser = useCallback(() => {
     getCurrentUser();
@@ -29,9 +41,8 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
   }, []);
 
   useEffect(() => {
-    console.log({user})
+    console.log({ user });
     if (user) {
-    
       setIsAuthenticated(true);
     }
   }, [user]);
@@ -58,5 +69,7 @@ export function AuthenticationProvider({ children }: Readonly<{ children: ReactN
     [user, onUserLogin, onUserLogout, isAuthenticated, isAuthenticating]
   );
 
-  return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+  );
 }

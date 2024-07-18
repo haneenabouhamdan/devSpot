@@ -1,5 +1,5 @@
-import { useQuery } from "@apollo/client";
-import { GET_USER_CHANNELS } from "../Queries";
+import { useQuery } from '@apollo/client';
+import { GET_USER_CHANNELS } from '../Queries';
 
 interface UserChannelsData {
   userChannels: {
@@ -21,7 +21,7 @@ export function useUserChannels(userId: string) {
   });
 
   return {
-    data:data?.userChannels,
+    data: data?.userChannels,
     loading,
   };
 }

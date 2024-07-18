@@ -1,39 +1,33 @@
-import React, {  useState } from "react";
-import { Flex, Text, Avatar, HStack, IconButton } from "@chakra-ui/react";
-import { FiHome, FiSettings } from "react-icons/fi";
+import React, { useEffect, useState } from 'react';
+import { Flex, Text, Avatar, HStack, IconButton, Box } from '@chakra-ui/react';
+import { FiHome, FiSettings } from 'react-icons/fi';
 import {
   IoChatbubblesOutline,
   IoBookmarkOutline,
   IoRocketOutline,
-} from "react-icons/io5";
+} from 'react-icons/io5';
 import {
   MdOutlineKeyboardDoubleArrowLeft,
   MdOutlineKeyboardDoubleArrowRight,
-} from "react-icons/md";
-import { BsPinAngle, BsBell } from "react-icons/bs";
-import NavItem from "./NavItem";
-import { NavLink } from "react-router-dom";
-import "./styles.scss"; 
-
+} from 'react-icons/md';
+import { BsPinAngle, BsBell } from 'react-icons/bs';
+import NavItem from './NavItem';
+import { NavLink } from 'react-router-dom';
+import './styles.scss';
+import { UserProfileModal } from '../../modals';
 
 const Sidebar: React.FC = () => {
-  const [navSize, setNavSize] = useState<"small" | "large">("small");
+  const [navSize, setNavSize] = useState<'small' | 'large'>('small');
 
   const toggleNavSize = () => {
-    setNavSize((prevSize) => (prevSize === "small" ? "large" : "small"));
+    setNavSize(prevSize => (prevSize === 'small' ? 'large' : 'small'));
   };
-
 
   return (
     <Flex className={`sidebar ${navSize}`}>
       <Flex className="nav-container" as="nav">
         <HStack className={`user`}>
-          <NavLink to={"/"}>
-            <Avatar borderRadius="50%" bg="gray" width="45px" height="45px"/>
-          </NavLink>
-          {navSize === "large"  && (
-            <Text className="white slightly-bold">Joe Doe</Text>
-          )}
+          <UserProfileModal navSize={navSize} />
         </HStack>
         <NavItem
           navSize={navSize}
@@ -45,47 +39,47 @@ const Sidebar: React.FC = () => {
           navSize={navSize}
           icon={IoChatbubblesOutline}
           title="DMs"
-          description={""}
+          description={''}
         />
         <NavItem
           navSize={navSize}
           icon={IoRocketOutline}
           title="Challenges"
-          description={""}
+          description={''}
         />
         <NavItem
           navSize={navSize}
           icon={IoBookmarkOutline}
           title="Saved"
-          description={""}
+          description={''}
         />
         <NavItem
           navSize={navSize}
           icon={BsPinAngle}
           title="Pinned"
-          description={""}
+          description={''}
         />
         <NavItem
           navSize={navSize}
           icon={BsBell}
           title="Notifications"
-          description={""}
+          description={''}
         />
         <NavItem
           navSize={navSize}
           icon={FiSettings}
           title="Settings"
-          description={""}
+          description={''}
         />
       </Flex>
-      {navSize !== "large" ? (
+      {navSize !== 'large' ? (
         <IconButton
           background="none"
           border={0}
           mb="10"
-          _hover={{ background: "none" }}
+          _hover={{ background: 'none' }}
           icon={
-            <MdOutlineKeyboardDoubleArrowRight size={"25px"} color="white" />
+            <MdOutlineKeyboardDoubleArrowRight size={'25px'} color="white" />
           }
           aria-label="Toggle Navigation Size"
           onClick={toggleNavSize}
@@ -95,9 +89,9 @@ const Sidebar: React.FC = () => {
           background="none"
           border={0}
           mb="10"
-          _hover={{ background: "none" }}
+          _hover={{ background: 'none' }}
           icon={
-            <MdOutlineKeyboardDoubleArrowLeft size={"25px"} color="white" />
+            <MdOutlineKeyboardDoubleArrowLeft size={'25px'} color="white" />
           }
           aria-label="Toggle Navigation Size"
           onClick={toggleNavSize}

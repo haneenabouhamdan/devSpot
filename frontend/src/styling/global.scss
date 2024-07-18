@@ -1,135 +1,132 @@
-@import "./Variables";
+@import './Variables';
 
 .green {
-    color: $green
-  }
-  
-  // Color classes
-  .pink {
-    color: $pink;
-  }
-  
-  .purple {
-    color: $purple;
-  }
-  
-  .orange {
-    color: $orange;
-  }
-  
-  .blue {
-    color: $blue;
-  }
-  
-  .black {
-    color: $black;
-  }
-  
-  .white {
-    color: $white;
-  }
-  
-  .gray {
-    color: $gray;
-  }
+  color: $green;
+}
 
-  
-  // Light color classes
-  .light-pink {
-    color: $light-pink;
-  }
-  
-  .light-orange {
-    color: $light-orange;
-  }
-  
-  .light-purple {
-    color: $light-purple;
-  }
-  
-  .light-blue {
-    color: $light-blue;
-  }
-  
-  .light-green {
-    color: $light-green;
-  }
-  
-  
-  .bg-pink {
-    background-color: $pink;
-    &:hover {
-      background-color: $light-pink;
-    }
-  }
-  
-  .bg-purple {
-    background-color: $purple;
-  }
+// Color classes
+.pink {
+  color: $pink;
+}
 
-  .bg-light-purple {
-    background-color: $light-purple;
-  }
-  
-  .bg-orange {
-    background-color: $orange;
-  }
-  
-  .bg-blue {
-    background-color: $blue;
-    &:hover {
-      background-color: $light-blue;
-    }
-  }
-  
-  .bg-black {
-    background-color: $black;
-    &:hover {
-      background-color: lighten($black, 20%);
-    }
-  }
-  
-  .bg-white {
-    background-color: $white;
-  }
-  
-  .bg-light-gray {
-      background-color: lighten($gray, 30%);
-  }
+.purple {
+  color: $purple;
+}
 
-  .light-gray {
-    color: lighten($gray, 30%);
-  }
+.orange {
+  color: $orange;
+}
 
-  .bold {
-    font-weight: 500;
-  }
+.blue {
+  color: $blue;
+}
 
-  .title {
-    font-size: larger;
-  }
+.black {
+  color: $black;
+}
 
-  .normal {
-    font-family: "Noto Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 400; /* Normal */
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
+.white {
+  color: $white;
+}
+
+.gray {
+  color: $gray;
+}
+
+// Light color classes
+.light-pink {
+  color: $light-pink;
+}
+
+.light-orange {
+  color: $light-orange;
+}
+
+.light-purple {
+  color: $light-purple;
+}
+
+.light-blue {
+  color: $light-blue;
+}
+
+.light-green {
+  color: $light-green;
+}
+
+.bg-pink {
+  background-color: $pink;
+  &:hover {
+    background-color: $light-pink;
   }
-  
-  .slightly-bold {
-    font-family: "Noto Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 500; /* Slightly Bold */
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
+}
+
+.bg-purple {
+  background-color: $purple;
+}
+
+.bg-light-purple {
+  background-color: $light-purple;
+}
+
+.bg-orange {
+  background-color: $orange;
+}
+
+.bg-blue {
+  background-color: $blue;
+  &:hover {
+    background-color: $light-blue;
   }
-  
-  .bold {
-    font-family: "Noto Sans", sans-serif;
-    font-optical-sizing: auto;
-    font-weight: 700; /* Bold */
-    font-style: normal;
-    font-variation-settings: "wdth" 100;
+}
+
+.bg-black {
+  background-color: $black;
+  &:hover {
+    background-color: lighten($black, 20%);
   }
-  
+}
+
+.bg-white {
+  background-color: $white;
+}
+
+.bg-light-gray {
+  background-color: lighten($gray, 30%);
+}
+
+.light-gray {
+  color: lighten($gray, 30%);
+}
+
+.bold {
+  font-weight: 500;
+}
+
+.title {
+  font-size: larger;
+}
+
+.normal {
+  font-family: 'Noto Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400; /* Normal */
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+}
+
+.slightly-bold {
+  font-family: 'Noto Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 500; /* Slightly Bold */
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+}
+
+.bold {
+  font-family: 'Noto Sans', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700; /* Bold */
+  font-style: normal;
+  font-variation-settings: 'wdth' 100;
+}

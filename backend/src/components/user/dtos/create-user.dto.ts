@@ -5,6 +5,8 @@ import {
   MaxLength,
   IsOptional,
   IsEmail,
+  IsBoolean,
+  IsDateString,
 } from 'class-validator';
 import { GraphQLString } from 'graphql';
 import { GraphQLEmailAddress } from 'graphql-scalars';
@@ -38,4 +40,29 @@ export class CreateUserDto {
   @IsString({ each: true })
   @IsOptional()
   roles?: string[];
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  bio?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  jobTitle?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsDateString()
+  dateOfBirth?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  notificationPaused?: boolean;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  profilePicture?: string;
 }

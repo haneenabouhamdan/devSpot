@@ -1,25 +1,25 @@
-import { createBrowserRouter } from "react-router-dom";
-import App from "../App";
-import { PrivateTemplate, PublicTemplate } from "../Template";
-import { HomeRoutes, SignInRoutes, SignUpRoutes } from "./Modules";
+import { createBrowserRouter } from 'react-router-dom';
+import App from '../App';
+import { PrivateTemplate, PublicTemplate } from '../Template';
+import { HomeRoutes, SignInRoutes, SignUpRoutes } from './Modules';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
     children: [
       {
-        path: "sign-in",
+        path: 'sign-in',
         element: <PublicTemplate />,
         children: [SignInRoutes],
       },
       {
-        path: "sign-up",
+        path: 'sign-up',
         element: <PublicTemplate />,
         children: [SignUpRoutes],
       },
       {
-        path: "/",
+        path: '/',
         element: <PrivateTemplate />,
         children: [HomeRoutes],
       },

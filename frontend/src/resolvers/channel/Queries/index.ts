@@ -1,2 +1,2 @@
 export * from './channel.graphql';
-export * from './channel.types'
+export * from './channel.types';

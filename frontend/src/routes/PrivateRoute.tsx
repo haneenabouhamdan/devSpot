@@ -2,17 +2,17 @@ import { type ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../contexts';
 
-
 interface PrivateRouteProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 export function PrivateRoute(props: PrivateRouteProps) {
-	const { children } = props;
-	const { isAuthenticated } = useAuthContext();
-	const location = useLocation();
+  const { children } = props;
+  const { isAuthenticated } = useAuthContext();
+  const location = useLocation();
 
-	if (!isAuthenticated) return <Navigate to="/sign-in" state={ { from: location.pathname } }/>;
+  if (!isAuthenticated)
+    return <Navigate to="/sign-in" state={{ from: location.pathname }} />;
 
-	return <>{ children }</>;
+  return <>{children}</>;
 }

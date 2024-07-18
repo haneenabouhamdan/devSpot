@@ -1,5 +1,3 @@
-
-
 export interface CreateChannelDto {
   createdBy: string;
   description: string;

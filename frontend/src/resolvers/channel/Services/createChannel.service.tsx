@@ -1,10 +1,10 @@
-import { useMutation } from "@apollo/client";
+import { useMutation } from '@apollo/client';
 import {
   CREATE_CHANNEL,
   CreateChannelDto,
   GET_USER_CHANNELS,
-} from "../Queries";
-import { clientOptionType } from "../../sharedTypes";
+} from '../Queries';
+import { clientOptionType } from '../../sharedTypes';
 
 interface CreateChannelResponse {
   id: string;

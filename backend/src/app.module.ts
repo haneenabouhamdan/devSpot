@@ -28,6 +28,7 @@ import { AppConfigModule } from './config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './auth/guards';
 import { APP_GUARD } from '@nestjs/core';
+import { CloudStorageModule } from './components/cloud-storage';
 
 @Module({
   imports: [
@@ -70,6 +71,7 @@ import { APP_GUARD } from '@nestjs/core';
     MessageModule,
     ChallengeModule,
     SubmissionModule,
+    CloudStorageModule,
   ],
   controllers: [AppController],
   providers: [

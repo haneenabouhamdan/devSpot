@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Box, Flex, Text, Icon, Collapse, Avatar } from "@chakra-ui/react";
-import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import "./styles.scss";
+import React, { useState } from 'react';
+import { Box, Flex, Text, Icon, Collapse, Avatar } from '@chakra-ui/react';
+import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import './styles.scss';
 
 interface DropdownItemProps {
   icon?: React.ElementType;
@@ -32,7 +32,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
             onClick={() => setSubOpen(!subOpen)}
             cursor="pointer"
           >
-            {item.icon && <Icon as={item.icon} mr={2} fontSize={"large"} />}
+            {item.icon && <Icon as={item.icon} mr={2} fontSize={'large'} />}
             {item.avatarSrc && <Avatar src={item.avatarSrc} size="sm" mr={2} />}
             <Text>{item.label}</Text>
             {item.subItems && (

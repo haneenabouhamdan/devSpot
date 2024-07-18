@@ -65,12 +65,14 @@ export class ChannelResolver {
 
   @ResolveField(() => [UserDto])
   async members(@Parent() channel: Channel): Promise<User[]> {
-    const userLoader = new DataLoader<UUID, User[]>(async (channelIds) => {
-      const membersMap = await this.channelBatches.members(
-        channelIds as UUID[],
-      );
-      return channelIds.map((id) => membersMap.get(id) || []);
-    });
+    const userLoader = new DataLoader<UUID, User[]>(
+      async (channelIds: UUID[]) => {
+        const membersMap = await this.channelBatches.members(
+          channelIds as UUID[],
+        );
+        return channelIds.map((id) => membersMap.get(id) || []);
+      },
+    );
 
     return userLoader.load(channel.id);
   }

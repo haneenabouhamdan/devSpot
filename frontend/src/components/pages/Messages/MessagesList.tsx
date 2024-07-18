@@ -1,7 +1,7 @@
-import React from "react";
-import { VStack, Box } from "@chakra-ui/react";
-import InMessageCard from "./InMessage";
-import OutMessageCard from "./OutMessage";
+import React from 'react';
+import { VStack, Box } from '@chakra-ui/react';
+import InMessageCard from './InMessage';
+import OutMessageCard from './OutMessage';
 
 interface Message {
   id: string;
@@ -27,10 +27,21 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       maxH="70vh"
       className="message-list"
     >
-      {messages.map((msg) => (
-        <Box key={msg.id} w="100%" gap={2} mt={10}  display="flex" justifyContent={msg.isOutgoing ? "flex-end" : "flex-start"}>
-        {msg.isOutgoing ? <OutMessageCard {...msg} /> : <InMessageCard {...msg} />}
-      </Box>
+      {messages.map(msg => (
+        <Box
+          key={msg.id}
+          w="100%"
+          gap={2}
+          mt={10}
+          display="flex"
+          justifyContent={msg.isOutgoing ? 'flex-end' : 'flex-start'}
+        >
+          {msg.isOutgoing ? (
+            <OutMessageCard {...msg} />
+          ) : (
+            <InMessageCard {...msg} />
+          )}
+        </Box>
       ))}
     </VStack>
   );

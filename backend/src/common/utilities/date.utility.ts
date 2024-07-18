@@ -9,7 +9,9 @@ const isValidDate = (date: string | Date) => {
 
 const isValidTime = (time: Time) => {
   if (time.split(':').length < 2) return false;
-  const falsyParts = time.split(':').filter((timePart) => Number.isNaN(timePart));
+  const falsyParts = time
+    .split(':')
+    .filter((timePart) => Number.isNaN(timePart));
   return !falsyParts.length;
 };
 
@@ -18,8 +20,13 @@ export const getToday = () => {
   return Object.values(Days)[todayIndex];
 };
 
-export const getDatesOffsetInDays = (date1: string | Date, date2: string | Date, timezone = Timezones.utc) => {
-  if (!isValidDate(date1) || !isValidDate(date2)) throw new Error('Invalid dates');
+export const getDatesOffsetInDays = (
+  date1: string | Date,
+  date2: string | Date,
+  timezone = Timezones.utc,
+) => {
+  if (!isValidDate(date1) || !isValidDate(date2))
+    throw new Error('Invalid dates');
 
   timezone = timezone ?? Timezones.utc;
 
@@ -36,16 +43,30 @@ export const getDatesOffsetInDays = (date1: string | Date, date2: string | Date,
 };
 
 export const getDatesDiffInSec = (date1: string, date2: string) => {
-  if (!isValidDate(date1) || !isValidDate(date2)) throw new Error('Invalid dates');
+  if (!isValidDate(date1) || !isValidDate(date2))
+    throw new Error('Invalid dates');
   return Math.abs(moment(date1).diff(date2, 'second'));
 };
 
-export const constructDate = (date: string | Date, { extraHours = 0, extraMinutes = 0, extraDays = 0, timezone = Timezones.utc } = {}) => {
+export const constructDate = (
+  date: string | Date,
+  {
+    extraHours = 0,
+    extraMinutes = 0,
+    extraDays = 0,
+    timezone = Timezones.utc,
+  } = {},
+) => {
   if (!isValidDate(date)) throw new Error('Invalid date');
 
   timezone = timezone ?? Timezones.utc;
 
-  return moment(date).tz(timezone).add(extraMinutes, 'minutes').add(extraHours, 'hours').add(extraDays, 'days').format();
+  return moment(date)
+    .tz(timezone)
+    .add(extraMinutes, 'minutes')
+    .add(extraHours, 'hours')
+    .add(extraDays, 'days')
+    .format();
 };
 
 export const getDayIndex = (day: Days) => {
@@ -83,7 +104,10 @@ export const timify = (time: Time) => {
   return `${hours}:${minutes}:${seconds}`;
 };
 
-export const fromDateToTime = ({ timezone = Timezones.utc, date = createZonedDate({ timezone }) } = {}) => {
+export const fromDateToTime = ({
+  timezone = Timezones.utc,
+  date = createZonedDate({ timezone }),
+} = {}) => {
   if (!isValidDate(date)) throw new Error('Invalid date');
 
   timezone = timezone ?? Timezones.utc;
@@ -93,7 +117,11 @@ export const fromDateToTime = ({ timezone = Timezones.utc, date = createZonedDat
 
   const [hours, minutes, seconds] = time.split(':');
 
-  return `${padStart(hours, 2, '0')}:${padStart(minutes, 2, '0')}:${padStart(seconds, 2, '0')}` as Time;
+  return `${padStart(hours, 2, '0')}:${padStart(minutes, 2, '0')}:${padStart(
+    seconds,
+    2,
+    '0',
+  )}` as Time;
 };
 
 export const fromTimeToDate = ({
@@ -111,7 +139,10 @@ export const fromTimeToDate = ({
   offsetDays = offsetDays ?? 0;
 
   const [hours, minutes] = time.split(':');
-  const startOfDay = moment(createZonedDate({ timezone })).tz(timezone).startOf('day').format();
+  const startOfDay = moment(createZonedDate({ timezone }))
+    .tz(timezone)
+    .startOf('day')
+    .format();
   return constructDate(startOfDay, {
     extraDays: offsetDays,
     extraHours: Number(hours),
@@ -145,8 +176,13 @@ export const shiftDayTime = ({
   return beautifyResult ? prettyDate(resultDate) : resultDate;
 };
 
-export const compareTime = (time1: Time, operator: CompareOperators, time2: Time) => {
-  if (!DATE_COMPARISON_FUNCTIONS[operator]) throw new Error('Invalid comparison operator');
+export const compareTime = (
+  time1: Time,
+  operator: CompareOperators,
+  time2: Time,
+) => {
+  if (!DATE_COMPARISON_FUNCTIONS[operator])
+    throw new Error('Invalid comparison operator');
 
   const date1 = new Date(fromTimeToDate({ time: time1 }));
   const date2 = new Date(fromTimeToDate({ time: time2 }));
@@ -154,20 +190,37 @@ export const compareTime = (time1: Time, operator: CompareOperators, time2: Time
   return DATE_COMPARISON_FUNCTIONS[operator](date1, date2);
 };
 
-export const compareDate = (date1: string | Date, operator: CompareOperators, date2: string | Date) => {
-  if (!isValidDate(date1) || !isValidDate(date2)) throw new Error('date not valid');
+export const compareDate = (
+  date1: string | Date,
+  operator: CompareOperators,
+  date2: string | Date,
+) => {
+  if (!isValidDate(date1) || !isValidDate(date2))
+    throw new Error('date not valid');
 
-  if (!DATE_COMPARISON_FUNCTIONS[operator]) throw new Error('Invalid comparison operator');
+  if (!DATE_COMPARISON_FUNCTIONS[operator])
+    throw new Error('Invalid comparison operator');
 
   return DATE_COMPARISON_FUNCTIONS[operator](new Date(date1), new Date(date2));
 };
 
-export const between2Dates = (date: string | Date, lowerDate: string | Date, upperDate: string | Date) => {
-  if (!isValidDate(date) || !isValidDate(lowerDate) || !isValidDate(upperDate)) throw new Error('date not valid');
+export const between2Dates = (
+  date: string | Date,
+  lowerDate: string | Date,
+  upperDate: string | Date,
+) => {
+  if (!isValidDate(date) || !isValidDate(lowerDate) || !isValidDate(upperDate))
+    throw new Error('date not valid');
 
   return (
-    DATE_COMPARISON_FUNCTIONS[CompareOperators.gte](new Date(date), new Date(lowerDate)) &&
-    DATE_COMPARISON_FUNCTIONS[CompareOperators.lt](new Date(date), new Date(upperDate))
+    DATE_COMPARISON_FUNCTIONS[CompareOperators.gte](
+      new Date(date),
+      new Date(lowerDate),
+    ) &&
+    DATE_COMPARISON_FUNCTIONS[CompareOperators.lt](
+      new Date(date),
+      new Date(upperDate),
+    )
   );
 };
 
@@ -175,7 +228,11 @@ export const createZonedDate = ({
   timezone = Timezones.utc,
   date = moment().tz(timezone),
   beautifyResult = false,
-}: { timezone?: Timezones; date?: moment.Moment | Date | string; beautifyResult?: boolean } = {}) => {
+}: {
+  timezone?: Timezones;
+  date?: moment.Moment | Date | string;
+  beautifyResult?: boolean;
+} = {}) => {
   timezone = timezone ?? Timezones.utc;
   date = date ?? moment().tz(timezone);
 
@@ -184,15 +241,23 @@ export const createZonedDate = ({
   return beautifyResult ? prettyDate(zonedDate) : zonedDate;
 };
 
-export const startOfDay = (date: Date | string, timezone = Timezones.utc) => moment(date).tz(timezone).startOf('day');
-export const endOfDay = (date: Date | string, timezone = Timezones.utc) => moment(date).tz(timezone).endOf('day');
+export const startOfDay = (date: Date | string, timezone = Timezones.utc) =>
+  moment(date).tz(timezone).startOf('day');
+export const endOfDay = (date: Date | string, timezone = Timezones.utc) =>
+  moment(date).tz(timezone).endOf('day');
 
 export const extractDate = (date: string) => {
   const [dateOnly] = date?.split('T');
   return dateOnly;
 };
 
-export const splitDate = ({ timezone = Timezones.utc, date }: { date: moment.Moment; timezone: Timezones }) => {
+export const splitDate = ({
+  timezone = Timezones.utc,
+  date,
+}: {
+  date: moment.Moment;
+  timezone: Timezones;
+}) => {
   const zonedDate = createZonedDate({ date, timezone });
 
   const [dateOnly, time] = zonedDate.split('T');
@@ -208,7 +273,11 @@ export const splitDate = ({ timezone = Timezones.utc, date }: { date: moment.Mom
 export const prettyDate = (date: string) => {
   const [dateOnly, time] = date.split('T');
 
-  const [timeOnly] = time.replace('Z', '').replace('+', '*').replace('-', '*').split('*');
+  const [timeOnly] = time
+    .replace('Z', '')
+    .replace('+', '*')
+    .replace('-', '*')
+    .split('*');
 
   return `${dateOnly} ${timify(timeOnly as Time)}`;
 };
@@ -217,13 +286,19 @@ export const extractTime = (date: string, timezone?: Timezones) => {
   const zonedDate = timezone ? createZonedDate({ timezone, date }) : date;
   const [dateOnly, time] = zonedDate.split('T');
 
-  const [timeOnly] = time.replace('Z', '').replace('+', '*').replace('-', '*').split('*');
+  const [timeOnly] = time
+    .replace('Z', '')
+    .replace('+', '*')
+    .replace('-', '*')
+    .split('*');
 
   return { time: timeOnly as Time, date: new Date(dateOnly) };
 };
 
 export const convertToUTCDate = (date: string, stringify = false) =>
-  stringify ? moment(date).tz(Timezones.utc).format() : moment(date).tz(Timezones.utc).toDate();
+  stringify
+    ? moment(date).tz(Timezones.utc).format()
+    : moment(date).tz(Timezones.utc).toDate();
 
 export const parseUTCDate = (date: string | Date, timezone: Timezones) => {
   const dateInTimeZone = moment(date).tz(timezone);

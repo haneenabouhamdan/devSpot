@@ -1,4 +1,4 @@
-import { gql } from "@apollo/client";
+import { gql } from '@apollo/client';
 
 export const SIGN_IN = gql`
   mutation SignIn($signInInput: SignInInput!) {
@@ -47,5 +47,10 @@ export const GET_PROFILE = gql`
       roles
       permissions
     }
+  }
+`;
+export const HASH_PASSWORD = gql`
+  mutation HashPassword($password: String!) {
+    hashPassword(password: $password)
   }
 `;
