@@ -15,8 +15,8 @@ export class UserDto extends EntityDTO {
   @Field()
   username: string;
 
-  @Field(() => GraphQLEmailAddress, { nullable: true })
-  email?: string;
+  @Field(() => GraphQLEmailAddress)
+  email: string;
 
   @Field()
   phoneNumber: string;

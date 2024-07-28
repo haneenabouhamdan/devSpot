@@ -4,7 +4,7 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { PERMISSIONS_KEY, SUPER_ROLES } from '../../common/constants';
 import { ROLES_KEY } from '../../common/decorators';
 import { AuthUserDto } from '../../common/dtos';
-import { DefaultRoles, DefaultPermissions } from '../../components/user/enums';
+import { DefaultRoles, Permissions } from '../../components/user/enums';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,7 +20,7 @@ export class AuthGuard implements CanActivate {
     >(ROLES_KEY, [context.getHandler(), context.getClass()]);
 
     const requiredPermissions = this.reflector.getAllAndOverride<
-      DefaultPermissions[] | undefined
+      Permissions[] | undefined
     >(PERMISSIONS_KEY, [context.getHandler(), context.getClass()]);
 
     if (!requiredRoles && !requiredPermissions) {

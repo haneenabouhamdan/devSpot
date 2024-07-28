@@ -9,6 +9,7 @@ import { Roles } from '../../common/decorators';
 import { DefaultRoles } from './enums';
 import { UserService } from './services';
 import { GeneralResponseDto } from 'src/common/dtos';
+import { UserToken } from './entities';
 
 @Resolver(() => UserDto)
 export class UserResolver {
@@ -20,7 +21,7 @@ export class UserResolver {
     return this.userService.create(CreateUserDto);
   }
 
-  @Query(() => [UserDto], { name: 'user' })
+  @Query(() => [UserDto], { name: 'users' })
   findAll() {
     return this.userService.findAll();
   }
@@ -58,6 +59,18 @@ export class UserResolver {
     await this.userService.remove(id);
     return {
       message: 'User removed successfully',
+      success: true,
+    };
+  }
+
+  @Mutation(() => GeneralResponseDto)
+  async saveToken(
+    @Args('userId', { type: () => GraphQLUUID }) userId: UUID,
+    @Args('token') token: string,
+  ): Promise<GeneralResponseDto> {
+    await this.userService.saveFirebaseToken(userId, token);
+    return {
+      message: 'User Token saved successfully',
       success: true,
     };
   }

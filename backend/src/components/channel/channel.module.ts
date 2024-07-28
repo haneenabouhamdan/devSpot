@@ -8,6 +8,8 @@ import { ChannelBatches } from './batches';
 import { UserRepository, UserModule } from '../user';
 import { UserFilter } from '../user/filters';
 import { MessageRepository, MessageService } from '../message';
+import { UserTokenRepository } from '../user/repositories';
+import { NotificationService } from '../notifications/notification.service';
 
 @Module({
   imports: [
@@ -24,6 +26,8 @@ import { MessageRepository, MessageService } from '../message';
     MessageService,
     MessageRepository,
     UserFilter,
+    UserTokenRepository,
+    NotificationService,
   ],
   exports: [ChannelService],
 })

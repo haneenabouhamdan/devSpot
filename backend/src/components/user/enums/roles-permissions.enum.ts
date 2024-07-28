@@ -2,12 +2,20 @@ export enum DefaultRoles {
   SUPERADMIN = 'SuperAdmin',
   ADMIN = 'Admin',
   MENTOR = 'Mentor',
-  DEVELOPER = 'Developer',
+  MEMBER = 'Member',
 }
-export enum DefaultPermissions {
-  MANAGE_USERS = 'manage-users',
-  CREATE_USERS = 'create-users',
-  UPDATE_USERS = 'update-users',
-  READ_USERS = 'read-users',
-  DELETE_USERS = 'delete-users',
+export enum Permissions {
+  CREATE_MESSAGE = 'create-messages',
+  DELETE_MESSAGE = 'delete-message',
+  VIEW_CHANNEL = 'view-channel',
+  MANAGE_MEMBERS = 'manage-members',
+  DELETE_CHANNEL = 'delete-channel',
 }
+
+export const defaultPermissions = [
+  Permissions.CREATE_MESSAGE,
+  Permissions.DELETE_MESSAGE,
+  Permissions.VIEW_CHANNEL,
+  Permissions.DELETE_CHANNEL,
+  Permissions.MANAGE_MEMBERS,
+];

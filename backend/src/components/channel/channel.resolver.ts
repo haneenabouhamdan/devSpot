@@ -30,11 +30,7 @@ export class ChannelResolver {
   @Roles(DefaultRoles.ADMIN, DefaultRoles.SUPERADMIN)
   @Mutation(() => ChannelDto)
   createChannel(@Args('CreateChannelDto') createChannelDto: CreateChannelDto) {
-    const data = this.channelService.create(createChannelDto);
-    return {
-      message: 'Channel created sucessfully',
-      data,
-    };
+    return this.channelService.create(createChannelDto);
   }
 
   @Query(() => [ChannelDto], { name: 'channels' })

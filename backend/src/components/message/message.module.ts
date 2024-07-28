@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MessageService } from './message.service';
 import { MessageResolver } from './message.resolver';
 import {
@@ -10,10 +10,16 @@ import { Message, MessageReaction, PinnedMessage } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository, UserService } from '../user';
 import { UserFilter } from '../user/filters';
+import { UserTokenRepository } from '../user/repositories';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Message, MessageReaction, PinnedMessage]),
+    TypeOrmModule.forFeature([
+      Message,
+      MessageReaction,
+      PinnedMessage,
+      UserTokenRepository,
+    ]),
   ],
   providers: [
     MessageResolver,

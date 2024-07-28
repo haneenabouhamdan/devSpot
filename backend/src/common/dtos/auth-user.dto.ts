@@ -11,8 +11,8 @@ export class AuthUserDto {
   @Field()
   username: string;
 
-  @Field(() => GraphQLEmailAddress, { nullable: true })
-  email?: string;
+  @Field(() => GraphQLEmailAddress)
+  email: string;
 
   @Field()
   phoneNumber: string;
@@ -40,4 +40,7 @@ export class AuthUserDto {
 
   @Field(() => [GraphQLString], { nullable: true })
   permissions?: string[];
+
+  @Field(() => String, { nullable: true })
+  fcmToken?: string;
 }

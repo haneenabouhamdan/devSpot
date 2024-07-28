@@ -10,6 +10,7 @@ import {
 } from 'class-validator';
 import { GraphQLString } from 'graphql';
 import { GraphQLEmailAddress } from 'graphql-scalars';
+import { AccountStatus } from '../enums';
 
 @InputType()
 export class CreateUserDto {
@@ -19,11 +20,10 @@ export class CreateUserDto {
   @MaxLength(100)
   username: string;
 
-  @Field(() => GraphQLEmailAddress, { nullable: true })
+  @Field(() => GraphQLEmailAddress)
   @IsString()
-  @IsOptional()
   @IsEmail()
-  email?: string;
+  email: string;
 
   @Field()
   @IsString()
@@ -41,6 +41,11 @@ export class CreateUserDto {
   @IsOptional()
   roles?: string[];
 
+  @Field(() => [GraphQLString], { nullable: true })
+  @IsString({ each: true })
+  @IsOptional()
+  permissions?: string[];
+
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
@@ -50,6 +55,11 @@ export class CreateUserDto {
   @IsOptional()
   @IsString()
   jobTitle?: string;
+
+  @Field(() => AccountStatus, { nullable: true })
+  @IsOptional()
+  @IsString()
+  status?: AccountStatus;
 
   @Field({ nullable: true })
   @IsOptional()

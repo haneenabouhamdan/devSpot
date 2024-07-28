@@ -7,14 +7,16 @@ import {
 import { CreateUserDto } from '../dtos/create-user.dto';
 import { UpdateUserDto } from '../dtos/update-user.dto';
 import { UserRepository } from '../repositories/user.repository';
-import { User } from '../entities';
+import { User, UserToken } from '../entities';
 import * as argon2 from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
+import { UserTokenRepository } from '../repositories';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(UserRepository) private userRepository: UserRepository,
+    private userTokenRepository: UserTokenRepository,
   ) {}
 
   findAll(): Promise<User[]> {
@@ -37,7 +39,17 @@ export class UserService {
   }
 
   async findOneByEmail(email: string): Promise<Nullable<User>> {
-    return this.userRepository.findOneBy({ email });
+    return this.userRepository
+      .createQueryBuilder('users')
+      .where('users.email ILIKE :email', { email: `%${email}%` })
+      .getOne();
+  }
+
+  async getUsersByEmails(email: string[]): Promise<Nullable<User[]>> {
+    return this.userRepository
+      .createQueryBuilder('users')
+      .where('users.email ILIKE :email', { email: `%${email}%` })
+      .getMany();
   }
 
   async create(payload: CreateUserDto): Promise<User> {
@@ -84,5 +96,34 @@ export class UserService {
   async updateById(id: UUID, dto: UpdateUserDto) {
     await this.userRepository.update(id, dto);
     return this.getById(id);
+  }
+
+  async saveFirebaseToken(userId: UUID, token: string): Promise<UserToken> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const existingToken = await this.userTokenRepository.findOneBy({
+      userId: user.id,
+    });
+
+    if (existingToken) {
+      existingToken.token = token;
+      return this.userTokenRepository.save(existingToken);
+    } else {
+      const newUserToken = this.userTokenRepository.create({
+        userId: user.id,
+        token,
+      });
+      return this.userTokenRepository.save(newUserToken);
+    }
+  }
+
+  async getFirebaseToken(userId: UUID): Promise<Nullable<UserToken>> {
+    const user = await this.userRepository.findOneBy({ id: userId });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    return this.userTokenRepository.findOneBy({ userId });
   }
 }

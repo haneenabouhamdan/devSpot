@@ -8,6 +8,7 @@ import { UserFilter } from '../components/user/filters';
 import { LocalStrategy } from './strategies';
 import { JwtStrategy } from './strategies/jwt.strategy';
 import { Config } from 'src/config';
+import { UserTokenRepository } from 'src/components/user/repositories';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { Config } from 'src/config';
     AuthService,
     UserService,
     UserRepository,
+    UserTokenRepository,
     LocalStrategy,
     JwtStrategy,
   ],

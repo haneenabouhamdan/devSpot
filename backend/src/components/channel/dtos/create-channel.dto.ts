@@ -1,5 +1,11 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { IsBoolean, IsOptional, IsString, IsUUID } from 'class-validator';
+import {
+  IsArray,
+  IsBoolean,
+  IsOptional,
+  IsString,
+  IsUUID,
+} from 'class-validator';
 import { GraphQLUUID } from 'graphql-scalars';
 
 @InputType()
@@ -31,4 +37,8 @@ export class CreateChannelDto {
   @IsOptional()
   @IsString()
   photo?: string;
+
+  @Field(() => [String])
+  @IsArray()
+  users: string[];
 }

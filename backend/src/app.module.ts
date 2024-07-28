@@ -1,5 +1,5 @@
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -23,12 +23,16 @@ import {
   UserChannels,
   MessageModule,
   SubmissionModule,
+  UserToken,
 } from './components';
 import { AppConfigModule } from './config';
 import { JwtService } from '@nestjs/jwt';
 import { JwtAuthGuard } from './auth/guards';
 import { APP_GUARD } from '@nestjs/core';
-import { CloudStorageModule } from './components/cloud-storage';
+import {
+  FirebaseAdminModule,
+  NotificationModule,
+} from './components/notifications';
 
 @Module({
   imports: [
@@ -51,6 +55,7 @@ import { CloudStorageModule } from './components/cloud-storage';
         Submission,
         Review,
         SubmissionReview,
+        UserToken,
       ],
       database: 'dev_spot',
       synchronize: true,
@@ -71,7 +76,8 @@ import { CloudStorageModule } from './components/cloud-storage';
     MessageModule,
     ChallengeModule,
     SubmissionModule,
-    CloudStorageModule,
+    FirebaseAdminModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [
