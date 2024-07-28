@@ -21,7 +21,10 @@ export const UserSchema = yup.object({
 
 export const getSignupSchema = () => {
   return yup.object().shape({
-    email: yup.string().email('Invalid email').optional(),
+    email: yup
+      .string()
+      .email('Invalid email')
+      .required('Email address is required'),
     password: yup
       .string()
       .min(8, 'Password must be at least 8 characters')
@@ -46,11 +49,12 @@ export const getSignInSchema = () => {
 };
 
 export const updateUserSchema = yup.object().shape({
+  id: yup.string().required('ID is required'),
   username: yup.string(),
   email: yup.string().email('Invalid email format').optional(),
   phoneNumber: yup.string(),
-  bio: yup.string(),
-  jobTitle: yup.string(),
+  bio: yup.string().nullable().optional(),
+  jobTitle: yup.string().nullable().optional(),
   dateOfBirth: yup
     .string()
     .nullable()
@@ -59,5 +63,5 @@ export const updateUserSchema = yup.object().shape({
       'Date of Birth must be in YYYY-MM-DD format'
     ),
   notificationPaused: yup.boolean(),
-  profilePicture: yup.string().url('Invalid URL format'),
+  profilePicture: yup.string().url('Invalid URL format').nullable().optional(),
 });

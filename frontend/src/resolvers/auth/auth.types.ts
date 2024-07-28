@@ -7,6 +7,8 @@ export interface AuthUser {
   jobTitle: string;
   dateOfBirth: string;
   notificationPaused: boolean;
+  profilePicture?: string;
+  fcmToken?: string;
 }
 
 export interface AuthResponse {

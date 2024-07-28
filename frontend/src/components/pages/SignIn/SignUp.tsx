@@ -38,7 +38,7 @@ const SignUp = () => {
     const password = getValues('password');
     try {
       await signUp({ phoneNumber, email, username, password }).then(() => {
-        if (Boolean(signUpResult.user && signUpResult.token)) {
+        if (signUpResult.token) {
           onUserLogin({
             user: (signUpResult.user ?? signUpResult.user) as AuthUser,
             token: String(signUpResult.token ?? signUpResult.token),

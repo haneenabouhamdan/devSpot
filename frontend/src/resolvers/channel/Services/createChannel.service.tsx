@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import {
   CREATE_CHANNEL,
-  CreateChannelDto,
+  CreateChannelInput,
   GET_USER_CHANNELS,
 } from '../Queries';
 import { clientOptionType } from '../../sharedTypes';
@@ -11,7 +11,7 @@ interface CreateChannelResponse {
 }
 
 interface CreateChannelProps {
-  payload: CreateChannelDto;
+  payload: CreateChannelInput;
   onCompleted: (
     data: { createChannel: CreateChannelResponse },
     clientOptions?: clientOptionType
@@ -20,9 +20,9 @@ interface CreateChannelProps {
 }
 
 export function useCreateChannelMutation() {
-  const [mutate, { loading, error }] = useMutation<
+  const [mutate, { data, loading, error }] = useMutation<
     { createChannel: CreateChannelResponse },
-    { createChannelDto: CreateChannelDto }
+    { createChannelDto: CreateChannelInput }
   >(CREATE_CHANNEL);
 
   async function createChannel({
@@ -44,6 +44,7 @@ export function useCreateChannelMutation() {
 
   return {
     createChannel,
+    data,
     loading,
     error,
   };

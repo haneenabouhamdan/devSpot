@@ -9,7 +9,6 @@ interface PrivateRouteProps {
 export function PrivateRoute(props: PrivateRouteProps) {
   const { children } = props;
   const { isAuthenticated } = useAuthContext();
-  const location = useLocation();
 
   if (!isAuthenticated)
     return <Navigate to="/sign-in" state={{ from: location.pathname }} />;

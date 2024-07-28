@@ -1,11 +1,11 @@
 export interface UpdateUserInput {
   id: string;
+  username?: string;
   email?: string;
-  phoneNumber: string;
-  username: string;
-  dateOfBirth?: string;
-  profilePicture?: string;
+  phoneNumber?: string;
+  bio?: string | null;
+  jobTitle?: string | null;
+  dateOfBirth?: string | null;
   notificationPaused?: boolean;
-  bio?: string;
-  jobTitle?: string;
+  profilePicture?: string | null;
 }

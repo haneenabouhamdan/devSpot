@@ -15,6 +15,7 @@ export const SIGN_IN = gql`
         jobTitle
         id
         bio
+        fcmToken
       }
     }
   }
@@ -46,6 +47,7 @@ export const GET_PROFILE = gql`
       profilePicture
       roles
       permissions
+      fcmToken
     }
   }
 `;

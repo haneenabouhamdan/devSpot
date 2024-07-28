@@ -25,6 +25,8 @@ const MessageInput = () => {
           placeholder="Message Channel..."
           height="80%"
           border={0}
+          id="message-input"
+          name="message"
           borderRadius={'5px'}
           fontSize={'large'}
           bgColor={'white'}

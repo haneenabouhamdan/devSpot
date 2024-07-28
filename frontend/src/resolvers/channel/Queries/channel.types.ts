@@ -1,8 +1,9 @@
-export interface CreateChannelDto {
+export interface CreateChannelInput {
   createdBy: string;
-  description: string;
-  isGroupChat: Boolean;
-  isPrivate: Boolean;
+  description?: string;
+  isGroupChat?: boolean;
+  isPrivate?: boolean;
   name: string;
   photo?: string;
+  users?: string[];
 }

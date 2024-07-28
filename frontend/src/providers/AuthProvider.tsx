@@ -1,10 +1,4 @@
-import {
-  type ReactNode,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react';
+import { type ReactNode, useCallback, useMemo, useState } from 'react';
 import { useHTTPContext } from './GraphQLProvider';
 import { AuthResponse, useGetProfileQuery } from '../resolvers';
 import { AuthContext } from '../contexts/AuthContext';
@@ -13,7 +7,9 @@ export function AuthenticationProvider({
   children,
 }: Readonly<{ children: ReactNode }>) {
   const { authenticate } = useHTTPContext();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    !!localStorage.getItem('token')
+  );
   const {
     getCurrentUser,
     user,
@@ -21,14 +17,15 @@ export function AuthenticationProvider({
   } = useGetProfileQuery();
 
   const getUser = useCallback(() => {
-    getCurrentUser();
-  }, [getCurrentUser]);
+    if (isAuthenticated) getCurrentUser();
+  }, [getCurrentUser, isAuthenticated]);
 
   const onUserLogin = useCallback(
     (data: AuthResponse) => {
       authenticate(data.token);
       localStorage.setItem('token', data.token);
       localStorage.setItem('uId', String(data.user.id));
+      setIsAuthenticated(true);
       getUser();
     },
     [authenticate, getUser]
@@ -39,24 +36,6 @@ export function AuthenticationProvider({
     localStorage.removeItem('uId');
     setIsAuthenticated(false);
   }, []);
-
-  useEffect(() => {
-    console.log({ user });
-    if (user) {
-      setIsAuthenticated(true);
-    }
-  }, [user]);
-
-  useEffect(() => {
-    const existedToken = localStorage.getItem('token');
-    const existedUserId = localStorage.getItem('uId');
-    if (existedToken && existedUserId) {
-      authenticate(existedToken);
-      getUser();
-    } else {
-      onUserLogout();
-    }
-  }, [onUserLogout]);
 
   const contextValue = useMemo(
     () => ({

@@ -6,7 +6,7 @@ interface ChannelProps {
   channelId: string;
 }
 
-const ChannelComponent = (props: ChannelProps) => {
+export const ChannelComponent = (props: ChannelProps) => {
   return (
     <Flex className="channel-content" flex="1" w={{ base: '100%', md: '70%' }}>
       <MessageInput />

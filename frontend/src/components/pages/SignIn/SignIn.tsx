@@ -16,6 +16,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SignInPayload } from './interface';
 import { AuthUser, useSignInMutation } from '../../../resolvers';
 import { useAuthContext } from '../../../contexts';
+import { useEffect } from 'react';
 
 const SignIn = () => {
   const { signIn, loading, user, token } = useSignInMutation();
@@ -41,12 +42,14 @@ const SignIn = () => {
     }
   }
 
-  if (user && token) {
-    onUserLogin({
-      user: user as AuthUser,
-      token: String(token),
-    });
-  }
+  useEffect(() => {
+    if (user && token) {
+      onUserLogin({
+        user: user as AuthUser,
+        token: String(token),
+      });
+    }
+  }, [user, token]);
 
   return (
     <Container

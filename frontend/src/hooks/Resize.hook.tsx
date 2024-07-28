@@ -13,6 +13,7 @@ export function useWindowSize() {
     isTablet: window.innerWidth < 991.98,
     isPhone: window.innerWidth < 487.58,
   });
+
   useEffect(() => {
     function handleResize() {
       setWindowSize({

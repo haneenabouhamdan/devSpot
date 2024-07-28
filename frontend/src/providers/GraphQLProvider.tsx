@@ -68,7 +68,9 @@ const createGraphQLClient = (
   token?: string
 ) =>
   new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      addTypename: false,
+    }),
     connectToDevTools: true,
     link: getApolloLinks(toast, token),
   });
@@ -79,11 +81,13 @@ export const GraphQLProvider = ({ children }: GraphQLProviderProps) => {
   const toast = useToast();
 
   useEffect(() => {
-    setGraphQLClient(createGraphQLClient(toast));
+    const token = localStorage.getItem('token') ?? undefined;
+    setGraphQLClient(createGraphQLClient(toast, token));
   }, [toast]);
 
   const authenticate = useCallback(
     (token: string) => {
+      localStorage.setItem('token', token);
       setGraphQLClient(() => createGraphQLClient(toast, token));
     },
     [toast]

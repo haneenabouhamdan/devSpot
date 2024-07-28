@@ -1,5 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { UPDATE_USER, UpdateUserInput } from './Queries';
+import { GET_PROFILE } from '../auth/auth.graphql';
+import { QueriesStore } from './Queries/queriesStore';
 
 interface UpdateUserResponse {
   id: string;
@@ -16,6 +18,12 @@ export function useUpdateUserMutation() {
       variables: {
         updateUserDto: payload,
       },
+      refetchQueries: [
+        {
+          query: GET_PROFILE,
+          variables: QueriesStore.get('GET_PROFILE'),
+        },
+      ],
     });
   }
 

@@ -12,6 +12,7 @@ import SendIcon from '../../assets/icons/send.svg';
 import SmileIcon from '../../assets/icons/face-smile.svg';
 import PlusOutlinedIcon from '../../assets/icons/plus-outlined.svg';
 import MenuIcon from '../../assets/icons/menu.svg';
+import AllDone from '../../assets/illustrations/allDone.svg';
 
 export {
   ChatIcon,
@@ -28,4 +29,5 @@ export {
   SmileIcon,
   PlusOutlinedIcon,
   MenuIcon,
+  AllDone,
 };

@@ -8,3 +8,11 @@ export const UPDATE_USER = gql`
     }
   }
 `;
+
+export const SAVE_TOKEN = gql`
+  mutation SaveToken($userId: UUID!, $token: String!) {
+    saveToken(userId: $userId, token: $token) {
+      message
+    }
+  }
+`;

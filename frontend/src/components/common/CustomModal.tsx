@@ -1,5 +1,6 @@
 import {
   Button,
+  HTMLChakraProps,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -7,16 +8,28 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  ModalProps,
+  ThemingProps,
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 
-interface CustomModalProps extends Omit<ModalProps, 'children'> {
+interface CustomModalProps
+  extends Omit<
+      HTMLChakraProps<typeof Modal>,
+      'children' | 'scrollBehavior' | 'size' | 'variant'
+    >,
+    ThemingProps {
+  isOpen: boolean;
+  onClose: () => void;
+  bordered?: Boolean;
+  header?: ReactNode | String;
+  body?: ReactNode | String;
+  footer?: ReactNode | String;
   title: string;
-  onSave: () => void;
-  children: ReactNode;
   size?: string;
   loading: boolean;
+  type?: 'delete' | 'warning' | 'success' | 'general';
+  handleConfirm?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  handleCancel?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
 
 export const CustomModal: React.FC<CustomModalProps> = ({
@@ -24,42 +37,37 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   onClose,
   title,
   size = 'md',
-  onSave,
-  children,
+  handleConfirm,
+  handleCancel,
+  body,
   loading,
 }) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    onSave();
-  };
-
   return (
-    <form onSubmit={handleSubmit}>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered size={size}>
-        <ModalOverlay />
-        <ModalContent bgColor={'white'}>
-          <ModalHeader bgColor={'orange.500'} color={'white'}>
-            {title}
-          </ModalHeader>
-          <ModalCloseButton color={'white'} />
-          <ModalBody>{children}</ModalBody>
-          <ModalFooter>
-            <Button
-              bgColor="orange.500"
-              isLoading={loading}
-              _hover={{ backgroundColor: '#f7ba8a' }}
-              color="white"
-              mr={3}
-              type="submit"
-            >
-              Save
-            </Button>
-            <Button variant="ghost" onClick={onClose}>
-              Cancel
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </form>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered size={size}>
+      <ModalOverlay />
+      <ModalContent bgColor={'white'}>
+        <ModalHeader bgColor={'orange.500'} color={'white'}>
+          {title}
+        </ModalHeader>
+        <ModalCloseButton color={'white'} />
+        <ModalBody>{body}</ModalBody>
+        <ModalFooter>
+          <Button
+            bgColor="orange.500"
+            isLoading={loading}
+            _hover={{ backgroundColor: '#f7ba8a' }}
+            color="white"
+            loadingText="Saving..."
+            mr={3}
+            onClick={handleConfirm}
+          >
+            Save
+          </Button>
+          <Button variant="ghost" onClick={handleCancel}>
+            Cancel
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };

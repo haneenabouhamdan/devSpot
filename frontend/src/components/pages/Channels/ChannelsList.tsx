@@ -7,10 +7,7 @@ import Dropdown from '../../common/DropdownList';
 import { IoBugOutline } from 'react-icons/io5';
 import { IoMdCheckboxOutline } from 'react-icons/io';
 import { MdOutlinePending } from 'react-icons/md';
-import { IconButton } from '@chakra-ui/react';
-import { MdOutlineGroupAdd } from 'react-icons/md';
-import { BiMessageRoundedAdd } from 'react-icons/bi';
-import { TbMoodPuzzled } from 'react-icons/tb';
+import { ChannelsHeader } from './ChannelsHeader';
 
 const ChannelList = () => {
   const channels = [
@@ -57,23 +54,7 @@ const ChannelList = () => {
 
   return (
     <Box w="250px" className="channel-card" h="90vh" overflowY="auto">
-      <Flex justifyContent={'end'} pb={4} gap="2">
-        <IconButton
-          backgroundColor={'#9b6f9b'}
-          icon={<TbMoodPuzzled color="white" fontSize={'20px'} />}
-          aria-label={'Add'}
-        />
-        <IconButton
-          backgroundColor={'#9b6f9b'}
-          icon={<MdOutlineGroupAdd color="white" fontSize={'20px'} />}
-          aria-label={'Add'}
-        />
-        <IconButton
-          backgroundColor={'#9b6f9b'}
-          icon={<BiMessageRoundedAdd color="white" fontSize={'20px'} />}
-          aria-label={'Add'}
-        />
-      </Flex>
+      <ChannelsHeader />
       <Box display={'flex'} flexDirection={'column'} gap={2}>
         <Dropdown title="Channels" items={channels} />
         <Dropdown title="Challenges" items={Challenges} />
