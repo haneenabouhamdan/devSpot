@@ -9,7 +9,6 @@ import { Roles } from '../../common/decorators';
 import { DefaultRoles } from './enums';
 import { UserService } from './services';
 import { GeneralResponseDto } from 'src/common/dtos';
-import { UserToken } from './entities';
 
 @Resolver(() => UserDto)
 export class UserResolver {

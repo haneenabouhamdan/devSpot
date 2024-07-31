@@ -29,4 +29,9 @@ export class CreateChallengeDto {
   @IsString()
   @Field({ nullable: true })
   difficultyLevel?: string;
+
+  @IsOptional()
+  @IsString()
+  @Field({ nullable: true })
+  status?: string;
 }

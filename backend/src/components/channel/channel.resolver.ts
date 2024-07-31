@@ -8,7 +8,7 @@ import {
 } from '@nestjs/graphql';
 import { ChannelService } from './channel.service';
 import { CreateChannelDto } from './dtos/create-channel.dto';
-import { ChannelDto } from './dtos';
+import { ChannelDto, InvitationInput } from './dtos';
 import { User, UserDto } from '../user';
 import { Channel } from './entities';
 import * as DataLoader from 'dataloader';
@@ -18,6 +18,7 @@ import { DefaultRoles } from '../user/enums';
 import { GraphQLUUID } from 'graphql-scalars';
 import { MessageDto } from '../message/dtos';
 import { MessageService } from '../message';
+import { GeneralResponseDto } from 'src/common/dtos';
 
 @Resolver(() => ChannelDto)
 export class ChannelResolver {
@@ -48,16 +49,36 @@ export class ChannelResolver {
     return this.channelService.findByUserId(id);
   }
 
-  // @Mutation(() => UserChannelDto, { name: 'SubscribeChannel' })
-  // async subscribe(
-  //   @Args('subscribeChannelDto') subscribeDto: SubscribeChannelDto,
-  // ): Promise<UserChannelDto> {
-  //   try {
-  //     return this.channelService.subscribe(subscribeDto);
-  //   } catch (error) {
-  //     console.error('Error subscribing to channel:', error);
-  //   }
-  // }
+  @Mutation(() => GeneralResponseDto)
+  async acceptInvitation(
+    @Args('invitationInput') invitationInput: InvitationInput,
+  ): Promise<GeneralResponseDto> {
+    const { userId, channelId } = invitationInput;
+    await this.channelService.acceptInvitation(
+      userId as UUID,
+      channelId as UUID,
+    );
+    return {
+      message: 'Invitation Accepted',
+      success: true,
+    };
+  }
+
+  @Mutation(() => GeneralResponseDto)
+  async ignoreInvitation(
+    @Args('invitationInput') invitationInput: InvitationInput,
+  ): Promise<GeneralResponseDto> {
+    const { userId, channelId } = invitationInput;
+    await this.channelService.ignoreInvitation(
+      userId as UUID,
+      channelId as UUID,
+    );
+
+    return {
+      message: 'Invitation Ignored',
+      success: true,
+    };
+  }
 
   @ResolveField(() => [UserDto])
   async members(@Parent() channel: Channel): Promise<User[]> {

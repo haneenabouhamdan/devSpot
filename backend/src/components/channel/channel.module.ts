@@ -10,6 +10,7 @@ import { UserFilter } from '../user/filters';
 import { MessageRepository, MessageService } from '../message';
 import { UserTokenRepository } from '../user/repositories';
 import { NotificationService } from '../notifications/notification.service';
+import { NotificationRepository } from '../notifications/notification.repository';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { NotificationService } from '../notifications/notification.service';
     MessageRepository,
     UserFilter,
     UserTokenRepository,
+    NotificationRepository,
     NotificationService,
   ],
   exports: [ChannelService],

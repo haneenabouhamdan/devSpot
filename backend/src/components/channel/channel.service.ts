@@ -65,7 +65,8 @@ export class ChannelService {
       await this.inviteUsers({
         channelId: newCreatedChannel.id,
         users: createChannelDto?.users,
-        byUser: user,
+        inviter: user,
+        channelName: newCreatedChannel.name,
       });
     }
 
@@ -87,8 +88,9 @@ export class ChannelService {
   async inviteUsers(
     inviteUserDto: InviteUserDto,
   ): Promise<UserChannelDto[] | undefined> {
-    const { users, channelId, byUser } = inviteUserDto;
+    const { users, channelId, inviter, channelName } = inviteUserDto;
     const allUsers = await this.userService.getUsersByEmails(users);
+
     if (!allUsers) return;
 
     const newMembers = allUsers.filter(
@@ -107,10 +109,12 @@ export class ChannelService {
     }));
     const userIds = arrayLens(newMembers, 'id');
 
-    await this.notifyUsers(userIds, {
-      title: 'New Invitation',
-      body: `${byUser?.username} invite you to join a channel`,
-    });
+    await this.notifyUsers(
+      userIds,
+      inviteUserDto.channelId,
+      inviter.username,
+      channelName,
+    );
 
     return this.userChannelsRepository.save(newSubscriptions);
   }
@@ -138,29 +142,55 @@ export class ChannelService {
   }
 
   async isChannelMember(channelId: UUID, userId: UUID) {
-    const userChannel = await this.userChannelsRepository.findBy({ channelId });
+    const userChannel = await this.userChannelsRepository.findBy({
+      channelId,
+      status: UserChannelSubscriptionStatus.ACTIVE,
+    });
     const members = userChannel.map((userChannel) => userChannel.userId);
     return members.includes(userId);
   }
 
   async notifyUsers(
     usersIds: string[],
-    message: { title: string; body: string },
+    channelId: UUID,
+    inviterName: string,
+    channelName: string,
   ) {
-    const tokens = await this.userTokenRepository.find({
-      where: {
-        userId: In(usersIds),
-      },
+    const userTokens = await this.userTokenRepository.find({
+      where: { userId: In(usersIds) },
     });
-    if (!tokens) return;
-    return await Promise.all(
-      tokens.map(({ token }) => {
-        this.notificationService.sendNotification(
-          token,
-          message.title,
-          message.body,
-        );
+
+    await Promise.all(
+      userTokens.map((userData) => {
+        return this.notificationService.sendFbNotification(userData.token, {
+          text: `Invitation to join ${channelName}`,
+          title: `${inviterName} has invited you to join the channel ${channelName}`,
+          channelId,
+          userId: userData.userId,
+        });
       }),
     );
+  }
+
+  async acceptInvitation(userId: UUID, channelId: UUID) {
+    const invitation = await this.userChannelsRepository.findOne({
+      where: { userId, channelId },
+    });
+    if (!invitation) throw new Error('Invitation not found');
+
+    return await this.userChannelsRepository.update(invitation.id, {
+      status: UserChannelSubscriptionStatus.ACTIVE,
+    });
+  }
+
+  async ignoreInvitation(userId: UUID, channelId: UUID) {
+    const invitation = await this.userChannelsRepository.findOne({
+      where: { userId, channelId },
+    });
+    if (!invitation) throw new Error('Invitation not found');
+
+    return await this.userChannelsRepository.update(invitation.id, {
+      status: UserChannelSubscriptionStatus.BANNED,
+    });
   }
 }

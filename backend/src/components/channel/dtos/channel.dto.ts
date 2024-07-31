@@ -1,6 +1,7 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { EntityDTO } from '../../../common/dtos';
 import { GraphQLUUID } from 'graphql-scalars';
+import { IsUUID } from 'class-validator';
 
 @ObjectType()
 export class ChannelDto extends EntityDTO {
@@ -21,4 +22,14 @@ export class ChannelDto extends EntityDTO {
 
   @Field({ nullable: true })
   photo: string;
+}
+@InputType()
+export class InvitationInput {
+  @Field()
+  @IsUUID()
+  userId: string;
+
+  @Field()
+  @IsUUID()
+  channelId: string;
 }

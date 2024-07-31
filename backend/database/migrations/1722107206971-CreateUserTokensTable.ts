@@ -40,7 +40,7 @@ export class CreateUserTokensTable1722107206971 implements MigrationInterface {
     const foreignKey = table.foreignKeys.find(
       (fk) => fk.columnNames.indexOf('user_id') !== -1,
     );
-    await queryRunner.dropForeignKey('token', foreignKey ?? ' ');
+    await queryRunner.dropForeignKey('user_tokens', foreignKey ?? ' ');
     await queryRunner.dropTable('user_tokens');
   }
 }

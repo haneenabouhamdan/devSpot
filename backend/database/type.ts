@@ -54,6 +54,14 @@ export const DATABASE_ENUMS_NAMES = Object.freeze({
 export const DATABASE_ENUMS = Object.freeze({
   roles: ['SuperAdmin', 'Admin', 'Mentor', 'Developer'],
   userStatus: ['PENDING', 'ACTIVE', 'INACTIVE'],
+  notificationStatus: [
+    'PENDING',
+    'SENT',
+    'DELIVERED',
+    'READ',
+    'FAILED',
+    'DISMISSED',
+  ],
   messageStatus: ['PENDING', 'SENT', 'DELIVERED', 'READ', 'FAILED'],
   challengeStatus: ['CREATED', 'ACTIVE', 'COMPLETED', 'CANCELLED', 'FAILED'],
   submissionStatus: [

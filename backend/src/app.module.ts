@@ -33,6 +33,7 @@ import {
   FirebaseAdminModule,
   NotificationModule,
 } from './components/notifications';
+import { Notification } from './components/notifications/entities';
 
 @Module({
   imports: [
@@ -56,6 +57,7 @@ import {
         Review,
         SubmissionReview,
         UserToken,
+        Notification,
       ],
       database: 'dev_spot',
       synchronize: true,

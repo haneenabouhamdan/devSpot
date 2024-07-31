@@ -33,5 +33,8 @@ export class InviteUserDto {
   roleId?: UUID;
 
   @Field(() => UserDto)
-  byUser?: UserDto;
+  inviter: UserDto;
+
+  @Field(() => String)
+  channelName: string;
 }
