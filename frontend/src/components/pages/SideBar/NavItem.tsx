@@ -29,7 +29,6 @@ const NavItem: React.FC<NavItemProps> = ({
 }) => {
   return (
     <Flex
-      mt={5}
       ml={0}
       flexDir="column"
       w="100%"

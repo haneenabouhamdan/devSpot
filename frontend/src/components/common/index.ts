@@ -6,3 +6,5 @@ export * from './SearchInput';
 export * from './DropdownList';
 export * from './SwitchInput';
 export * from './CustomModal';
+export * from './StarRating';
+export * from './RichTextEditor';

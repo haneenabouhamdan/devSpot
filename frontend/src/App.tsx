@@ -2,34 +2,33 @@ import { Outlet } from 'react-router';
 import { MainHelmet } from './components/pages/MainHelmet';
 import './App.scss';
 import { useEffect } from 'react';
-import { getMessaging, getToken } from 'firebase/messaging';
 import { useSaveTokenMutation } from './resolvers';
+import { onForegroundMessage, setupNotifications } from '../firebase';
 
 const App = () => {
   const { saveToken } = useSaveTokenMutation();
 
-  const setupNotifications = async () => {
-    const userId = localStorage.getItem('uId');
+  const saveTokenCallback = async (userId: string, token: string) => {
     try {
-      const permission = await Notification.requestPermission();
-
-      if (permission === 'granted') {
-        const messaging = getMessaging();
-        const token = await getToken(messaging, {
-          vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
-        });
-        console.log('FCM Token:', token);
-        if (userId) await saveToken(userId, token);
-      } else {
-        console.log('Notification permission denied.');
-      }
+      await saveToken(userId, token);
     } catch (error) {
-      console.error('Error setting up notifications:', error);
+      console.error('Error saving token:', error);
     }
   };
 
   useEffect(() => {
-    setupNotifications();
+    setupNotifications(saveTokenCallback);
+
+    onForegroundMessage()
+      .then(payload => {
+        console.log('Received foreground message: ', payload);
+      })
+      .catch(err =>
+        console.log(
+          'An error occured while retrieving foreground message. ',
+          err
+        )
+      );
   }, []);
 
   return (

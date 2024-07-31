@@ -7,3 +7,8 @@ export interface CreateChannelInput {
   photo?: string;
   users?: string[];
 }
+
+export interface InvitationInput {
+  userId: string;
+  channelId: string;
+}

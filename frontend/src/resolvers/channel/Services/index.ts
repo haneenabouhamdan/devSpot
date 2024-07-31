@@ -1,2 +1,3 @@
-export * from './createChannel.service';
-export * from './userChannels.service';
+export * from './create-channel.service';
+export * from './user-channels.service';
+export * from './respond-to-invitation.service';

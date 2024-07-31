@@ -5,9 +5,11 @@ import { MdOutlineGroupAdd } from 'react-icons/md';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import { TbMoodPuzzled } from 'react-icons/tb';
 import { CreateChannelModal } from '../../modals/channelModals';
+import { CreateChallengeModal } from '../../modals';
 
 export const ChannelsHeader: React.FC = () => {
   const [isOpenAddChannel, setIsOpenAddChannel] = useState<boolean>(false);
+  const [isOpenAddChallenge, setIsOpenAddChallenge] = useState<boolean>(false);
 
   return (
     <>
@@ -23,7 +25,8 @@ export const ChannelsHeader: React.FC = () => {
             backgroundColor={'#9b6f9b'}
             _hover={{ bg: 'purple.500' }}
             icon={<TbMoodPuzzled color="white" fontSize={'20px'} />}
-            aria-label={'Add'}
+            onClick={() => setIsOpenAddChallenge(true)}
+            aria-label={'Add challenge'}
           />
         </Tooltip>
         <Tooltip
@@ -37,7 +40,7 @@ export const ChannelsHeader: React.FC = () => {
             backgroundColor={'#9b6f9b'}
             _hover={{ bg: 'purple.500' }}
             icon={<MdOutlineGroupAdd color="white" fontSize={'20px'} />}
-            aria-label={'Add'}
+            aria-label={'Add Friend'}
           />
         </Tooltip>
         <Tooltip
@@ -59,6 +62,10 @@ export const ChannelsHeader: React.FC = () => {
       <CreateChannelModal
         isOpen={isOpenAddChannel}
         onClose={() => setIsOpenAddChannel(false)}
+      />
+      <CreateChallengeModal
+        isOpen={isOpenAddChallenge}
+        onClose={() => setIsOpenAddChallenge(false)}
       />
     </>
   );

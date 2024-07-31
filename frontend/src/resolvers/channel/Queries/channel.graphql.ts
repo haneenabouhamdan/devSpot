@@ -54,3 +54,21 @@ export const CREATE_CHANNEL = gql`
     }
   }
 `;
+
+export const ACCEPT_INVITATION = gql`
+  mutation AcceptInvitation($invitationInput: InvitationInput!) {
+    acceptInvitation(invitationInput: $invitationInput) {
+      message
+      success
+    }
+  }
+`;
+
+export const IGNORE_INVITATION = gql`
+  mutation IgnoreInvitation($invitationInput: InvitationInput!) {
+    ignoreInvitation(invitationInput: $invitationInput) {
+      message
+      success
+    }
+  }
+`;

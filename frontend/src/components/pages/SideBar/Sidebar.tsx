@@ -66,7 +66,7 @@ const Sidebar: React.FC = () => {
         <HStack className={`user`}>
           <UserProfileModal navSize={navSize} triggerButton={triggerButton} />
         </HStack>
-        <VStack>
+        <VStack pt={10}>
           <NavItem
             navSize={navSize}
             icon={FiHome}
@@ -79,7 +79,7 @@ const Sidebar: React.FC = () => {
             title="DMs"
             description={''}
           />
-          <Stack mt={5} mb={5}>
+          <Stack mt={2} mb={2}>
             <NotificationPopover />
           </Stack>
           <NavItem
