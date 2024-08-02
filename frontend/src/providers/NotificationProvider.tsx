@@ -1,16 +1,9 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
-import { MessagePayload } from 'firebase/messaging';
-import { onMessageListener } from '../../firebase';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+// import { MessagePayload } from 'firebase/messaging';
 
 interface NotificationContextProps {
-  notifications: MessagePayload[];
-  addNotification: (notification: MessagePayload) => void;
+  notifications: any[];
+  addNotification: (notification: any) => void;
 }
 
 const NotificationContext = createContext<NotificationContextProps | undefined>(
@@ -40,14 +33,14 @@ export const NotificationProvider: React.FC<NotificationProviderProps> = ({
     setNotifications(prevNotifications => [...prevNotifications, notification]);
   };
 
-  useEffect(() => {
-    onMessageListener()
-      .then(payload => {
-        console.log({ payload });
-        addNotification(payload);
-      })
-      .catch(err => console.log('failed: ', err));
-  }, []);
+  // useEffect(() => {
+  //   onForegroundMessage()
+  //     .then(payload => {
+  //       console.log({ payload });
+  //       addNotification(payload);
+  //     })
+  //     .catch(err => console.log('failed: ', err));
+  // }, []);
 
   return (
     <NotificationContext.Provider value={{ notifications, addNotification }}>

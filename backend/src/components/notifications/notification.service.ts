@@ -49,7 +49,6 @@ export class NotificationService {
       },
     };
 
-    //save entity id in the paylaod
     try {
       const response = await this.firebaseAdmin.messaging().send(message);
       console.log('Successfully sent message:', response);
@@ -103,6 +102,30 @@ export class NotificationService {
       return notifications;
     } catch (error) {
       throw new Error('Failed to retrieve notifications');
+    }
+  }
+
+  async checkIfTokenRegistered(token: string): Promise<boolean> {
+    const message = {
+      token: token,
+      notification: {
+        title: 'Test Notification',
+        body: 'This is a test notification to check if the token is registered.',
+      },
+    };
+
+    try {
+      // Use the dry-run option to test the message without actually sending it
+      await admin.messaging().send(message, true);
+      return true; // Token is registered
+    } catch (error) {
+      if (error.code === 'messaging/registration-token-not-registered') {
+        console.log('Token is not registered:', error.message);
+        return false; // Token is not registered
+      } else {
+        console.error('Error checking token:', error);
+        throw new Error('Failed to check token registration');
+      }
     }
   }
 }

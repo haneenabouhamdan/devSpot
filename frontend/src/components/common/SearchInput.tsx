@@ -28,7 +28,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
         <Input
           placeholder={placeholder}
           pl={5}
-          pb={2}
+          height="30px"
           id="search-input"
           name="search"
           className="bg-light-purple"

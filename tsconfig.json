@@ -5,10 +5,10 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true
     },
-    "exclude": ["node_modules"],
+    "exclude": ["node_modules", "dist"],
     "references": [
-      { "path": "./packages/backend" },
-      { "path": "./packages/frontend" }
-    ]
+      { "path": "./backend" },
+      { "path": "./frontend" }
+    ],
   }
   

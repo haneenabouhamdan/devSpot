@@ -61,12 +61,12 @@ export const EditUserForm = memo(
         </TabList>
         <TabIndicator mt="-20px" height="2px" bg="#f4a261" borderRadius="1px" />
         <TabPanels>
-          <TabPanel padding="10">
+          <TabPanel>
             <Box
-              mb={8}
               display="flex"
               justifyContent="center"
               alignItems="center"
+              mb={4}
             >
               <AvatarUploader
                 onUploadComplete={handleUploadComplete}

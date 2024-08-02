@@ -10,6 +10,7 @@ import {
 import { UpdateSubmissionDto } from './dto';
 import { SubmissionStatus } from './enums';
 import { Review } from './entities';
+import { In } from 'typeorm';
 
 @Injectable()
 export class SubmissionService {
@@ -36,6 +37,12 @@ export class SubmissionService {
   async findAll(): Promise<Submission[]> {
     return this.submissionsRepository.find({
       relations: ['created_by', 'submission_reviews'],
+    });
+  }
+
+  async findByChallengeId(challengeIds: UUID[]): Promise<Submission[]> {
+    return this.submissionsRepository.find({
+      where: { challengeId: In(challengeIds) },
     });
   }
 

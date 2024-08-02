@@ -13,12 +13,9 @@ export class SubmissionDto extends EntityDTO {
   challengeId: UUID;
 
   @Field({ nullable: false })
-  submisisonText: string;
+  submissionText: string;
 
   @Field(() => SubmissionStatus)
   @IsEnum(SubmissionStatus)
   status: SubmissionStatus;
-
-  @Field(() => GraphQLUUID, { nullable: false })
-  submissionReviewId: UUID;
 }

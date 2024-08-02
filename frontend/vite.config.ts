@@ -12,11 +12,11 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        additionalData: `@import "@/styling/global.scss";`, 
+        additionalData: `@import "@/styling/global.scss";`,
       },
     },
   },
   server: {
-    port: 3033, 
+    port: 3033,
   },
 });

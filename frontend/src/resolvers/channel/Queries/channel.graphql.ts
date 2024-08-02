@@ -72,3 +72,28 @@ export const IGNORE_INVITATION = gql`
     }
   }
 `;
+
+export const CREATE_DM_CHANNEL = gql`
+  mutation CreateDmChannel($createDmChannelDto: CreateDmChannelDto!) {
+    createDmChannel(CreateDmChannelDto: $createDmChannelDto) {
+      id
+    }
+  }
+`;
+
+export const DM_CHANNELS = gql`
+  query UserDms($userDmsId: UUID!) {
+    userDms(id: $userDmsId) {
+      id
+      createdAt
+      updatedAt
+      deletedAt
+      name
+      description
+      isPrivate
+      isGroupChat
+      createdBy
+      photo
+    }
+  }
+`;

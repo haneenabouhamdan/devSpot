@@ -1,18 +1,8 @@
 import { useQuery } from '@apollo/client';
-import { GET_USER_CHANNELS } from '../Queries';
+import { Channel, DM_CHANNELS, GET_USER_CHANNELS } from '../Queries';
 
 interface UserChannelsData {
-  userChannels: {
-    id: string;
-    createdAt: string;
-    updatedAt: string;
-    name: string;
-    description: string;
-    isPrivate: boolean;
-    isGroupChat: boolean;
-    createdBy: string;
-    photo: string;
-  };
+  userChannels: Channel[];
 }
 
 export function useUserChannels(userId: string) {
@@ -22,6 +12,17 @@ export function useUserChannels(userId: string) {
 
   return {
     data: data?.userChannels,
+    loading,
+  };
+}
+
+export function useUserDms(userId: string) {
+  const { data, loading } = useQuery<UserChannelsData>(DM_CHANNELS, {
+    variables: { userDmsId: userId },
+  });
+
+  return {
+    data: data?.userDms,
     loading,
   };
 }

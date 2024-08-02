@@ -7,7 +7,10 @@ import {
   ResolveField,
 } from '@nestjs/graphql';
 import { ChannelService } from './channel.service';
-import { CreateChannelDto } from './dtos/create-channel.dto';
+import {
+  CreateChannelDto,
+  CreateDmChannelDto,
+} from './dtos/create-channel.dto';
 import { ChannelDto, InvitationInput } from './dtos';
 import { User, UserDto } from '../user';
 import { Channel } from './entities';
@@ -34,6 +37,13 @@ export class ChannelResolver {
     return this.channelService.create(createChannelDto);
   }
 
+  @Mutation(() => ChannelDto)
+  createDmChannel(
+    @Args('CreateDmChannelDto') createDmChannelDto: CreateDmChannelDto,
+  ) {
+    return this.channelService.createDM(createDmChannelDto);
+  }
+
   @Query(() => [ChannelDto], { name: 'channels' })
   findAll() {
     return this.channelService.findAll();
@@ -46,7 +56,12 @@ export class ChannelResolver {
 
   @Query(() => [ChannelDto], { name: 'userChannels' })
   getUserCreatedChannels(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
-    return this.channelService.findByUserId(id);
+    return this.channelService.getSubscribedChannel(id);
+  }
+
+  @Query(() => [ChannelDto], { name: 'userDms' })
+  getUserDms(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
+    return this.channelService.getDms(id);
   }
 
   @Mutation(() => GeneralResponseDto)

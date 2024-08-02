@@ -11,3 +11,11 @@ export const channelSchema = yup.object().shape({
     .required('CreatedBy is required'),
   photo: yup.string(),
 });
+
+export const dmChannelSchema = yup.object().shape({
+  description: yup.string(),
+  createdBy: yup
+    .string()
+    .uuid('Invalid UUID')
+    .required('CreatedBy is required'),
+});

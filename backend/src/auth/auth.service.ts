@@ -18,7 +18,7 @@ export class AuthService {
   async signIn(
     identifier: string,
     pass: string,
-  ): Promise<{ token: string; user: User & { fcmToken: string | undefined } }> {
+  ): Promise<{ token: string; user: User }> {
     let user: Nullable<User>;
 
     if (identifier.includes('@')) {
@@ -30,8 +30,6 @@ export class AuthService {
       throw new NotFoundException();
     }
 
-    const fcmToken = await this.userService.getFirebaseToken(user.id);
-
     if (!user?.password || !(await argon2.verify(user.password, pass))) {
       throw new UnauthorizedException();
     }
@@ -39,7 +37,7 @@ export class AuthService {
     const payload = { sub: user.id, username: user.username };
     return {
       token: await this.jwtService.signAsync(payload),
-      user: { ...user, fcmToken: fcmToken?.token },
+      user,
     };
   }
 

@@ -42,3 +42,19 @@ export class CreateChannelDto {
   @IsArray()
   users: string[];
 }
+
+@InputType()
+export class CreateDmChannelDto {
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @Field(() => GraphQLUUID)
+  @IsUUID()
+  createdBy: UUID;
+
+  @Field(() => [String])
+  @IsArray()
+  users: string[];
+}

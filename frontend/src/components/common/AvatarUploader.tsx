@@ -39,12 +39,14 @@ export const AvatarUploader: React.FC<AvatarUploaderProps> = ({
         title: 'Upload successful',
         description: 'Avatar has been uploaded successfully',
         status: 'success',
+        position: 'top-right',
       });
     } catch (err: any) {
       toast({
         title: 'Upload failed',
         description: err.message,
         status: 'error',
+        position: 'top-right',
       });
     } finally {
       setIsUploading(false);

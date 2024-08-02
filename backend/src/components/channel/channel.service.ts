@@ -2,13 +2,13 @@ import {
   BadRequestException,
   Inject,
   Injectable,
-  NotFoundException,
   forwardRef,
 } from '@nestjs/common';
-import { UserService } from '../user';
+import { UserDto, UserService } from '../user';
 import {
   ChannelDto,
   CreateChannelDto,
+  CreateDmChannelDto,
   InviteUserDto,
   SubscribeChannelDto,
   UserChannelDto,
@@ -20,7 +20,7 @@ import { RolesPermissionsService } from '../user/services';
 import { UserTokenRepository } from '../user/repositories';
 import { In } from 'typeorm';
 import { NotificationService } from '../notifications/notification.service';
-import { arrayLens } from 'src/common/utilities';
+import { arrayLens, recordsToMapAsArray } from 'src/common/utilities';
 
 @Injectable()
 export class ChannelService {
@@ -73,6 +73,46 @@ export class ChannelService {
     return newCreatedChannel;
   }
 
+  async createDM(createDmChannelDto: CreateDmChannelDto): Promise<ChannelDto> {
+    const { createdBy, users, description } = createDmChannelDto;
+    const user = await this.userService.findOneById(createdBy);
+    const allUsers = await this.userService.getUsersByEmails(users);
+
+    if (!user || !allUsers) {
+      throw new BadRequestException('User not found');
+    }
+
+    const newChannel = this.channelRepository.create({
+      name: 'DM',
+      description,
+      createdBy: user.id,
+      isPrivate: true,
+      isGroupChat: false,
+    });
+
+    const newCreatedChannel = await this.channelRepository.save(newChannel);
+
+    const adminRole = await this.rolePermissionsService.fetchDefaultMemberRole(
+      DefaultRoles.SUPERADMIN,
+    );
+
+    await this.userChannelsRepository.save({
+      userId: user.id,
+      channelId: newCreatedChannel.id,
+      status: UserChannelSubscriptionStatus.ACTIVE,
+      roleId: adminRole?.id,
+    });
+
+    await this.userChannelsRepository.save({
+      userId: allUsers[0].id,
+      channelId: newCreatedChannel.id,
+      status: UserChannelSubscriptionStatus.ACTIVE,
+      roleId: adminRole?.id,
+    });
+
+    return newCreatedChannel;
+  }
+
   findAll(): Promise<ChannelDto[]> {
     return this.channelRepository.find();
   }
@@ -81,8 +121,64 @@ export class ChannelService {
     return this.channelRepository.findOne({ where: { id } });
   }
 
-  findByUserId(userId: UUID): Promise<ChannelDto[]> {
-    return this.channelRepository.findBy({ createdBy: userId });
+  async getDms(userId: UUID): Promise<ChannelDto[]> {
+    const userChannels = await this.userChannelsRepository.findBy({
+      userId,
+      status: UserChannelSubscriptionStatus.ACTIVE,
+    });
+
+    const channelsIds = userChannels.map(
+      (userChannel) => userChannel.channelId,
+    );
+
+    const dms = await this.channelRepository.find({
+      where: { id: In(channelsIds), isPrivate: true, isGroupChat: false },
+    });
+
+    const formattedDms = await Promise.all(
+      dms.map(async (channel) => {
+        const members = await this.getDmChannelMembers(channel.id);
+        const receiver = members.filter((member) => member.id !== userId);
+        return {
+          ...channel,
+          name: receiver[0].username,
+        } as ChannelDto;
+      }),
+    );
+
+    return formattedDms;
+  }
+
+  async getDmChannelMembers(channelId: UUID) {
+    const channels = await this.userChannelsRepository.find({
+      where: {
+        channelId,
+        status: UserChannelSubscriptionStatus.ACTIVE,
+      },
+      relations: ['user'],
+    });
+    return channels.map((channel) => channel.user);
+  }
+
+  async getSubscribedChannel(userId: UUID): Promise<ChannelDto[]> {
+    const userChannels = await this.userChannelsRepository.findBy({
+      userId,
+      status: UserChannelSubscriptionStatus.ACTIVE,
+    });
+
+    const publicChannels = await this.channelRepository.find({
+      where: { isPrivate: false },
+    });
+
+    const channelsIds = userChannels.map(
+      (userChannel) => userChannel.channelId,
+    );
+
+    const subscribedChannels = await this.channelRepository.find({
+      where: { id: In(channelsIds), isPrivate: true, isGroupChat: true },
+    });
+
+    return [...subscribedChannels, ...publicChannels];
   }
 
   async inviteUsers(
@@ -107,6 +203,7 @@ export class ChannelService {
       status: UserChannelSubscriptionStatus.INACTIVE,
       roleId: role?.id,
     }));
+
     const userIds = arrayLens(newMembers, 'id');
 
     await this.notifyUsers(
@@ -141,6 +238,7 @@ export class ChannelService {
     return this.userChannelsRepository.save(userChannel);
   }
 
+  //check if user
   async isChannelMember(channelId: UUID, userId: UUID) {
     const userChannel = await this.userChannelsRepository.findBy({
       channelId,

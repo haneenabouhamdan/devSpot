@@ -14,8 +14,10 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "composite": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "noEmit": false,
+    "jsx": "react-jsx",
+    "typeRoots": ["node_modules/@types"]
   },
-  "include": ["src", "firebase.ts"]
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
 }

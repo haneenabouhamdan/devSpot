@@ -12,3 +12,21 @@ export interface InvitationInput {
   userId: string;
   channelId: string;
 }
+
+export interface CreateDMChannelInput {
+  users?: string[];
+  createdBy: string;
+  description?: string;
+}
+
+export interface Channel {
+  id: string;
+  createdAt: string;
+  updatedAt: string;
+  name?: string;
+  description?: string;
+  isPrivate: boolean;
+  isGroupChat: boolean;
+  createdBy: string;
+  photo?: string;
+}

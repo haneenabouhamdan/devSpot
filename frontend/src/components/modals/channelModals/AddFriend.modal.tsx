@@ -1,18 +1,13 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Box, Stack, useToast } from '@chakra-ui/react';
+import { CustomModal, FormInput } from '../../common';
 import {
-  AvatarUploader,
-  CustomModal,
-  FormInput,
-  SwitchInput,
-} from '../../common';
-import {
-  CreateChannelInput,
-  useCreateChannelMutation,
+  CreateDMChannelInput,
+  useCreateDMChannelMutation,
 } from '../../../resolvers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { channelSchema } from '../../validations';
+import { dmChannelSchema } from '../../validations';
 import { InviteUsersForm } from './InviteUser.form';
 
 interface CreateChannelModalProps {
@@ -20,11 +15,11 @@ interface CreateChannelModalProps {
   onClose: () => void;
 }
 
-export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
+export const AddFriendModal: React.FC<CreateChannelModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const { createChannel } = useCreateChannelMutation();
+  const { createDMChannel } = useCreateDMChannelMutation();
   const userId = localStorage.getItem('uId');
 
   const {
@@ -32,15 +27,12 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
     setValue,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<CreateChannelInput>({
+  } = useForm<CreateDMChannelInput>({
     mode: 'all',
-    resolver: yupResolver(channelSchema),
+    resolver: yupResolver(dmChannelSchema),
   });
 
   const toast = useToast();
-  const handleUploadComplete = (fileUrl: string) => {
-    setValue('photo', fileUrl);
-  };
 
   useEffect(() => {
     if (userId) setValue('createdBy', userId);
@@ -51,7 +43,7 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
   };
 
   const onConfirm = useCallback(
-    (data: CreateChannelInput) => {
+    (data: CreateDMChannelInput) => {
       if (!userId) return;
 
       const payload = {
@@ -59,11 +51,11 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
         createdBy: userId,
       };
       try {
-        createChannel({
+        createDMChannel({
           payload,
           onCompleted: () => {
             toast({
-              description: 'Channel created successfully',
+              description: 'DM created successfully',
               status: 'success',
               duration: 3000,
               position: 'top-right',
@@ -83,45 +75,20 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      title="Add Channel"
+      title="Add Friend"
       size="lg"
       body={
         <Stack>
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            mt={4}
-            gap={4}
-          >
-            <AvatarUploader onUploadComplete={handleUploadComplete} size="lg" />
-            <FormInput
-              label="Channel Name"
-              placeholder="Enter Channel name"
-              {...register('name')}
-              error={errors.name?.message}
-            />
-          </Box>
           <Box mb={6} mt={6}>
             <FormInput
-              label="Description"
-              placeholder="Describe this channel"
+              label="Invitation Message"
+              placeholder=""
               {...register('description')}
               error={errors.description?.message}
             />
           </Box>
 
           <InviteUsersForm onEmailsUpdate={onUsersListUpdate} />
-          <SwitchInput
-            label="Private Channel"
-            {...register('isPrivate')}
-            defaultChecked={false}
-          />
-          <SwitchInput
-            label="Group Chat"
-            {...register('isGroupChat')}
-            defaultChecked={false}
-          />
         </Stack>
       }
       loading={false}

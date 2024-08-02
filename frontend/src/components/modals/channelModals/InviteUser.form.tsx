@@ -69,7 +69,7 @@ export const InviteUsersForm = ({ onEmailsUpdate }: InviteUsersFormProps) => {
           <Menu>
             <MenuButton
               as={IconButton}
-              rightIcon={<ChevronDownIcon />}
+              // rightIcon={<ChevronDownIcon />}
               bgColor={'white'}
               color="black"
               _hover={{ bgColor: 'white' }}

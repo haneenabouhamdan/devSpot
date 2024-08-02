@@ -10,12 +10,10 @@ import { useUpdateUserMutation } from '../../../resolvers/user/update-user.servi
 import { updateUserSchema } from '../../validations';
 
 interface UserProfileModalProps {
-  navSize: string;
   triggerButton: ReactElement;
 }
 
 export const UserProfileModal: React.FC<UserProfileModalProps> = ({
-  navSize,
   triggerButton,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();

@@ -1,36 +1,14 @@
-import { Box, Flex } from '@chakra-ui/layout';
+import { Box } from '@chakra-ui/layout';
 import './styles.scss';
 import { FiHash } from 'react-icons/fi';
-import { RxAvatar } from 'react-icons/rx';
-import { PiBookOpenTextDuotone } from 'react-icons/pi';
 import Dropdown from '../../common/DropdownList';
-import { IoBugOutline } from 'react-icons/io5';
 import { IoMdCheckboxOutline } from 'react-icons/io';
 import { MdOutlinePending } from 'react-icons/md';
-import { ChannelsHeader } from './ChannelsHeader';
+import { HeaderActions } from '../Headers/HeaderActions';
+import { ChannelList } from './Lists/Channels.list';
+import { DmsList } from './Lists/Dms.list';
 
-const ChannelList = () => {
-  const channels = [
-    {
-      icon: PiBookOpenTextDuotone,
-      label: 'resources',
-      link: '/channels/fast-track-to-senior',
-    },
-    { icon: FiHash, label: 'general', link: '/channels/general' },
-    { icon: IoBugOutline, label: 'issues', link: '/channels/general' },
-  ];
-  const dms = [
-    {
-      icon: RxAvatar,
-      label: 'Haneen',
-      link: '/channels/fast-track-to-senior',
-    },
-    {
-      icon: RxAvatar,
-      label: 'Sara',
-      link: '/channels/fast-track-to-senior',
-    },
-  ];
+const MainList = () => {
   const Challenges = [
     {
       icon: IoMdCheckboxOutline,
@@ -54,13 +32,12 @@ const ChannelList = () => {
 
   return (
     <Box w="250px" className="channel-card" h="90vh" overflowY="auto">
-      <ChannelsHeader />
       <Box display={'flex'} flexDirection={'column'} gap={2}>
-        <Dropdown title="Channels" items={channels} />
+        <ChannelList />
         <Dropdown title="Challenges" items={Challenges} />
-        <Dropdown title="DMs" items={dms} />
+        <DmsList />
       </Box>
     </Box>
   );
 };
-export default ChannelList;
+export default MainList;

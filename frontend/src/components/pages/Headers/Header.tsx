@@ -1,4 +1,4 @@
-import { Flex } from '@chakra-ui/layout';
+import { Flex, Spacer } from '@chakra-ui/layout';
 import { IconButton } from '@chakra-ui/react';
 import { IoLogOutOutline } from 'react-icons/io5';
 import './styles.scss';
@@ -14,7 +14,8 @@ const Header = () => {
       justifyContent="space-between"
       className={`main-header`}
     >
-      <SearchInput />
+      {/* <SearchInput /> */}
+      <Spacer />
       <IconButton
         aria-label="Logout"
         icon={<IoLogOutOutline />}

@@ -17,7 +17,8 @@ const serviceAccount = JSON.parse(fs.readFileSync(serviceAccountPath, 'utf8'));
             credential: admin.credential.cert(
               serviceAccount as admin.ServiceAccount,
             ),
-            storageBucket: 'devspot-c4934.appspot.com',
+            storageBucket: 'test-firebase-2cd5d.appspot.com',
+            // 'devspot-c4934.appspot.com',
           });
         }
         return admin;

@@ -2,25 +2,18 @@ import React, { useEffect, useState } from 'react';
 import {
   Flex,
   HStack,
-  IconButton,
   Avatar,
   Text,
   Button,
-  Box,
   Stack,
   VStack,
 } from '@chakra-ui/react';
-import { FiHome, FiSettings } from 'react-icons/fi';
+import { FiHome } from 'react-icons/fi';
 import {
   IoChatbubblesOutline,
   IoBookmarkOutline,
   IoRocketOutline,
 } from 'react-icons/io5';
-import {
-  MdOutlineKeyboardDoubleArrowLeft,
-  MdOutlineKeyboardDoubleArrowRight,
-} from 'react-icons/md';
-import { BsPinAngle, BsBell } from 'react-icons/bs';
 import NavItem from './NavItem';
 import './styles.scss';
 import { UserProfileModal } from '../../modals';
@@ -34,10 +27,6 @@ const Sidebar: React.FC = () => {
   useEffect(() => {
     getCurrentUser();
   }, [getCurrentUser, user]);
-
-  const toggleNavSize = () => {
-    setNavSize(prevSize => (prevSize === 'small' ? 'large' : 'small'));
-  };
 
   const triggerButton = (
     <Button
@@ -61,12 +50,9 @@ const Sidebar: React.FC = () => {
   );
 
   return (
-    <Flex className={`sidebar ${navSize}`}>
+    <Flex className={'sidebar'}>
       <Flex className="nav-container" as="nav">
-        <HStack className={`user`}>
-          <UserProfileModal navSize={navSize} triggerButton={triggerButton} />
-        </HStack>
-        <VStack pt={10}>
+        <VStack pt={8}>
           <NavItem
             navSize={navSize}
             icon={FiHome}
@@ -94,45 +80,11 @@ const Sidebar: React.FC = () => {
             title="Saved"
             description={''}
           />
-          <NavItem
-            navSize={navSize}
-            icon={BsPinAngle}
-            title="Pinned"
-            description={''}
-          />
-          <NavItem
-            navSize={navSize}
-            icon={FiSettings}
-            title="Settings"
-            description={''}
-          />
         </VStack>
       </Flex>
-      {navSize !== 'large' ? (
-        <IconButton
-          background="none"
-          border={0}
-          mb="10"
-          _hover={{ background: 'none' }}
-          icon={
-            <MdOutlineKeyboardDoubleArrowRight size={'25px'} color="white" />
-          }
-          aria-label="Toggle Navigation Size"
-          onClick={toggleNavSize}
-        />
-      ) : (
-        <IconButton
-          background="none"
-          border={0}
-          mb="10"
-          _hover={{ background: 'none' }}
-          icon={
-            <MdOutlineKeyboardDoubleArrowLeft size={'25px'} color="white" />
-          }
-          aria-label="Toggle Navigation Size"
-          onClick={toggleNavSize}
-        />
-      )}
+      <HStack className={`user`} pb={5} justifyContent={'center'}>
+        <UserProfileModal triggerButton={triggerButton} />
+      </HStack>
     </Flex>
   );
 };

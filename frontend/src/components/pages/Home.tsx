@@ -1,10 +1,11 @@
-import { Flex } from '@chakra-ui/react';
+import { Flex, HStack, VStack } from '@chakra-ui/react';
 import Sidebar from './SideBar/Sidebar';
 import Header from './Headers/Header';
-import ChannelList from './Channels/ChannelsList';
 import MessageInput from './Messages/MessageInput';
 import MessageList from './Messages/MessagesList';
 import './styles.scss';
+import MainList from './Channels/ChannelsList';
+import { HeaderActions } from './Headers';
 
 export default function Home() {
   const messages = [
@@ -40,17 +41,20 @@ export default function Home() {
   ];
 
   return (
-    <Flex
-      w="100%"
-      h="100vh"
-      overflow="hidden"
-      flexDirection={{ base: 'column', md: 'row' }}
-    >
+    <Flex w="100%" h="100vh" overflow="hidden">
       <Flex borderRight={{ md: '0px solid #e6e6e6' }}>
         <Sidebar />
       </Flex>
+      <Flex>
+        <HStack className="list-container" p={2}>
+          <VStack>
+            <HeaderActions />
+            <MainList />
+          </VStack>
+        </HStack>
+      </Flex>
+      {/* 
       <Flex flex="1" flexDirection="column">
-        <Header />
         <Flex
           flex="1"
           className="bg-purple"
@@ -61,7 +65,10 @@ export default function Home() {
             p={4}
             w={{ base: '100%', md: '20%' }}
           >
-            <ChannelList />
+            <VStack>
+              <HeaderActions />
+              <MainList />
+            </VStack>
           </Flex>
           <Flex
             className="channel-content"
@@ -74,7 +81,7 @@ export default function Home() {
             </Flex>
           </Flex>
         </Flex>
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

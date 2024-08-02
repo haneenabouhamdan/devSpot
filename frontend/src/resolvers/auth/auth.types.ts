@@ -8,7 +8,6 @@ export interface AuthUser {
   dateOfBirth: string;
   notificationPaused: boolean;
   profilePicture?: string;
-  fcmToken?: string;
 }
 
 export interface AuthResponse {

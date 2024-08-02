@@ -40,7 +40,4 @@ export class AuthUserDto {
 
   @Field(() => [GraphQLString], { nullable: true })
   permissions?: string[];
-
-  @Field(() => String, { nullable: true })
-  fcmToken?: string;
 }

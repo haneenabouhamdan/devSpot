@@ -1,1 +1,1 @@
-export * from './ChannelsHeader';
+export * from './ChannelsList';

@@ -4,16 +4,17 @@ import { IconButton, Tooltip } from '@chakra-ui/react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import { TbMoodPuzzled } from 'react-icons/tb';
-import { CreateChannelModal } from '../../modals/channelModals';
+import { AddFriendModal, CreateChannelModal } from '../../modals/channelModals';
 import { CreateChallengeModal } from '../../modals';
 
-export const ChannelsHeader: React.FC = () => {
+export const HeaderActions: React.FC = () => {
   const [isOpenAddChannel, setIsOpenAddChannel] = useState<boolean>(false);
   const [isOpenAddChallenge, setIsOpenAddChallenge] = useState<boolean>(false);
+  const [isOpenAddDMChannel, setIsOpenAddDMChannel] = useState<boolean>(false);
 
   return (
     <>
-      <Flex justifyContent={'end'} pb={4} gap="2">
+      <Flex justifyContent={'end'} pb={4} gap="2" width="100%">
         <Tooltip
           label={'Create Challenge'}
           color="white"
@@ -40,6 +41,7 @@ export const ChannelsHeader: React.FC = () => {
             backgroundColor={'#9b6f9b'}
             _hover={{ bg: 'purple.500' }}
             icon={<MdOutlineGroupAdd color="white" fontSize={'20px'} />}
+            onClick={() => setIsOpenAddDMChannel(true)}
             aria-label={'Add Friend'}
           />
         </Tooltip>
@@ -59,6 +61,10 @@ export const ChannelsHeader: React.FC = () => {
           />
         </Tooltip>
       </Flex>
+      <AddFriendModal
+        isOpen={isOpenAddDMChannel}
+        onClose={() => setIsOpenAddDMChannel(false)}
+      />
       <CreateChannelModal
         isOpen={isOpenAddChannel}
         onClose={() => setIsOpenAddChannel(false)}

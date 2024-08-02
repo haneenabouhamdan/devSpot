@@ -24,7 +24,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
       const [subOpen, setSubOpen] = useState(true);
 
       return (
-        <Box key={index} pl={5} pb={2}>
+        <Box key={index} pl={2}>
           <Flex
             align="center"
             py={1}
@@ -32,9 +32,9 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
             onClick={() => setSubOpen(!subOpen)}
             cursor="pointer"
           >
-            {item.icon && <Icon as={item.icon} mr={2} fontSize={'large'} />}
+            {item.icon && <Icon as={item.icon} mr={2} fontSize={'sm'} />}
             {item.avatarSrc && <Avatar src={item.avatarSrc} size="sm" mr={2} />}
-            <Text>{item.label}</Text>
+            <Text fontSize={'small'}>{item.label}</Text>
             {item.subItems && (
               <Icon as={subOpen ? ChevronDownIcon : ChevronRightIcon} ml="5" />
             )}
@@ -50,7 +50,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
   };
 
   return (
-    <Box w="100%">
+    <Box w="100%" pb={2}>
       <Flex
         align="center"
         justify="space-between"
@@ -59,7 +59,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
         p={2}
         className="dropdown-header"
       >
-        <Text fontWeight="bold" height="fit-content">
+        <Text fontWeight="bold" fontSize={'medium'} height="fit-content">
           {title}
         </Text>
         <Icon as={isOpen ? ChevronDownIcon : ChevronRightIcon} />

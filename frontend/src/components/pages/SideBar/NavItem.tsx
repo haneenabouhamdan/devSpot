@@ -69,7 +69,7 @@ const NavItem: React.FC<NavItemProps> = ({
                   ml={10}
                   display={navSize === 'small' ? 'none' : 'flex'}
                   color="white"
-                  fontSize={'medium'}
+                  fontSize={'sm'}
                 >
                   {title}
                 </Text>

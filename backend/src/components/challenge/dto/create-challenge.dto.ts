@@ -7,6 +7,8 @@ import {
   IsUUID,
 } from 'class-validator';
 import { GraphQLUUID } from 'graphql-scalars';
+import { ChallengeStatus } from '../enums';
+import { SubmissionStatus } from 'src/components/submission/enums';
 
 @InputType()
 export class CreateChallengeDto {
@@ -32,6 +34,24 @@ export class CreateChallengeDto {
 
   @IsOptional()
   @IsString()
-  @Field({ nullable: true })
-  status?: string;
+  @Field(() => ChallengeStatus, { nullable: true })
+  status?: ChallengeStatus;
+}
+
+@InputType()
+export class CreateChallengeAnswerDto {
+  @IsNotEmpty()
+  @IsString()
+  @Field()
+  submissionText: string;
+
+  @IsNotEmpty()
+  @IsUUID()
+  @Field(() => GraphQLUUID)
+  createdBy: string;
+
+  @IsOptional()
+  @IsString()
+  @Field(() => SubmissionStatus, { nullable: true })
+  status?: SubmissionStatus;
 }
