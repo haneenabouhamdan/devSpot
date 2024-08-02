@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Flex, Text, Icon, Collapse, Avatar } from '@chakra-ui/react';
+import { Box, Flex, Text, Icon, Avatar, Collapse } from '@chakra-ui/react';
 import { ChevronDownIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import './styles.scss';
 
@@ -10,6 +10,7 @@ interface DropdownItemProps {
   avatarSrc?: string;
   subItems?: DropdownItemProps[];
 }
+
 interface DropdownProps {
   title: string;
   items: DropdownItemProps[];
@@ -17,12 +18,9 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(true);
-
   const renderItems = (items: DropdownItemProps[]) => {
     return items.map((item, index) => {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
       const [subOpen, setSubOpen] = useState(true);
-
       return (
         <Box key={index} pl={2}>
           <Flex
@@ -32,9 +30,9 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
             onClick={() => setSubOpen(!subOpen)}
             cursor="pointer"
           >
-            {item.icon && <Icon as={item.icon} mr={2} fontSize={'sm'} />}
-            {item.avatarSrc && <Avatar src={item.avatarSrc} size="sm" mr={2} />}
-            <Text fontSize={'small'}>{item.label}</Text>
+            {item.icon && <Icon as={item.icon} mr={2} fontSize={'md'} />}
+            {item.avatarSrc && <Avatar src={item.avatarSrc} size="md" mr={2} />}
+            <Text fontSize={'md'}>{item.label}</Text>
             {item.subItems && (
               <Icon as={subOpen ? ChevronDownIcon : ChevronRightIcon} ml="5" />
             )}
@@ -59,7 +57,7 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
         p={2}
         className="dropdown-header"
       >
-        <Text fontWeight="bold" fontSize={'medium'} height="fit-content">
+        <Text fontWeight="semi-bold" fontSize={'md'} height="fit-content">
           {title}
         </Text>
         <Icon as={isOpen ? ChevronDownIcon : ChevronRightIcon} />

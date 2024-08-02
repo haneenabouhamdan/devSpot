@@ -50,7 +50,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
           toast({
             description: 'User updated successfully',
             status: 'success',
-            duration: 3000,
+            duration: 2000,
             position: 'top-right',
             isClosable: true,
           });

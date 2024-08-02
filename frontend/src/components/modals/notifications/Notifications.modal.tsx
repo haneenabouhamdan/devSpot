@@ -36,7 +36,7 @@ const NotificationPopover: React.FC = () => {
             <IconButton
               icon={<BsBell color="white" />}
               backgroundColor={'transparent'}
-              fontSize="large"
+              fontSize="x-large"
               p={3}
               borderRadius={8}
               _hover={{ textDecor: 'none', backgroundColor: '#7b4e7b' }}

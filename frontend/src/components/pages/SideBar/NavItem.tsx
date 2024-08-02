@@ -15,15 +15,15 @@ interface NavItemProps extends FlexProps {
   icon: IconType;
   title: string;
   description: string;
-  active?: boolean;
   navSize: string;
+  isActive?: boolean;
 }
 
 const NavItem: React.FC<NavItemProps> = ({
   icon,
   title,
   description = '',
-  active = false,
+  isActive = false,
   navSize,
   ...rest
 }) => {
@@ -46,7 +46,7 @@ const NavItem: React.FC<NavItemProps> = ({
           fontSize={'small'}
         >
           <Link
-            backgroundColor={active ? '#7b4e7b' : 'transparent'}
+            backgroundColor={isActive ? '#7b4e7b' : 'transparent'}
             p={3}
             borderRadius={8}
             _hover={{ textDecor: 'none', backgroundColor: '#7b4e7b' }}

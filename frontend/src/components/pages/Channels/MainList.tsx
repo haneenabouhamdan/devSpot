@@ -4,11 +4,14 @@ import { FiHash } from 'react-icons/fi';
 import Dropdown from '../../common/DropdownList';
 import { IoMdCheckboxOutline } from 'react-icons/io';
 import { MdOutlinePending } from 'react-icons/md';
-import { HeaderActions } from '../Headers/HeaderActions';
 import { ChannelList } from './Lists/Channels.list';
 import { DmsList } from './Lists/Dms.list';
 
-const MainList = () => {
+interface Props {
+  currentView: string;
+}
+const MainList = (props: Props) => {
+  const { currentView } = props;
   const Challenges = [
     {
       icon: IoMdCheckboxOutline,
@@ -32,12 +35,16 @@ const MainList = () => {
 
   return (
     <Box w="250px" className="channel-card" h="90vh" overflowY="auto">
-      <Box display={'flex'} flexDirection={'column'} gap={2}>
-        <ChannelList />
-        <Dropdown title="Challenges" items={Challenges} />
-        <DmsList />
+      <Box display={'flex'} flexDirection={'column'} gap={4}>
+        {currentView === 'Home' && <ChannelList />}
+        {(currentView === 'DMs' || currentView == 'Home') && <DmsList />}
+        {(currentView === 'Challenges' || currentView == 'Home') && (
+          <Dropdown title="Challenges" items={Challenges} />
+        )}
+        {currentView === 'Saved' && <div>Saved Items Component</div>}
       </Box>
     </Box>
   );
 };
+
 export default MainList;

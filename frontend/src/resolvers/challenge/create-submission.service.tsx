@@ -1,37 +1,37 @@
 import { useMutation } from '@apollo/client';
 import {
-  CREATE_CHALLENGE,
-  CreateChallengeInput,
+  CREATE_SUBMISSION,
+  CreateSubmissionInput,
   GET_CHALLENGES,
 } from './Queries';
 import { clientOptionType } from '../sharedTypes';
 
-interface CreateChallengeResponse {
+interface CreateSubmissionResponse {
   id: string;
 }
 
-interface CreateChallengeProps {
-  payload: CreateChallengeInput;
+interface CreateSubmissionProps {
+  payload: CreateSubmissionInput;
   onCompleted: (
-    data: { createChallenge: CreateChallengeResponse },
+    data: { CreateSubmission: CreateSubmissionResponse },
     clientOptions?: clientOptionType
   ) => void;
   refetch?: boolean;
 }
 
-export function useCreateChallenge() {
+export function useCreateSubmission() {
   const [mutate, { data, loading, error }] = useMutation<
-    { createChallenge: CreateChallengeResponse },
-    { createChallengeDto: CreateChallengeInput }
-  >(CREATE_CHALLENGE);
+    { CreateSubmission: CreateSubmissionResponse },
+    { createSubmissionInput: CreateSubmissionInput }
+  >(CREATE_SUBMISSION);
 
-  async function createChallenge({
+  async function createSubmission({
     payload,
     onCompleted,
     refetch = true,
-  }: CreateChallengeProps) {
+  }: CreateSubmissionProps) {
     await mutate({
-      variables: { createChallengeDto: payload },
+      variables: { createSubmissionInput: payload },
       onCompleted,
       refetchQueries: refetch
         ? [
@@ -44,7 +44,7 @@ export function useCreateChallenge() {
   }
 
   return {
-    createChallenge,
+    createSubmission,
     data,
     loading,
     error,

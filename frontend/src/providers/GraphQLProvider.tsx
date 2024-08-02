@@ -45,7 +45,7 @@ const getApolloLinks = (toast: ReturnType<typeof useToast>, token?: string) => {
           title: 'Error',
           description: message,
           status: 'error',
-          duration: 5000,
+          duration: 3000,
           position: 'top-right',
           isClosable: true,
         });

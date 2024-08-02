@@ -52,7 +52,7 @@ export const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({
 
       const payload = {
         ...data,
-        status: 'ACTIVE',
+        status: 'active',
         createdBy: localStorage.getItem('uId') || undefined,
       };
       try {
@@ -62,7 +62,7 @@ export const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({
             toast({
               description: 'Challenge created successfully',
               status: 'success',
-              duration: 3000,
+              duration: 2000,
               position: 'top-right',
               isClosable: true,
             });

@@ -1,5 +1,4 @@
-import { LockIcon } from '@chakra-ui/icons';
-import { FaHashtag } from 'react-icons/fa6';
+import { HiMiniHashtag, HiOutlineLockClosed } from 'react-icons/hi2';
 import { Channel, useUserChannels } from '../../../../resolvers';
 import Dropdown from '../../../common/DropdownList';
 
@@ -12,7 +11,7 @@ const ChannelList = () => {
 
   const channels = data.map((channel: Channel) => {
     return {
-      icon: channel.isPrivate ? LockIcon : FaHashtag,
+      icon: channel.isPrivate ? HiOutlineLockClosed : HiMiniHashtag,
       label: channel.name,
       link: `/channels/${channel.id}`,
     };

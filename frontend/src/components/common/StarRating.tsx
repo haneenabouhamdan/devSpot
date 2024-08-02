@@ -4,16 +4,16 @@ import { FaStar } from 'react-icons/fa';
 
 interface StarRatingProps {
   rating: number;
-  setRating: (rating: number) => void;
+  setRating?: (rating: number) => void;
 }
 
 const StarRating: React.FC<StarRatingProps> = ({ rating, setRating }) => {
   const handleClick = (value: number) => {
-    setRating(value);
+    setRating && setRating(value);
   };
 
   return (
-    <Box display="flex" alignItems="center">
+    <Box display="flex" alignItems="center" width={'fit-content'}>
       {[1, 2, 3, 4, 5].map(value => (
         <IconButton
           key={value}
@@ -21,7 +21,7 @@ const StarRating: React.FC<StarRatingProps> = ({ rating, setRating }) => {
           color={value <= rating ? 'orange.300' : 'gray.300'}
           onClick={() => handleClick(value)}
           variant="ghost"
-          size="lg"
+          size="sm"
           aria-label="rating"
         />
       ))}

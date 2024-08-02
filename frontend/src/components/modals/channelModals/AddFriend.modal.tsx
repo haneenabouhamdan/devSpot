@@ -57,7 +57,7 @@ export const AddFriendModal: React.FC<CreateChannelModalProps> = ({
             toast({
               description: 'DM created successfully',
               status: 'success',
-              duration: 3000,
+              duration: 2000,
               position: 'top-right',
               isClosable: true,
             });

@@ -7,6 +7,7 @@ import {
   Button,
   Stack,
   VStack,
+  IconButton,
 } from '@chakra-ui/react';
 import { FiHome } from 'react-icons/fi';
 import {
@@ -19,10 +20,18 @@ import './styles.scss';
 import { UserProfileModal } from '../../modals';
 import { useGetProfileQuery } from '../../../resolvers';
 import NotificationPopover from '../../modals/notifications/Notifications.modal';
+import { useAuthContext } from '../../../contexts';
+import { VscSignOut } from 'react-icons/vsc';
 
-const Sidebar: React.FC = () => {
+interface Props {
+  setCurrentView: (input: string) => void;
+  currentView: string;
+}
+const Sidebar = (props: Props) => {
+  const { currentView, setCurrentView } = props;
   const [navSize, setNavSize] = useState<'small' | 'large'>('small');
   const { getCurrentUser, user } = useGetProfileQuery();
+  const { onUserLogout } = useAuthContext();
 
   useEffect(() => {
     getCurrentUser();
@@ -52,38 +61,61 @@ const Sidebar: React.FC = () => {
   return (
     <Flex className={'sidebar'}>
       <Flex className="nav-container" as="nav">
-        <VStack pt={8}>
+        <VStack pb={8} pt={2}>
           <NavItem
             navSize={navSize}
             icon={FiHome}
             title="Home"
+            isActive={currentView === 'Home'}
             description="This is the description for the dashboard."
+            onClick={() => setCurrentView('Home')}
           />
           <NavItem
             navSize={navSize}
             icon={IoChatbubblesOutline}
             title="DMs"
+            isActive={currentView === 'DMs'}
             description={''}
+            onClick={() => setCurrentView('DMs')}
+          />
+
+          <NavItem
+            navSize={navSize}
+            icon={IoRocketOutline}
+            title="Challenges"
+            description={''}
+            isActive={currentView === 'Challenges'}
+            onClick={() => setCurrentView('Challenges')}
           />
           <Stack mt={2} mb={2}>
             <NotificationPopover />
           </Stack>
           <NavItem
             navSize={navSize}
-            icon={IoRocketOutline}
-            title="Challenges"
-            description={''}
-          />
-          <NavItem
-            navSize={navSize}
             icon={IoBookmarkOutline}
             title="Saved"
+            isActive={currentView === 'Saved'}
             description={''}
+            onClick={() => setCurrentView('Saved')}
           />
         </VStack>
       </Flex>
       <HStack className={`user`} pb={5} justifyContent={'center'}>
-        <UserProfileModal triggerButton={triggerButton} />
+        <VStack>
+          <Flex pb={4}>
+            <NavItem
+              navSize={navSize}
+              icon={VscSignOut}
+              title="Logout"
+              isActive={currentView === 'Logout'}
+              description={''}
+              onClick={onUserLogout}
+            />
+          </Flex>
+          <Flex ml={4}>
+            <UserProfileModal triggerButton={triggerButton} />
+          </Flex>
+        </VStack>
       </HStack>
     </Flex>
   );
