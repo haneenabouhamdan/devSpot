@@ -1,4 +1,10 @@
-import { IsUUID, IsEnum, IsString, IsOptional } from 'class-validator';
+import {
+  IsUUID,
+  IsEnum,
+  IsString,
+  IsOptional,
+  IsNumber,
+} from 'class-validator';
 import { SubmissionStatus } from '../enums';
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLUUID } from 'graphql-scalars';

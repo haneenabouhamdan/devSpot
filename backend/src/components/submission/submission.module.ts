@@ -1,13 +1,9 @@
 import { Module } from '@nestjs/common';
 import { SubmissionResolver } from './submission.resolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from '../user';
+import { UserRepository } from '../user';
 import { Submission, Review, SubmissionReview } from './entities';
-import {
-  ReviewRepository,
-  SubmissionRepository,
-  SubmissionReviewRepository,
-} from './repositories';
+import { ReviewRepository, SubmissionRepository } from './repositories';
 import { SubmissionService } from './submission.service';
 
 @Module({
@@ -17,8 +13,8 @@ import { SubmissionService } from './submission.service';
       Review,
       SubmissionRepository,
       SubmissionReview,
-      SubmissionReviewRepository,
       ReviewRepository,
+      UserRepository,
     ]),
   ],
   providers: [SubmissionResolver, SubmissionService],

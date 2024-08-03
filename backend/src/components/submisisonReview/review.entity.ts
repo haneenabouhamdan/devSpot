@@ -1,8 +1,5 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
-
-import { AbstractEntity } from '../../../common/entities';
-import { User } from '../../user';
-import { SubmissionReview } from './submission-review.entity';
+import { Entity, Column } from 'typeorm';
+import { AbstractEntity } from '../../common/entities';
 
 @Entity('reviews')
 export class Review extends AbstractEntity {

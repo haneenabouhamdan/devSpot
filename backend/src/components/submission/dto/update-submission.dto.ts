@@ -1,6 +1,6 @@
 import { GraphQLUUID } from 'graphql-scalars';
 import { CreateSubmissionDto } from './create-submission.dto';
-import { InputType, Field, PartialType } from '@nestjs/graphql';
+import { InputType, Field, PartialType, ObjectType } from '@nestjs/graphql';
 import { IsUUID } from 'class-validator';
 
 @InputType()

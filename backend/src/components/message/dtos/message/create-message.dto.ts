@@ -36,5 +36,5 @@ export class CreateMessageDto {
   @IsOptional()
   @IsUUID(4)
   @Field(() => GraphQLUUID, { nullable: true })
-  parentMessageId: UUID;
+  parentMessageId?: UUID;
 }

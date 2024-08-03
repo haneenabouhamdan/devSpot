@@ -2,11 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Challenge } from './entities/challenge.entity';
-import {
-  CreateChallengeAnswerDto,
-  CreateChallengeDto,
-  UpdateChallengeDto,
-} from './dto';
+import { CreateChallengeDto, UpdateChallengeDto } from './dto';
 
 @Injectable()
 export class ChallengeService {

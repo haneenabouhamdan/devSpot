@@ -1,5 +1,5 @@
 import { ApolloDriverConfig, ApolloDriver } from '@nestjs/apollo';
-import { Module, OnModuleInit } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
@@ -34,6 +34,7 @@ import {
   NotificationModule,
 } from './components/notifications';
 import { Notification } from './components/notifications/entities';
+import { ReviewModule } from './components/submisisonReview/review.module';
 
 @Module({
   imports: [
@@ -80,6 +81,7 @@ import { Notification } from './components/notifications/entities';
     SubmissionModule,
     FirebaseAdminModule,
     NotificationModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [

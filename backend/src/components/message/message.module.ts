@@ -11,6 +11,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserRepository, UserService } from '../user';
 import { UserFilter } from '../user/filters';
 import { UserTokenRepository } from '../user/repositories';
+import { MessagesGateway } from './Messages.gateway';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { UserTokenRepository } from '../user/repositories';
     UserRepository,
     UserFilter,
     PinnedMessageRepository,
+    MessagesGateway,
   ],
 })
 export class MessageModule {}

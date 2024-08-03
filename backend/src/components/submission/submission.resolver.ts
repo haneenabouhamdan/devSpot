@@ -1,4 +1,11 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { SubmissionService } from './submission.service';
 import {
   CreateSubmissionDto,
@@ -7,6 +14,7 @@ import {
   UpdateSubmissionDto,
 } from './dto';
 import { GraphQLUUID } from 'graphql-scalars';
+import { Submission } from './entities';
 
 @Resolver(() => SubmissionDto)
 export class SubmissionResolver {
@@ -30,7 +38,7 @@ export class SubmissionResolver {
   }
 
   @Query(() => [ReviewDto], { name: 'reviewsBySubmissionId' })
-  findSubmissionReviewById(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
+  findReviewsBySubmissionId(@Args('id', { type: () => GraphQLUUID }) id: UUID) {
     return this.submissionService.findSubmissionReviewById(id);
   }
 
@@ -42,5 +50,13 @@ export class SubmissionResolver {
       updateSubmissionInput.id,
       updateSubmissionInput,
     );
+  }
+
+  @ResolveField(() => [ReviewDto])
+  async reviews(@Parent() submission: Submission): Promise<ReviewDto[]> {
+    const reviews = await this.submissionService.findSubmissionReviewById(
+      submission.id,
+    );
+    return reviews || [];
   }
 }

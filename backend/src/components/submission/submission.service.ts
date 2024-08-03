@@ -2,23 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Submission } from './entities/submission.entity';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
-import {
-  ReviewRepository,
-  SubmissionRepository,
-  SubmissionReviewRepository,
-} from './repositories';
+import { ReviewRepository, SubmissionRepository } from './repositories';
 import { UpdateSubmissionDto } from './dto';
 import { SubmissionStatus } from './enums';
-import { Review } from './entities';
-import { In } from 'typeorm';
+import { Review, SubmissionReview } from './entities';
+import { In, Repository } from 'typeorm';
+import { User, UserRepository } from '../user';
+import { recordsToMapAsObject } from 'src/common/utilities';
 
 @Injectable()
 export class SubmissionService {
   constructor(
     @InjectRepository(Submission)
     private submissionsRepository: SubmissionRepository,
-    private submissionReviewRepository: SubmissionReviewRepository,
-    private reviewRepository: ReviewRepository,
+    @InjectRepository(SubmissionReview)
+    private submissionReviewRepository: Repository<SubmissionReview>,
+    @InjectRepository(Review)
+    private reviewRepository: Repository<Review>,
+    private userRepository: UserRepository,
   ) {}
 
   async create(createSubmissionDto: CreateSubmissionDto): Promise<Submission> {
@@ -40,9 +41,22 @@ export class SubmissionService {
     });
   }
 
-  async findByChallengeId(challengeIds: UUID[]): Promise<Submission[]> {
-    return this.submissionsRepository.find({
+  async findByChallengeId(
+    challengeIds: UUID[],
+  ): Promise<(Submission & { user: User | undefined })[]> {
+    const submissions = await this.submissionsRepository.find({
       where: { challengeId: In(challengeIds) },
+    });
+
+    const usersIds = submissions.map((submission) => submission.createdBy);
+    const users = await this.userRepository.find({
+      where: { id: In(usersIds) },
+    });
+    const usersMap = recordsToMapAsObject(users, 'id');
+
+    return submissions.map((submission) => {
+      const user = usersMap.get(submission.createdBy);
+      return { ...submission, user };
     });
   }
 

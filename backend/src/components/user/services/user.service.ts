@@ -11,6 +11,7 @@ import { User, UserToken } from '../entities';
 import * as argon2 from 'argon2';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserTokenRepository } from '../repositories';
+import { In } from 'typeorm';
 
 @Injectable()
 export class UserService {
@@ -91,6 +92,10 @@ export class UserService {
 
   async getById(id: UUID) {
     return this.userRepository.findOneBy({ id });
+  }
+
+  async getByIds(ids: UUID[]) {
+    return this.userRepository.find({ where: { id: In(ids) } });
   }
 
   async updateById(id: UUID, dto: UpdateUserDto) {

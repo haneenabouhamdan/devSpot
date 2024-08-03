@@ -8,16 +8,10 @@ import {
 } from '@nestjs/graphql';
 import { ChallengeService } from './challenge.service';
 import { Challenge } from './entities/challenge.entity';
-import {
-  ChallengeDto,
-  CreateChallengeAnswerDto,
-  CreateChallengeDto,
-  UpdateChallengeDto,
-} from './dto';
+import { ChallengeDto, CreateChallengeDto, UpdateChallengeDto } from './dto';
 import { GraphQLUUID } from 'graphql-scalars';
-import { SubmissionDto } from '../submission/dto';
-import DataLoader from 'dataloader';
-import { SubmissionService } from '../submission';
+import { ReviewDto, SubmissionDto } from '../submission/dto';
+import { Submission, SubmissionService } from '../submission';
 
 @Resolver(() => ChallengeDto)
 export class ChallengeResolver {

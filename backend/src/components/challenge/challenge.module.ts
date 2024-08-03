@@ -5,21 +5,30 @@ import { Challenge } from './entities';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ChallengeRepository } from './challenge.repository';
 import {
+  Review,
   ReviewRepository,
   Submission,
-  SubmissionReviewRepository,
+  SubmissionReview,
   SubmissionService,
 } from '../submission';
+import { UserRepository, UserService } from '../user';
+import { UserTokenRepository } from '../user/repositories';
+import { UserFilter } from '../user/filters';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Challenge, Submission])],
+  imports: [
+    TypeOrmModule.forFeature([Challenge, Submission, SubmissionReview, Review]),
+  ],
   providers: [
     ChallengeResolver,
     ChallengeService,
     ChallengeRepository,
     SubmissionService,
-    SubmissionReviewRepository,
     ReviewRepository,
+    UserService,
+    UserRepository,
+    UserTokenRepository,
+    UserFilter,
   ],
 })
 export class ChallengeModule {}
