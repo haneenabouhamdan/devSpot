@@ -3,8 +3,8 @@ import {
   CREATE_SUBMISSION,
   CreateSubmissionInput,
   GET_CHALLENGES,
-} from './Queries';
-import { clientOptionType } from '../sharedTypes';
+} from '../Queries';
+import { clientOptionType } from '../../sharedTypes';
 
 interface CreateSubmissionResponse {
   id: string;

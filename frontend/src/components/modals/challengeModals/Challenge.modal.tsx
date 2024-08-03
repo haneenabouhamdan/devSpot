@@ -22,7 +22,11 @@ import { tomorrow as codeStyle } from 'react-syntax-highlighter/dist/esm/styles/
 import DOMPurify from 'dompurify';
 import RichTextEditor from '../../common/RichTextEditor';
 import StarRating from '../../common/StarRating'; // Assuming you have a StarRating component
-import { SubmissionStatus, useCreateSubmission } from '../../../resolvers';
+import {
+  Submission,
+  SubmissionStatus,
+  useCreateSubmission,
+} from '../../../resolvers';
 
 interface ChallengeModalProps {
   isOpen: boolean;
@@ -32,6 +36,7 @@ interface ChallengeModalProps {
   difficultyLevel: string;
   challengeId: string;
   isSolvedByUser: boolean;
+  submissions?: Submission[];
 }
 
 const ChallengeModal: React.FC<ChallengeModalProps> = ({
@@ -42,8 +47,11 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
   difficultyLevel,
   challengeId,
   isSolvedByUser,
+  submissions,
 }) => {
   const [showInput, setShowInput] = useState(!isSolvedByUser);
+  const [error, setError] = useState('');
+  const [submissionText, setSubmissionText] = useState('');
   const sanitizedDescription = DOMPurify.sanitize(description);
 
   const { createSubmission } = useCreateSubmission();
@@ -60,7 +68,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
             style={codeStyle}
             language="javascript"
           >
-            {node.textContent}
+            {node.textContent || ''}
           </SyntaxHighlighter>
         );
       }
@@ -76,16 +84,22 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
     return 5;
   };
 
-  const onSubmit = async () => {
+  const onConfirm = async () => {
     const userId = localStorage.getItem('uId');
     if (!userId) return;
+
+    const formattedSubmission = DOMPurify.sanitize(submissionText);
+    if (!formattedSubmission || !submissionText) {
+      setError('Submission Text is required');
+      return;
+    }
 
     await createSubmission({
       payload: {
         challengeId,
-        submissionText: sanitizedDescription,
+        submissionText: formattedSubmission,
         createdBy: userId,
-        status: SubmissionStatus.CREATED,
+        status: SubmissionStatus.SUBMITTED,
       },
       onCompleted: () => {
         toast({
@@ -97,6 +111,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
         });
         setShowInput(false);
         onClose();
+        setError('');
       },
     });
   };
@@ -123,6 +138,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
                 >
                   {renderHTML(sanitizedDescription)}
                 </Box>
+
                 <Flex mt={4} justifyContent="flex-start">
                   <HStack>
                     <Text fontSize="sm" color="gray.500">
@@ -137,11 +153,15 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
                   Submit your answer
                 </FormLabel>
                 <RichTextEditor
-                  value={''} // Replace with the appropriate value from your state
-                  onChange={value => {
-                    /* Handle the change event */
-                  }}
+                  value={submissionText}
+                  onChange={value => setSubmissionText(value)}
                 />
+
+                {!!error && !submissionText && (
+                  <Text mt={4} color="red">
+                    {error}
+                  </Text>
+                )}
               </GridItem>
             </Grid>
           ) : (
@@ -157,15 +177,20 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
                   <StarRating rating={getRate(difficultyLevel)} />
                 </HStack>
               </Flex>
+              <Text fontSize="small" color="gray.500" fontWeight={'bold'}>
+                ({submissions?.length})submissions
+              </Text>
             </>
           )}
         </ModalBody>
         <ModalFooter>
-          <Flex width="100%" justifyContent="end">
-            <Button colorScheme="green" width="200px" onClick={onSubmit}>
-              Submit
-            </Button>
-          </Flex>
+          {!isSolvedByUser && (
+            <Flex width="100%" justifyContent="end">
+              <Button colorScheme="green" width="200px" onClick={onConfirm}>
+                Submit
+              </Button>
+            </Flex>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

@@ -1,48 +1,16 @@
 import { Flex, HStack, VStack } from '@chakra-ui/react';
 import Sidebar from './SideBar/Sidebar';
-import Header from './Headers/Header';
-import MessageInput from './Messages/MessageInput';
-import MessageList from './Messages/MessagesList';
 import './styles.scss';
 import MainList from './Channels/MainList';
 import { HeaderActions } from './Headers';
 import { useState } from 'react';
 import ChallengesList from './Challenges/Challenges.list';
+import MessageComponent from './Messages/MessageComponent';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('Home');
 
-  const messages = [
-    {
-      id: '1',
-      name: 'Rick',
-      avatarUrl: 'https://bit.ly/sage-adebayo',
-      time: '2:28PM',
-      message:
-        'Hey everyone, just got off the phone with a new client. They want us to handle their accounting.',
-      images: [],
-      isOutgoing: true,
-    },
-    {
-      id: '2',
-      name: 'Ahmad',
-      avatarUrl: 'https://bit.ly/dan-abramov',
-      time: '2:45PM',
-      message:
-        'Great job, Rick! This is the perfect time to expand our client base.',
-      images: [],
-      isOutgoing: false,
-    },
-    {
-      id: '3',
-      name: 'Mo',
-      avatarUrl: 'https://bit.ly/code-beast',
-      time: '2:45PM',
-      message: 'Great job, Rick! ',
-      images: ['https://bit.ly/kent-c-dodds', 'https://bit.ly/kent-c-dodds'],
-      isOutgoing: false,
-    },
-  ];
+  const userId = localStorage.getItem('uId');
 
   return (
     <Flex w="100%" h="100vh" overflow="hidden">
@@ -64,7 +32,11 @@ export default function Home() {
       >
         {/* <MessageInput /> */}
         <Flex width="100%">
-          <ChallengesList />
+          {/* <ChallengesList /> */}
+          <MessageComponent
+            userId={String(userId)}
+            channelId={'42a873a0-2d68-4df0-8227-85e3b17542a8'}
+          />
           {/* <MessageList messages={messages} /> */}
         </Flex>
       </Flex>

@@ -16,14 +16,16 @@ import StarRating from '../../common/StarRating';
 import DOMPurify from 'dompurify';
 import { IoMdCheckmarkCircleOutline } from 'react-icons/io';
 import ChallengeModal from '../../modals/challengeModals/Challenge.modal';
-import { SubmissionStatus } from '../../../resolvers';
+import { Submission } from '../../../resolvers';
+import CreateReviewModal from '../../modals/challengeModals/CreateReview.modal';
 
 interface ChallengeCardProps {
   title: string;
   description: string;
   difficultyLevel: string;
   id: string;
-  submissions: { createdBy: string; status: SubmissionStatus }[];
+  createdBy: string;
+  submissions: Submission[];
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({
@@ -32,8 +34,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   difficultyLevel,
   id,
   submissions,
+  createdBy,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   const getRate = (level: string): number => {
     if (level == 'easy') return 1;
@@ -57,6 +61,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     });
   };
 
+  const isCreatedByAuthUser = createdBy === userId;
   const isSolvedByUser = submissions.some(sub => sub.createdBy === userId);
 
   return (
@@ -96,14 +101,17 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
               <StarRating rating={getRate(difficultyLevel)} />
             </HStack>
           </CardBody>
-
           <CardFooter pt={0}>
             <Flex width="100%" justifyContent="space-between" mb={0} gap={2}>
-              <HStack justifyContent={'center'}>
+              <Button
+                justifyContent={'center'}
+                isDisabled={!submissions || submissions.length === 0}
+                onClick={() => setIsReviewModalOpen(!isReviewModalOpen)}
+              >
                 <Text fontSize="small" color="gray.500" fontWeight={'bold'}>
-                  ({submissions.length})submissions
+                  ({submissions.length}) submissions
                 </Text>
-              </HStack>
+              </Button>
               {!isSolvedByUser ? (
                 <Button
                   colorScheme="green"
@@ -113,10 +121,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
                   Solve
                 </Button>
               ) : (
-                <Button aria-label={'solved'} p={1}>
-                  <IoMdCheckmarkCircleOutline />
-                  <Text pl={1}>Solved</Text>
-                </Button>
+                <Tooltip label="Solved" color={'gray.300'}>
+                  <IconButton
+                    icon={<IoMdCheckmarkCircleOutline size={'lg'} />}
+                    aria-label={'solved'}
+                    p={1}
+                  />
+                </Tooltip>
               )}
             </Flex>
           </CardFooter>
@@ -129,7 +140,14 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
         description={description}
         challengeId={id}
         isSolvedByUser={isSolvedByUser}
+        submissions={submissions}
         difficultyLevel={difficultyLevel}
+      />
+      <CreateReviewModal
+        isOpen={isReviewModalOpen}
+        isCreatedByAuthUser={isCreatedByAuthUser}
+        onClose={() => setIsReviewModalOpen(false)}
+        submissions={submissions}
       />
     </>
   );

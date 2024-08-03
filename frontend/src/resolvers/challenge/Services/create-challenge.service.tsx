@@ -3,8 +3,8 @@ import {
   CREATE_CHALLENGE,
   CreateChallengeInput,
   GET_CHALLENGES,
-} from './Queries';
-import { clientOptionType } from '../sharedTypes';
+} from '../Queries';
+import { clientOptionType } from '../../sharedTypes';
 
 interface CreateChallengeResponse {
   id: string;

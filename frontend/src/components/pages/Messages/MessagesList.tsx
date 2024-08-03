@@ -4,13 +4,19 @@ import InMessageCard from './InMessage';
 import OutMessageCard from './OutMessage';
 
 interface Message {
-  id: string;
-  name: string;
-  avatarUrl: string;
-  time: string;
-  message: string;
-  images?: string[];
-  isOutgoing?: boolean;
+  text: string;
+  attachments?: string[];
+  senderId: string;
+  channelId: string;
+  createdAt: string;
+  // messageReactions: {
+  //   emoji: string;
+  // }[];
+  // sender: {
+  //   profilePicture: string;
+  //   phoneNumber: string;
+  //   username: string;
+  // };
 }
 
 interface MessageListProps {
@@ -24,25 +30,36 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       spacing={10}
       align="start"
       overflowY="scroll"
-      maxH="70vh"
       className="message-list"
     >
-      {messages.map(msg => (
-        <Box
-          key={msg.id}
-          w="100%"
-          gap={2}
-          mt={10}
-          display="flex"
-          justifyContent={msg.isOutgoing ? 'flex-end' : 'flex-start'}
-        >
-          {msg.isOutgoing ? (
-            <OutMessageCard {...msg} />
-          ) : (
-            <InMessageCard {...msg} />
-          )}
-        </Box>
-      ))}
+      {messages.map((msg, index) => {
+        const isOutgoing = msg.senderId === localStorage.getItem('uId');
+        return (
+          <Box
+            key={new Date().toDateString()}
+            w="100%"
+            mt={index === 0 ? 10 : 0}
+            display="flex"
+            justifyContent={isOutgoing ? 'flex-end' : 'flex-start'}
+          >
+            {isOutgoing ? (
+              <OutMessageCard
+                name={'haneen'}
+                avatarUrl={''}
+                time={msg.createdAt}
+                message={msg.text}
+              />
+            ) : (
+              <InMessageCard
+                name={'haneen'}
+                avatarUrl={''}
+                time={msg.createdAt}
+                message={msg.text}
+              />
+            )}
+          </Box>
+        );
+      })}
     </VStack>
   );
 };

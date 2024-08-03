@@ -38,9 +38,9 @@ export const CustomModal: React.FC<CustomModalProps> = ({
   title,
   size = 'md',
   handleConfirm,
-  handleCancel,
   body,
   loading,
+  footer,
 }) => {
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered size={size}>
@@ -51,22 +51,24 @@ export const CustomModal: React.FC<CustomModalProps> = ({
         </ModalHeader>
         <ModalCloseButton color={'white'} />
         <ModalBody>{body}</ModalBody>
-        <ModalFooter>
-          <Button
-            bgColor="orange.500"
-            isLoading={loading}
-            _hover={{ backgroundColor: '#f7ba8a' }}
-            color="white"
-            loadingText="Saving..."
-            mr={3}
-            onClick={handleConfirm}
-          >
-            Save
-          </Button>
-          <Button variant="ghost" onClick={handleCancel}>
-            Cancel
-          </Button>
-        </ModalFooter>
+        {footer ?? (
+          <ModalFooter>
+            <Button
+              bgColor="orange.500"
+              isLoading={loading}
+              _hover={{ backgroundColor: '#f7ba8a' }}
+              color="white"
+              loadingText="Saving..."
+              mr={3}
+              onClick={handleConfirm}
+            >
+              Save
+            </Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
+          </ModalFooter>
+        )}
       </ModalContent>
     </Modal>
   );

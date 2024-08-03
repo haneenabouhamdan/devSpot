@@ -1,3 +1,5 @@
+import { AuthUser } from '../../auth';
+
 export interface CreateChallengeInput {
   description: string;
   difficultyLevel: string;
@@ -15,10 +17,19 @@ export interface Challenge {
   status: string;
   createdBy: string;
   difficultyLevel: string;
-  submissions?: {
-    status: SubmissionStatus;
-    createdBy: string;
-  }[];
+  submissions?: Submission[];
+}
+
+export interface Submission {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+  challengeId: string;
+  submissionText: string;
+  status: SubmissionStatus;
+  user?: AuthUser;
+  reviews?: Review[];
 }
 
 export interface CreateSubmissionInput {
@@ -28,7 +39,25 @@ export interface CreateSubmissionInput {
   submissionText: string;
 }
 
+export interface Review {
+  id: string;
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: string;
+  comment: string;
+  score: number;
+}
+export interface CreateReviewInput {
+  score: number;
+  comment: string;
+  createdBy: string;
+  submissionId: string;
+}
+
 export enum SubmissionStatus {
-  CLOSED = 'CLOSED',
-  CREATED = 'CREATED',
+  PENDING = 'PENDING',
+  SUBMITTED = 'SUBMITTED',
+  UNDER_REVIEW = 'UNDER_REVIEW',
+  ACCEPTED = 'ACCEPTED',
+  REJECTED = 'REJECTED',
 }

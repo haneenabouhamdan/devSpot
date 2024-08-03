@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Challenge, GET_CHALLENGES } from './Queries';
+import { Challenge, GET_CHALLENGES } from '../Queries';
 
 interface ChallengesData {
   challenges: Challenge[];

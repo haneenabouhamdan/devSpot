@@ -8,13 +8,14 @@ import {
   Image,
   useMediaQuery,
 } from '@chakra-ui/react';
+import { formatDate } from '../../../helpers';
 
 interface MessageCardProps {
   name: string;
   avatarUrl: string;
   time: string;
   message: string;
-  images?: string[];
+  attachments?: string[];
 }
 
 const OutMessageCard: React.FC<MessageCardProps> = ({
@@ -22,10 +23,21 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
   avatarUrl,
   time,
   message,
-  images,
+  attachments,
 }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
-
+  const renderHTML = (html: string) => {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    return Array.from(template.content.childNodes).map((node, index) => {
+      if (node.nodeName === 'PRE') {
+        return <></>;
+      }
+      return (
+        <Box key={index} dangerouslySetInnerHTML={{ __html: node.outerHTML }} />
+      );
+    });
+  };
   return (
     <HStack
       maxW={isMobile ? '100%' : '42%'}
@@ -44,7 +56,7 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
         pt="10px"
         alignSelf="start"
       >
-        {time}
+        {formatDate(new Date(time), 'HH:mm')}
       </Text>
       <Box
         pr={isMobile ? '0' : '40px'}
@@ -59,11 +71,11 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
             {name}
           </Text>
           <Text pt={0} pb={2} m={0} fontSize={'14px'}>
-            {message}
+            {renderHTML(message)}
           </Text>
-          {images && (
+          {attachments && (
             <HStack spacing={2} pb={2}>
-              {images.map((imgUrl, index) => (
+              {attachments.map((imgUrl, index) => (
                 <Image
                   key={index}
                   src={imgUrl}

@@ -21,8 +21,28 @@ export const GET_CHALLENGES = gql`
       createdBy
       difficultyLevel
       submissions {
-        status
+        id
+        createdAt
+        updatedAt
         createdBy
+        challengeId
+        submissionText
+        status
+        reviews {
+          id
+          createdAt
+          updatedAt
+          deletedAt
+          createdBy
+          comment
+          score
+        }
+        user {
+          profilePicture
+          username
+          email
+          phoneNumber
+        }
       }
     }
   }
@@ -38,6 +58,20 @@ export const CREATE_SUBMISSION = gql`
       createdBy
       challengeId
       status
+    }
+  }
+`;
+
+export const CREATE_REVIEW = gql`
+  mutation CreateReview($createReviewInput: CreateReviewInput!) {
+    createReview(createReviewInput: $createReviewInput) {
+      id
+      createdAt
+      updatedAt
+      deletedAt
+      createdBy
+      comment
+      score
     }
   }
 `;

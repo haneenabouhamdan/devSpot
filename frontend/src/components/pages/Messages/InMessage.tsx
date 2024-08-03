@@ -8,6 +8,7 @@ import {
   Image,
   useMediaQuery,
 } from '@chakra-ui/react';
+import { formatDate } from '../../../helpers';
 
 interface InMessageCardProps {
   name: string;
@@ -26,9 +27,21 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
 }) => {
   const [isMobile] = useMediaQuery('(max-width: 768px)');
 
+  const renderHTML = (html: string) => {
+    const template = document.createElement('template');
+    template.innerHTML = html.trim();
+    return Array.from(template.content.childNodes).map((node, index) => {
+      if (node.nodeName === 'PRE') {
+        return <></>;
+      }
+      return (
+        <Box key={index} dangerouslySetInnerHTML={{ __html: node.outerHTML }} />
+      );
+    });
+  };
+
   return (
     <HStack
-      maxW={isMobile ? '100%' : '42%'}
       alignItems="start"
       spacing={1}
       ml={isMobile ? '0' : '5%'}
@@ -50,13 +63,13 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
         transform={isMobile ? 'translateX(-50%)' : 'none'}
         border="2px solid white"
       />
-      <Box pl={'1vw'} pt={0} w="100%" pr="10px">
+      <Box pl={'1vw'} pt={0} w="100%" pr="10px" minW={'200px'}>
         <VStack alignItems="start" spacing={2} w="100%" pl={4}>
           <Text fontWeight="bold" pt={2} m={0}>
             {name}
           </Text>
           <Text pt={0} pb={2} m={0} fontSize={'14px'}>
-            {message}
+            {renderHTML(message)}
           </Text>
           {images && (
             <HStack spacing={2} pb={2}>
@@ -77,10 +90,10 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
         fontSize={'small'}
         className="gray"
         position="absolute"
-        right={isMobile ? '0' : '-60px'}
+        right={isMobile ? '0' : '-50px'}
         top="10px"
       >
-        {time}
+        {formatDate(new Date(time), 'HH:mm')}
       </Text>
     </HStack>
   );
