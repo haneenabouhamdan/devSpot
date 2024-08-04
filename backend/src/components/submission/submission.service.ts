@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Submission } from './entities/submission.entity';
 import { CreateSubmissionDto } from './dto/create-submission.dto';
-import { ReviewRepository, SubmissionRepository } from './repositories';
+import { SubmissionRepository } from './repositories';
 import { UpdateSubmissionDto } from './dto';
 import { SubmissionStatus } from './enums';
 import { Review, SubmissionReview } from './entities';
@@ -78,9 +78,11 @@ export class SubmissionService {
   }
 
   async findSubmissionReviewById(id: UUID): Promise<Review[]> {
-    const submissionReview = await this.submissionReviewRepository.findOne({
+    const submissionReview = await this.submissionReviewRepository.find({
       where: { submissionId: id },
     });
-    return this.reviewRepository.findBy({ id: submissionReview?.submissionId });
+    return this.reviewRepository.find({
+      where: { id: In(submissionReview.map((sr) => sr.reviewId)) },
+    });
   }
 }

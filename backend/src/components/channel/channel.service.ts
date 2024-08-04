@@ -78,7 +78,7 @@ export class ChannelService {
     const user = await this.userService.findOneById(createdBy);
     const allUsers = await this.userService.getUsersByEmails(users);
 
-    if (!user || !allUsers) {
+    if (!user || !allUsers?.length) {
       throw new BadRequestException('User not found');
     }
 
@@ -104,7 +104,7 @@ export class ChannelService {
     });
 
     await this.userChannelsRepository.save({
-      userId: allUsers[0].id,
+      userId: allUsers[0]?.id,
       channelId: newCreatedChannel.id,
       status: UserChannelSubscriptionStatus.ACTIVE,
       roleId: adminRole?.id,
@@ -139,9 +139,10 @@ export class ChannelService {
       dms.map(async (channel) => {
         const members = await this.getDmChannelMembers(channel.id);
         const receiver = members.filter((member) => member.id !== userId);
+
         return {
           ...channel,
-          name: receiver[0].username,
+          name: receiver[0]?.username ?? 'Dm',
         } as ChannelDto;
       }),
     );

@@ -8,12 +8,13 @@ export class ReviewDto extends EntityDTO {
   @Field(() => GraphQLUUID, { nullable: false })
   createdBy: UUID;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   comment: string;
 
-  @Field({ nullable: false })
+  @Field(() => Number, { nullable: false })
   score: number;
 }
+
 @InputType()
 export class CreateReviewInput {
   @Field(() => GraphQLUUID)

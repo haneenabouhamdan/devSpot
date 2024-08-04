@@ -24,6 +24,6 @@ export class SubmissionDto extends EntityDTO {
   @Field(() => UserDto)
   user?: UserDto;
 
-  @Field(() => [ReviewDto])
+  @Field(() => [ReviewDto], { nullable: true })
   reviews?: ReviewDto[];
 }

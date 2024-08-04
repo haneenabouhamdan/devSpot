@@ -10,8 +10,8 @@ import { ChallengeService } from './challenge.service';
 import { Challenge } from './entities/challenge.entity';
 import { ChallengeDto, CreateChallengeDto, UpdateChallengeDto } from './dto';
 import { GraphQLUUID } from 'graphql-scalars';
-import { ReviewDto, SubmissionDto } from '../submission/dto';
-import { Submission, SubmissionService } from '../submission';
+import { SubmissionDto } from '../submission/dto';
+import { SubmissionService } from '../submission';
 
 @Resolver(() => ChallengeDto)
 export class ChallengeResolver {
@@ -46,12 +46,12 @@ export class ChallengeResolver {
       updateChallengeInput,
     );
   }
-
   @ResolveField(() => [SubmissionDto])
   async submissions(@Parent() challenge: Challenge): Promise<SubmissionDto[]> {
     const submissions = await this.submissionService.findByChallengeId([
       challenge.id,
     ]);
+
     return submissions || [];
   }
 }

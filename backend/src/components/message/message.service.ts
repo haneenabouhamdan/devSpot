@@ -37,7 +37,6 @@ export class MessageService {
     const messageChannels = (await this.messageRepository.find({
       where: {
         channelId: In(channelIds),
-        status: MessageStatus.DELIVERED,
       },
       take: filters?.limit || 100,
       relations: ['messageReactions'],

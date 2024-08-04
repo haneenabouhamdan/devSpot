@@ -4,6 +4,7 @@ import { Review } from './review.entity';
 import { In, Repository } from 'typeorm';
 import { CreateReviewInput } from './review.dto';
 import { Submission, SubmissionReview } from '../submission';
+import { SubmissionStatus } from '../submission/enums';
 
 @Injectable()
 export class ReviewService {
@@ -21,21 +22,24 @@ export class ReviewService {
   async createReview(createReviewInput: CreateReviewInput): Promise<Review> {
     const review = await this.reviewRepository.save(createReviewInput);
 
-    const a = await this.submissionReviewRepository.save({
+    await this.submissionReviewRepository.save({
       reviewId: review.id,
       submissionId: createReviewInput.submissionId,
+    });
+    const status =
+      review.score > 3 ? SubmissionStatus.ACCEPTED : SubmissionStatus.REJECTED;
+
+    await this.submissionRepository.update(createReviewInput.submissionId, {
+      status,
     });
 
     return review;
   }
 
-  async getReviewsByChallengeId(challengeId: UUID) {
-    const submissions = await this.submissionRepository.find({
-      where: { challengeId },
-    });
+  async getReviewsBySubmissionId(submissionId: UUID) {
     const submissionReviews = await this.submissionReviewRepository.find({
       where: {
-        submissionId: In(submissions.map((submission) => submission.id)),
+        submissionId,
       },
     });
     return this.reviewRepository.find({
