@@ -170,9 +170,11 @@ export class ChannelService {
       (userChannel) => userChannel.channelId,
     );
 
-    const subscribedChannels = await this.channelRepository.find({
-      where: { id: In(channelsIds), isPrivate: true, isGroupChat: true },
-    });
+    const subscribedChannels = channelsIds
+      ? await this.channelRepository.find({
+          where: { id: In(channelsIds), isPrivate: false },
+        })
+      : [];
 
     return [...subscribedChannels, ...publicChannels];
   }
