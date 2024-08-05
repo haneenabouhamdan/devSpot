@@ -21,6 +21,6 @@
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/components/gateway/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

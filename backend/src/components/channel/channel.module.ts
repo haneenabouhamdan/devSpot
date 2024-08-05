@@ -8,7 +8,6 @@ import { ChannelBatches } from './batches';
 import { UserRepository, UserModule } from '../user';
 import { UserFilter } from '../user/filters';
 import { MessageRepository, MessageService } from '../message';
-import { UserTokenRepository } from '../user/repositories';
 import { NotificationService } from '../notifications/notification.service';
 import { NotificationRepository } from '../notifications/notification.repository';
 
@@ -27,7 +26,6 @@ import { NotificationRepository } from '../notifications/notification.repository
     MessageService,
     MessageRepository,
     UserFilter,
-    UserTokenRepository,
     NotificationRepository,
     NotificationService,
   ],

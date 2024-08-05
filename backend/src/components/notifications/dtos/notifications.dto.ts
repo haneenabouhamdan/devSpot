@@ -2,6 +2,7 @@ import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { IsUUID, IsString, IsOptional, IsArray } from 'class-validator';
 import { GraphQLUUID } from 'graphql-scalars';
 import { NotificationStatus } from '../enums';
+import { EntityDTO } from 'src/common/dtos';
 
 @InputType()
 export class CreateNotificationDto {
@@ -51,10 +52,7 @@ export class NotificationsFilters {
 }
 
 @ObjectType('Notification')
-export class NotificationDto {
-  @Field()
-  id: string;
-
+export class NotificationDto extends EntityDTO {
   @Field({ nullable: true })
   userId: string;
 
@@ -70,7 +68,7 @@ export class NotificationDto {
   @Field({ nullable: true })
   channelId: string;
 
-  @Field((type) => NotificationStatus)
+  @Field(() => NotificationStatus)
   status: NotificationStatus;
 }
 

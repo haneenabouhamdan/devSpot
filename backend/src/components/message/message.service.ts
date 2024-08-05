@@ -7,7 +7,6 @@ import { FilterArgs } from 'src/common/dtos';
 import { WithRelation } from 'src/common/types';
 import { In } from 'typeorm';
 import { Message } from './entities';
-import { MessageStatus } from './enums';
 import { UserService } from '../user';
 
 @Injectable()

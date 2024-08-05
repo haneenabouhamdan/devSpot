@@ -4,7 +4,7 @@ import {
   Injectable,
   forwardRef,
 } from '@nestjs/common';
-import { UserDto, UserService } from '../user';
+import { UserService } from '../user';
 import {
   ChannelDto,
   CreateChannelDto,
@@ -17,21 +17,16 @@ import { ChannelRepository, UserChannelsRepository } from './repositories';
 import { UserChannelSubscriptionStatus } from './enums';
 import { DefaultRoles } from '../user/enums';
 import { RolesPermissionsService } from '../user/services';
-import { UserTokenRepository } from '../user/repositories';
 import { In } from 'typeorm';
-import { NotificationService } from '../notifications/notification.service';
-import { arrayLens, recordsToMapAsArray } from 'src/common/utilities';
 
 @Injectable()
 export class ChannelService {
   constructor(
     private readonly channelRepository: ChannelRepository,
-    private readonly userTokenRepository: UserTokenRepository,
     @Inject(forwardRef(() => UserService))
     private readonly userService: UserService,
     private userChannelsRepository: UserChannelsRepository,
     private rolePermissionsService: RolesPermissionsService,
-    private notificationService: NotificationService,
   ) {}
 
   async create(createChannelDto: CreateChannelDto): Promise<ChannelDto> {
@@ -185,34 +180,21 @@ export class ChannelService {
   async inviteUsers(
     inviteUserDto: InviteUserDto,
   ): Promise<UserChannelDto[] | undefined> {
-    const { users, channelId, inviter, channelName } = inviteUserDto;
+    const { users, inviter, channelName } = inviteUserDto;
     const allUsers = await this.userService.getUsersByEmails(users);
 
     if (!allUsers) return;
-
-    const newMembers = allUsers.filter(
-      async (user) => !(await this.isChannelMember(channelId, user.id)),
-    );
 
     const role = await this.rolePermissionsService.fetchDefaultMemberRole(
       DefaultRoles.MEMBER,
     );
 
-    const newSubscriptions = newMembers.map((user) => ({
+    const newSubscriptions = allUsers.map((user) => ({
       userId: user!.id,
       channelId: inviteUserDto.channelId,
       status: UserChannelSubscriptionStatus.INACTIVE,
       roleId: role?.id,
     }));
-
-    const userIds = arrayLens(newMembers, 'id');
-
-    await this.notifyUsers(
-      userIds,
-      inviteUserDto.channelId,
-      inviter.username,
-      channelName,
-    );
 
     return this.userChannelsRepository.save(newSubscriptions);
   }
@@ -249,28 +231,6 @@ export class ChannelService {
     return members.includes(userId);
   }
 
-  async notifyUsers(
-    usersIds: string[],
-    channelId: UUID,
-    inviterName: string,
-    channelName: string,
-  ) {
-    const userTokens = await this.userTokenRepository.find({
-      where: { userId: In(usersIds) },
-    });
-
-    await Promise.all(
-      userTokens.map((userData) => {
-        return this.notificationService.sendFbNotification(userData.token, {
-          text: `Invitation to join ${channelName}`,
-          title: `${inviterName} has invited you to join the channel ${channelName}`,
-          channelId,
-          userId: userData.userId,
-        });
-      }),
-    );
-  }
-
   async acceptInvitation(userId: UUID, channelId: UUID) {
     const invitation = await this.userChannelsRepository.findOne({
       where: { userId, channelId },
@@ -291,5 +251,15 @@ export class ChannelService {
     return await this.userChannelsRepository.update(invitation.id, {
       status: UserChannelSubscriptionStatus.BANNED,
     });
+  }
+
+  async getMembers(channelId: UUID) {
+    const userChannels = await this.userChannelsRepository.find({
+      where: { channelId },
+    });
+    const channel = await this.findOneById(channelId);
+    return userChannels
+      .filter((user) => user.userId !== channel?.createdBy)
+      .map((userChannel) => userChannel.userId);
   }
 }
