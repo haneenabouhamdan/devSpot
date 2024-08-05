@@ -19,7 +19,7 @@ import { AuthUser, useSignUpMutation } from '../../../resolvers';
 import { useAuthContext } from '../../../contexts';
 
 const SignUp = () => {
-  const { signUp, loading, ...signUpResult } = useSignUpMutation();
+  const { signUp, loading, data: signUpResult } = useSignUpMutation(); // Ensure data is extracted from the mutation hook
   const { onUserLogin } = useAuthContext();
 
   const {
@@ -32,19 +32,16 @@ const SignUp = () => {
   });
 
   async function onSubmit(values: SignUpPayload) {
-    const phoneNumber = getValues('phoneNumber');
-    const email = getValues('email');
-    const username = getValues('username');
-    const password = getValues('password');
+    const { phoneNumber, email, username, password } = values;
     try {
-      await signUp({ phoneNumber, email, username, password }).then(() => {
-        if (signUpResult.token) {
-          onUserLogin({
-            user: (signUpResult.user ?? signUpResult.user) as AuthUser,
-            token: String(signUpResult.token ?? signUpResult.token),
-          });
-        }
-      });
+      const result = await signUp({ phoneNumber, email, username, password });
+      if (result.data?.signUp) {
+        const { token, user } = result.data.signUp;
+        onUserLogin({
+          user: user as AuthUser,
+          token: String(token),
+        });
+      }
     } catch (error) {
       console.error('Sign Up error:', error);
     }
