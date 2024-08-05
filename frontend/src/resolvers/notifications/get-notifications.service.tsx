@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { NotificationStatus } from './enums';
-import { FETCH_NOTIFICATIONS, NotificationDto } from './Queries';
+import { FETCH_NOTIFICATIONS, NotificationsDto } from './Queries';
 
 interface NotificationsFilters {
   userId?: string;
@@ -8,7 +8,7 @@ interface NotificationsFilters {
 }
 
 export const useFetchNotifications = (filters: NotificationsFilters) => {
-  const { data, loading, error, refetch } = useQuery<NotificationDto>(
+  const { data, loading, error, refetch } = useQuery<NotificationsDto>(
     FETCH_NOTIFICATIONS,
     {
       variables: { filters },

@@ -32,13 +32,11 @@ export function useCreateChannelMutation() {
   }: CreateChannelProps) {
     await mutate({
       variables: { createChannelDto: payload },
-      onCompleted,
-      refetchQueries: [
-        {
-          query: GET_USER_CHANNELS,
-          variables: { userChannelsId: payload.createdBy },
-        },
-      ],
+      onCompleted: (data: any) => {
+        if (data) {
+          onCompleted(data);
+        }
+      },
     });
   }
 

@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverArrow,
   PopoverCloseButton,
   PopoverBody,
   List,
@@ -12,15 +11,107 @@ import {
   Image,
   Box,
   Text,
+  Flex,
   Tooltip,
+  Button,
 } from '@chakra-ui/react';
 import { BsBell } from 'react-icons/bs';
 import './styles.scss';
 import { AllDone } from '../../common';
-import { useNotifications } from '../../../providers/NotificationProvider';
+import WebSocketService from '../../../resolvers/websoket/websocket.service';
+import {
+  Channel,
+  NotificationDto,
+  NotificationStatus,
+  useAcceptInvitation,
+  useFetchNotifications,
+  useIgnoreInvitation,
+  useUpdateNotificationStatusMutation,
+  useUserChannels,
+} from '../../../resolvers';
 
-const NotificationPopover: React.FC = () => {
-  const { notifications } = useNotifications();
+interface Props {
+  handleNotificationClick: (
+    channelId: string,
+    channelName?: string,
+    channelDesc?: string
+  ) => void;
+}
+
+const NotificationPopover: React.FC<Props> = (props: Props) => {
+  const [allNotifications, setNotifications] = useState<NotificationDto[]>([]);
+  const [newNotifications, setNewNotifications] = useState(false);
+  const [channelNames, setChannelsNames] = useState([]);
+  const userId = localStorage.getItem('uId');
+  const { data } = useUserChannels(String(userId));
+  const { acceptInvitation } = useAcceptInvitation();
+  const { ignoreInvitation } = useIgnoreInvitation();
+
+  const { notifications, refetch } = useFetchNotifications({
+    statuses: [NotificationStatus.PENDING],
+    userId: String(userId),
+  });
+
+  const { updateStatus } = useUpdateNotificationStatusMutation();
+
+  useEffect(() => {
+    if (data?.length) {
+      const channelsNames = data.map((ch: any) => {
+        return { name: ch.name, id: ch.id, description: ch.description };
+      });
+      setChannelsNames(channelsNames);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (notifications)
+      setNotifications(prevNot => [...prevNot, ...notifications]);
+  }, [notifications]);
+
+  useEffect(() => {
+    const handleConnect = () => {
+      console.log('Connected to WebSocket server');
+    };
+
+    const handleDisconnect = () => {
+      console.log('Disconnected from WebSocket server');
+    };
+
+    const handleNotifications = (notification: NotificationDto) => {
+      setNewNotifications(true);
+      setNotifications(prevNot => [...prevNot, notification]);
+    };
+
+    WebSocketService.onConnect(handleConnect);
+    WebSocketService.onDisconnect(handleDisconnect);
+    WebSocketService.onNotification(handleNotifications);
+
+    return () => {
+      WebSocketService.socket.off('connect', handleConnect);
+      WebSocketService.socket.off('disconnect', handleDisconnect);
+      WebSocketService.socket.off('notification', handleNotifications);
+    };
+  }, []);
+
+  const clickNotification = (channel: Channel) => {
+    props.handleNotificationClick(
+      channel.id,
+      channel.name,
+      channel.description
+    );
+  };
+
+  const handleAccept = (channelId: string, id: string) => {
+    acceptInvitation({ channelId, userId: String(userId) });
+    updateStatus(id, NotificationStatus.READ);
+    refetch();
+  };
+
+  const handleIgnore = (channelId: string, id: string) => {
+    ignoreInvitation({ channelId, userId: String(userId) });
+    updateStatus(id, NotificationStatus.DISMISSED);
+    refetch();
+  };
 
   return (
     <Popover placement="right">
@@ -43,7 +134,7 @@ const NotificationPopover: React.FC = () => {
               aria-label={'notifications'}
             />
           </Tooltip>
-          {/* {hasPendingNotifications && (
+          {newNotifications && (
             <Box
               position="absolute"
               top="0"
@@ -54,14 +145,19 @@ const NotificationPopover: React.FC = () => {
               borderRadius="50%"
               border="2px solid orange"
             />
-          )} */}
+          )}
         </Box>
       </PopoverTrigger>
-      <PopoverContent backgroundColor={'white'} zIndex={1000} maxW={'350px'}>
-        <PopoverArrow />
+      <PopoverContent
+        backgroundColor={'white'}
+        zIndex={2000}
+        maxW={'300px'}
+        maxH={'350px'}
+        overflowY={'scroll'}
+      >
         <PopoverCloseButton />
         <PopoverBody>
-          {!notifications.length ? (
+          {!allNotifications.length ? (
             <Box
               display="flex"
               alignItems="center"
@@ -75,17 +171,59 @@ const NotificationPopover: React.FC = () => {
               </Text>
             </Box>
           ) : (
-            <List spacing={4} mt={4}>
-              {notifications.map((notification, index) => (
-                <ListItem key={index} height="80px" borderBottomWidth={'1px'}>
-                  <Box>
-                    <Text fontWeight="bold">
-                      {notification.notification?.title}
-                    </Text>
-                    <Text>{notification.notification?.body}</Text>
-                  </Box>
-                </ListItem>
-              ))}
+            <List spacing={4} mt={4} zIndex={2000}>
+              {allNotifications
+                .sort((n, m) => (n.createdAt > m.createdAt ? -1 : 1))
+                .map((notification: NotificationDto, index) => {
+                  const channel = (data || []).filter(
+                    (channel: Channel) => channel.id === notification.channelId
+                  );
+                  return (
+                    <ListItem
+                      key={index}
+                      height="80px"
+                      borderBottomWidth={'1px'}
+                      onClick={() => clickNotification(channel[0])}
+                    >
+                      <Box>
+                        <Text fontWeight="bold" fontSize={'sm'}>
+                          {notification.title}
+                        </Text>
+                        <Text color="gray" fontSize={'sm'}>
+                          {notification.text}
+                        </Text>
+                      </Box>
+                      {notification.title.includes('Invitation') && (
+                        <Flex mt={2} justifyContent="right" gap={4}>
+                          <Button
+                            size="xs"
+                            colorScheme="green"
+                            onClick={() =>
+                              handleAccept(
+                                notification.channelId,
+                                String(notification.id)
+                              )
+                            }
+                          >
+                            Accept
+                          </Button>
+                          <Button
+                            size="xs"
+                            colorScheme="red"
+                            onClick={() =>
+                              handleIgnore(
+                                notification.channelId,
+                                String(notification.id)
+                              )
+                            }
+                          >
+                            Ignore
+                          </Button>
+                        </Flex>
+                      )}
+                    </ListItem>
+                  );
+                })}
             </List>
           )}
         </PopoverBody>

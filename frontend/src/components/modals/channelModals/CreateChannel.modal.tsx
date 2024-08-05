@@ -8,12 +8,15 @@ import {
 } from '../../common';
 import {
   CreateChannelInput,
+  NotificationDto,
+  NotificationStatus,
   useCreateChannelMutation,
 } from '../../../resolvers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { channelSchema } from '../../validations';
 import { InviteUsersForm } from './InviteUser.form';
+import WebSocketService from '../../../resolvers/websoket/websocket.service';
 
 interface CreateChannelModalProps {
   isOpen: boolean;
@@ -31,6 +34,7 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<CreateChannelInput>({
     mode: 'all',
@@ -50,6 +54,16 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
     setValue('users', updatedEmails);
   };
 
+  const handleSendNotifications = (notification: NotificationDto) => {
+    const message: NotificationDto = {
+      ...notification,
+      messageId: null,
+      createdAt: new Date().toISOString(),
+    };
+
+    WebSocketService.sendNotification(message);
+  };
+
   const onConfirm = useCallback(
     (data: CreateChannelInput) => {
       if (!userId) return;
@@ -58,10 +72,11 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
         ...data,
         createdBy: userId,
       };
+
       try {
         createChannel({
           payload,
-          onCompleted: () => {
+          onCompleted: data => {
             toast({
               description: 'Channel created successfully',
               status: 'success',
@@ -69,7 +84,19 @@ export const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
               position: 'top-right',
               isClosable: true,
             });
+
+            handleSendNotifications({
+              text: `You have a new channel invitation`,
+              title: `New Invitation`,
+              channelId: data.createChannel.id,
+              userId,
+              messageId: null,
+              createdAt: new Date().toISOString(),
+              status: NotificationStatus.PENDING,
+            });
+
             onClose();
+            reset();
           },
         });
       } catch (error) {

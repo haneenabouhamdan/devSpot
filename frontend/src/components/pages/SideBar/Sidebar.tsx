@@ -7,14 +7,9 @@ import {
   Button,
   Stack,
   VStack,
-  IconButton,
 } from '@chakra-ui/react';
 import { FiHome } from 'react-icons/fi';
-import {
-  IoChatbubblesOutline,
-  IoBookmarkOutline,
-  IoRocketOutline,
-} from 'react-icons/io5';
+import { IoChatbubblesOutline, IoRocketOutline } from 'react-icons/io5';
 import NavItem from './NavItem';
 import './styles.scss';
 import { UserProfileModal } from '../../modals';
@@ -26,9 +21,14 @@ import { VscSignOut } from 'react-icons/vsc';
 interface Props {
   setCurrentView: (input: string) => void;
   currentView: string;
+  handleNotificationClick: (
+    channelId: string,
+    channelName?: string,
+    channelDecs?: string
+  ) => void;
 }
 const Sidebar = (props: Props) => {
-  const { currentView, setCurrentView } = props;
+  const { currentView, setCurrentView, handleNotificationClick } = props;
   const [navSize, setNavSize] = useState<'small' | 'large'>('small');
   const { getCurrentUser, user } = useGetProfileQuery();
   const { onUserLogout } = useAuthContext();
@@ -87,8 +87,10 @@ const Sidebar = (props: Props) => {
             isActive={currentView === 'Challenges'}
             onClick={() => setCurrentView('Challenges')}
           />
-          <Stack mt={2} mb={2}>
-            <NotificationPopover />
+          <Stack mt={2} mb={2} zIndex={'2000'}>
+            <NotificationPopover
+              handleNotificationClick={handleNotificationClick}
+            />
           </Stack>
         </VStack>
       </Flex>

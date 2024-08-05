@@ -1,5 +1,6 @@
 import { io, Socket } from 'socket.io-client';
 import { Message } from '../channel';
+import { NotificationDto } from '../notifications';
 
 class WebSocketService {
   socket: Socket;
@@ -38,6 +39,15 @@ class WebSocketService {
 
   onMessage(callback: (message: Message) => void) {
     this.socket.on('msgToClient', callback);
+  }
+
+  sendNotification(notification: NotificationDto) {
+    console.log({ notification });
+    this.socket.emit('notify', notification);
+  }
+
+  onNotification(callback: (notification: NotificationDto) => void) {
+    this.socket.on('notification', callback);
   }
 
   onConnect(callback: () => void) {

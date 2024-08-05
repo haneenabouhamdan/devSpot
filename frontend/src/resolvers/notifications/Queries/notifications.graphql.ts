@@ -16,6 +16,7 @@ export const FETCH_NOTIFICATIONS = gql`
     notifications(filters: $filters) {
       id
       userId
+      createdAt
       messageId
       title
       text

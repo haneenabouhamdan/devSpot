@@ -18,16 +18,23 @@ import GroupChatIllustration from '../../../assets/illustrations/community.svg';
 interface MessageComponentProps {
   channelId: string;
   channelName: string;
+  channelDesc?: string;
 }
 
 const ChannelComponent: React.FC<MessageComponentProps> = ({
   channelId,
   channelName,
+  channelDesc,
 }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const userId = localStorage.getItem('uId');
   const userDetails = useUserDetails(String(userId));
-  const { data } = useChannelDetails(channelId);
+  const { data, refetch } = useChannelDetails(channelId);
+
+  useEffect(() => {
+    setMessages([]);
+    refetch();
+  }, [channelId]);
 
   useEffect(() => {
     if (data?.messages)
@@ -96,6 +103,9 @@ const ChannelComponent: React.FC<MessageComponentProps> = ({
           color="purple.300"
         >
           {channelName}
+        </Text>
+        <Text fontSize={{ base: 'sm', md: 'sm' }} color="gray">
+          {channelDesc}
         </Text>
       </Box>
       <Box flex="1" overflow="hidden" marginTop={{ base: '50px', md: '60px' }}>

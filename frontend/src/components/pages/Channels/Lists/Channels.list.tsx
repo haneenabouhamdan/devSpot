@@ -1,9 +1,14 @@
 import { HiMiniHashtag, HiOutlineLockClosed } from 'react-icons/hi2';
 import { Channel, useUserChannels } from '../../../../resolvers';
 import Dropdown from '../../../common/DropdownList';
+import { MdGroups } from 'react-icons/md';
 
 interface ChannelListProps {
-  onSelectChannel: (channelId: string, channelName: string) => void;
+  onSelectChannel: (
+    channelId: string,
+    channelName: string,
+    channelDes?: string
+  ) => void;
 }
 
 const ChannelList: React.FC<ChannelListProps> = ({ onSelectChannel }) => {
@@ -14,9 +19,14 @@ const ChannelList: React.FC<ChannelListProps> = ({ onSelectChannel }) => {
 
   const channels = data.map((channel: Channel) => {
     return {
-      icon: channel.isPrivate ? HiOutlineLockClosed : HiMiniHashtag,
+      icon: channel.isPrivate
+        ? HiOutlineLockClosed
+        : channel.isGroupChat
+          ? MdGroups
+          : HiMiniHashtag,
       label: channel.name,
-      onClick: () => onSelectChannel(channel.id, String(channel.name)),
+      onClick: () =>
+        onSelectChannel(channel.id, String(channel.name), channel.description),
     };
   });
 

@@ -33,18 +33,23 @@ export default function Home() {
   const [selectedChannel, setSelectedChannel] = useState<{
     channelId: string;
     channelName: string;
+    channelDesc?: string;
   } | null>();
 
   const [isMobile] = useMediaQuery('(max-width: 768px)');
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const handleSelectChannel = (channelId: string, channelName: string) => {
+  const handleSelectChannel = (
+    channelId: string,
+    channelName: string,
+    channelDesc?: string
+  ) => {
     setLoading(true);
     if (channelId === 'challengeId') {
       setSelectedChannel(null);
       setSelectedChallenge(channelName);
     } else {
-      setSelectedChannel({ channelId, channelName });
+      setSelectedChannel({ channelId, channelName, channelDesc });
       setSelectedChallenge('');
     }
 
@@ -55,10 +60,21 @@ export default function Home() {
     <Flex w="100%" h="100vh" overflow="hidden">
       {!isMobile && (
         <>
-          <Flex borderRight={{ md: '0px solid #e6e6e6' }}>
+          <Flex borderRight={{ md: '0px solid #e6e6e6' }} zIndex={2000}>
             <Sidebar
               setCurrentView={setCurrentView}
               currentView={currentView}
+              handleNotificationClick={(
+                channelId: string,
+                channelName?: string,
+                channelDecs?: string
+              ) =>
+                setSelectedChannel({
+                  channelId,
+                  channelName: channelName ?? '',
+                  channelDesc: channelDecs ?? '',
+                })
+              }
             />
           </Flex>
           <Flex>
@@ -135,6 +151,7 @@ export default function Home() {
             <ChannelComponent
               channelId={selectedChannel.channelId}
               channelName={selectedChannel.channelName}
+              channelDesc={selectedChannel.channelDesc}
             />
           </Flex>
         ) : (
