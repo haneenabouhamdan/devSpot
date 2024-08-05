@@ -2,57 +2,45 @@ import React from 'react';
 import { VStack, Box } from '@chakra-ui/react';
 import InMessageCard from './InMessage';
 import OutMessageCard from './OutMessage';
-
-interface Message {
-  text: string;
-  attachments?: string[];
-  senderId: string;
-  channelId: string;
-  createdAt: string;
-  // messageReactions: {
-  //   emoji: string;
-  // }[];
-  // sender: {
-  //   profilePicture: string;
-  //   phoneNumber: string;
-  //   username: string;
-  // };
-}
+import { Message } from '../../../resolvers';
 
 interface MessageListProps {
   messages: Message[];
 }
 
 const MessageList: React.FC<MessageListProps> = ({ messages }) => {
+  const userId = localStorage.getItem('uId');
   return (
     <VStack
-      w="100%"
-      spacing={10}
+      w={{ base: '100%', md: '98%' }}
+      spacing={4}
       align="start"
       overflowY="scroll"
       className="message-list"
+      p={{ base: 2, md: 4 }}
     >
       {messages.map((msg, index) => {
-        const isOutgoing = msg.senderId === localStorage.getItem('uId');
+        const isOutgoing = msg.sender.id === userId;
         return (
           <Box
-            key={new Date().toDateString()}
+            key={msg.id || index}
             w="100%"
-            mt={index === 0 ? 10 : 0}
+            mt={index === 0 ? 4 : 0}
             display="flex"
             justifyContent={isOutgoing ? 'flex-end' : 'flex-start'}
+            p={1}
           >
             {isOutgoing ? (
               <OutMessageCard
-                name={'haneen'}
-                avatarUrl={''}
+                name={msg.sender?.username}
+                avatarUrl={msg.sender?.profilePicture}
                 time={msg.createdAt}
                 message={msg.text}
               />
             ) : (
               <InMessageCard
-                name={'haneen'}
-                avatarUrl={''}
+                name={msg.sender.username}
+                avatarUrl={msg.sender.profilePicture}
                 time={msg.createdAt}
                 message={msg.text}
               />

@@ -28,6 +28,7 @@ export const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({
     setValue,
     getValues,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<CreateChallengeInput>({
     mode: 'all',
@@ -66,6 +67,8 @@ export const CreateChallengeModal: React.FC<CreateChallengeModalProps> = ({
               position: 'top-right',
               isClosable: true,
             });
+            setRating(0);
+            reset();
             onClose();
           },
         });

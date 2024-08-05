@@ -11,7 +11,7 @@ import {
   Avatar,
 } from '@chakra-ui/react';
 import { FormInput } from '../../common';
-import { AddIcon, ChevronDownIcon, CloseIcon } from '@chakra-ui/icons';
+import { AddIcon, CloseIcon } from '@chakra-ui/icons';
 import { useState } from 'react';
 import * as Yup from 'yup';
 
@@ -69,7 +69,6 @@ export const InviteUsersForm = ({ onEmailsUpdate }: InviteUsersFormProps) => {
           <Menu>
             <MenuButton
               as={IconButton}
-              // rightIcon={<ChevronDownIcon />}
               bgColor={'white'}
               color="black"
               _hover={{ bgColor: 'white' }}

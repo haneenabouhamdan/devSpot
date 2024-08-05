@@ -16,3 +16,23 @@ export const SAVE_TOKEN = gql`
     }
   }
 `;
+
+export const GET_USER = gql`
+  query User($userId: UUID!) {
+    user(id: $userId) {
+      id
+      createdAt
+      updatedAt
+      deletedAt
+      username
+      email
+      phoneNumber
+      status
+      bio
+      jobTitle
+      dateOfBirth
+      notificationPaused
+      profilePicture
+    }
+  }
+`;

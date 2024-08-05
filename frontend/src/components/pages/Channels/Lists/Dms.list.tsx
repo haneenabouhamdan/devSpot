@@ -1,8 +1,13 @@
+import React from 'react';
 import { Channel, useUserDms } from '../../../../resolvers';
 import Dropdown from '../../../common/DropdownList';
 import { RxAvatar } from 'react-icons/rx';
 
-const DmsList = () => {
+interface DmListProps {
+  onSelectChannel: (channelId: string, channelName: string) => void;
+}
+
+const DmsList: React.FC<DmListProps> = ({ onSelectChannel }) => {
   const userId = localStorage.getItem('uId');
 
   const { data: dmData } = useUserDms(String(userId));
@@ -13,7 +18,7 @@ const DmsList = () => {
     return {
       icon: RxAvatar,
       label: channel.name,
-      link: `/dms/${channel.id}`,
+      onClick: () => onSelectChannel(channel.id, String(channel.name)),
     };
   });
 

@@ -1,75 +1,158 @@
-import { Flex, HStack, VStack } from '@chakra-ui/react';
+import {
+  Flex,
+  HStack,
+  VStack,
+  Spinner,
+  Center,
+  Image,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  useDisclosure,
+  Button,
+  Box,
+} from '@chakra-ui/react';
 import Sidebar from './SideBar/Sidebar';
 import './styles.scss';
 import MainList from './Channels/MainList';
 import { HeaderActions } from './Headers';
 import { useState } from 'react';
-import ChallengesList from './Challenges/Challenges.list';
-import MessageComponent from './Messages/MessageComponent';
+import ChannelComponent from './Messages/ChannelComponent';
+import ChallengesComponent from './Challenges/ChallengeComponent';
+import WelcomeIcon from '../../assets/illustrations/welcome.svg';
+import { useMediaQuery } from '@chakra-ui/react';
+import { HamburgerIcon } from '@chakra-ui/icons';
 
 export default function Home() {
   const [currentView, setCurrentView] = useState('Home');
+  const [loading, setLoading] = useState(false);
+  const [selectedChallenge, setSelectedChallenge] = useState('');
+  const [selectedChannel, setSelectedChannel] = useState<{
+    channelId: string;
+    channelName: string;
+  } | null>();
 
-  const userId = localStorage.getItem('uId');
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const handleSelectChannel = (channelId: string, channelName: string) => {
+    setLoading(true);
+    if (channelId === 'challengeId') {
+      setSelectedChannel(null);
+      setSelectedChallenge(channelName);
+    } else {
+      setSelectedChannel({ channelId, channelName });
+      setSelectedChallenge('');
+    }
+
+    setTimeout(() => setLoading(false), 500);
+  };
 
   return (
     <Flex w="100%" h="100vh" overflow="hidden">
-      <Flex borderRight={{ md: '0px solid #e6e6e6' }}>
-        <Sidebar setCurrentView={setCurrentView} currentView={currentView} />
-      </Flex>
-      <Flex>
-        <HStack className="list-container" p={2}>
-          <VStack>
-            <HeaderActions currentView={currentView} />
-            <MainList currentView={currentView} />
-          </VStack>
-        </HStack>
-      </Flex>
+      {!isMobile && (
+        <>
+          <Flex borderRight={{ md: '0px solid #e6e6e6' }}>
+            <Sidebar
+              setCurrentView={setCurrentView}
+              currentView={currentView}
+            />
+          </Flex>
+          <Flex>
+            <HStack className="list-container" p={2}>
+              <VStack>
+                <HeaderActions currentView={currentView} />
+                <MainList
+                  currentView={currentView}
+                  onSelectChannel={handleSelectChannel}
+                />
+              </VStack>
+            </HStack>
+          </Flex>
+        </>
+      )}
+      {isMobile && (
+        <>
+          <Box
+            position="fixed"
+            top="0"
+            left="0"
+            width="100%"
+            zIndex="1000"
+            boxShadow="md"
+            pl={2}
+            pr={2}
+            bg={'purple.300'}
+          >
+            <HStack justifyContent="space-between">
+              <Button
+                onClick={onOpen}
+                borderRadius="10%"
+                width="30px"
+                height="40px"
+                bg={'#9b6f9b'}
+              >
+                <HamburgerIcon w={6} h={6} color={'white'} />
+              </Button>
+              <HeaderActions currentView={currentView} />
+            </HStack>
+          </Box>
+          <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
+            <DrawerOverlay />
+            <DrawerContent bg={'purple.300'} maxWidth="70%">
+              <DrawerCloseButton color={'white'} />
+              <DrawerBody mt={6}>
+                <HStack>
+                  <VStack>
+                    <MainList
+                      currentView={currentView}
+                      onSelectChannel={handleSelectChannel}
+                      withLogout={true}
+                    />
+                  </VStack>
+                </HStack>
+              </DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
+      )}
       <Flex
         className="channel-content"
         flex="1"
         w={{ base: '100%', md: '70%' }}
+        justifyContent="center"
+        mt={isMobile ? '60px' : '0'}
       >
-        {/* <MessageInput /> */}
-        <Flex width="100%">
-          {/* <ChallengesList /> */}
-          <MessageComponent
-            userId={String(userId)}
-            channelId={'42a873a0-2d68-4df0-8227-85e3b17542a8'}
+        {loading ? (
+          <Center w="100%" h="100%">
+            <Spinner size="xl" />
+          </Center>
+        ) : !!selectedChannel?.channelId && !selectedChallenge ? (
+          <Flex width="100%" id={selectedChannel.channelId}>
+            <ChannelComponent
+              channelId={selectedChannel.channelId}
+              channelName={selectedChannel.channelName}
+            />
+          </Flex>
+        ) : (
+          !!selectedChallenge && (
+            <ChallengesComponent filter={selectedChallenge} />
+          )
+        )}
+
+        {!loading && !selectedChallenge && !selectedChannel && (
+          <Image
+            src={WelcomeIcon}
+            alt="welcome"
+            boxSize={'50%'}
+            justifyContent={'center'}
+            alignSelf={'center'}
           />
-          {/* <MessageList messages={messages} /> */}
-        </Flex>
+        )}
       </Flex>
-      {/* 
-      <Flex flex="1" flexDirection="column">
-        <Flex
-          flex="1"
-          className="bg-purple"
-          flexDirection={{ base: 'column', md: 'row' }}
-        >
-          <Flex
-            className="list-container"
-            p={4}
-            w={{ base: '100%', md: '20%' }}
-          >
-            <VStack>
-              <HeaderActions />
-              <MainList />
-            </VStack>
-          </Flex>
-          <Flex
-            className="channel-content"
-            flex="1"
-            w={{ base: '100%', md: '70%' }}
-          >
-            <MessageInput />
-            <Flex mt={100} width="100%">
-             <ChallengesList />
-              <MessageList messages={messages} />
-            </Flex>
-          </Flex>
-        </Flex>
-      </Flex> */}
     </Flex>
   );
 }

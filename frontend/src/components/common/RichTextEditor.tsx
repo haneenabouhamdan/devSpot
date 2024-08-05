@@ -4,6 +4,7 @@ import 'react-quill/dist/quill.snow.css';
 
 interface RichTextEditorProps {
   value: string;
+  placeholder: string;
   onChange: (content: string) => void;
   style?: React.CSSProperties;
   handleKeyPress?: (event: React.KeyboardEvent<HTMLDivElement>) => void;
@@ -14,6 +15,7 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
   onChange,
   style,
   handleKeyPress,
+  placeholder,
 }) => {
   const modules = {
     toolbar: [
@@ -32,8 +34,8 @@ const RichTextEditor: React.FC<RichTextEditorProps> = ({
         onChange={onChange}
         modules={modules}
         theme="snow"
+        placeholder={placeholder}
         onKeyDown={handleKeyPress}
-        style={{ border: '1px solid #ccc', borderRadius: '10px' }}
       />
     </div>
   );

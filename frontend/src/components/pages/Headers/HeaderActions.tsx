@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Flex } from '@chakra-ui/layout';
-import { IconButton, Tooltip, Text } from '@chakra-ui/react';
+import { IconButton, Tooltip, Text, useMediaQuery } from '@chakra-ui/react';
 import { MdOutlineGroupAdd } from 'react-icons/md';
 import { BiMessageRoundedAdd } from 'react-icons/bi';
 import { TbMoodPuzzled } from 'react-icons/tb';
@@ -15,9 +15,17 @@ export const HeaderActions: React.FC<Props> = props => {
   const [isOpenAddChallenge, setIsOpenAddChallenge] = useState<boolean>(false);
   const [isOpenAddDMChannel, setIsOpenAddDMChannel] = useState<boolean>(false);
 
+  const [isMobile] = useMediaQuery('(max-width: 768px)');
+
   return (
     <>
-      <Flex justifyContent={'space-between'} pb={4} pt={4} gap={4} width="100%">
+      <Flex
+        justifyContent={'space-between'}
+        pb={isMobile ? 0 : 4}
+        pt={isMobile ? 0 : 4}
+        gap={4}
+        width="100%"
+      >
         <Text color="white" fontSize={'lg'} pl={3} pt={5} fontWeight={'bold'}>
           {props.currentView}
         </Text>

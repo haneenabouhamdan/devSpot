@@ -12,7 +12,7 @@ import { formatDate } from '../../../helpers';
 
 interface InMessageCardProps {
   name: string;
-  avatarUrl: string;
+  avatarUrl?: string;
   time: string;
   message: string;
   images?: string[];
@@ -54,18 +54,30 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
       <Avatar
         name={name}
         src={avatarUrl}
+        bg="white"
         position="absolute"
         borderRadius={'50%'}
         width="50px"
         height="50px"
-        top={isMobile ? '-30px' : '-10px'}
-        left={isMobile ? '50%' : '-30px'}
-        transform={isMobile ? 'translateX(-50%)' : 'none'}
+        top={isMobile ? '-25px' : '-10px'}
+        left={isMobile ? '-10px' : '-30px'}
+        transform={isMobile ? 'none' : 'none'}
         border="2px solid white"
       />
-      <Box pl={'1vw'} pt={0} w="100%" pr="10px" minW={'200px'}>
+      <Box
+        pl={isMobile ? '30px' : '1vw'}
+        pt={0}
+        w="100%"
+        pr="10px"
+        minW={'200px'}
+      >
         <VStack alignItems="start" spacing={2} w="100%" pl={4}>
-          <Text fontWeight="bold" pt={2} m={0}>
+          <Text
+            fontWeight="bold"
+            pt={2}
+            m={0}
+            fontSize={{ base: 'small', md: '14px' }}
+          >
             {name}
           </Text>
           <Text pt={0} pb={2} m={0} fontSize={'14px'}>
@@ -90,7 +102,7 @@ const InMessageCard: React.FC<InMessageCardProps> = ({
         fontSize={'small'}
         className="gray"
         position="absolute"
-        right={isMobile ? '0' : '-50px'}
+        right={'-50px'}
         top="10px"
       >
         {formatDate(new Date(time), 'HH:mm')}

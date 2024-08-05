@@ -25,7 +25,7 @@ interface ChallengeCardProps {
   difficultyLevel: string;
   id: string;
   createdBy: string;
-  submissions: Submission[];
+  submissions?: Submission[];
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({
@@ -33,7 +33,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   description,
   difficultyLevel,
   id,
-  submissions,
+  submissions = [],
   createdBy,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -109,7 +109,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
                 onClick={() => setIsReviewModalOpen(!isReviewModalOpen)}
               >
                 <Text fontSize="small" color="gray.500" fontWeight={'bold'}>
-                  ({submissions.length}) submissions
+                  ({submissions?.length}) submissions
                 </Text>
               </Button>
               {!isSolvedByUser ? (
@@ -139,7 +139,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
         title={title}
         description={description}
         challengeId={id}
-        isSolvedByUser={isSolvedByUser}
+        isSolvedByUser={isSolvedByUser ?? false}
         submissions={submissions}
         difficultyLevel={difficultyLevel}
       />

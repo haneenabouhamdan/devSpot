@@ -9,6 +9,7 @@ interface DropdownItemProps {
   link?: string;
   avatarSrc?: string;
   subItems?: DropdownItemProps[];
+  onClick?: () => void;
 }
 
 interface DropdownProps {
@@ -18,6 +19,7 @@ interface DropdownProps {
 
 const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(true);
+
   const renderItems = (items: DropdownItemProps[]) => {
     return items.map((item, index) => {
       const [subOpen, setSubOpen] = useState(true);
@@ -27,7 +29,10 @@ const Dropdown: React.FC<DropdownProps> = ({ title, items }) => {
             align="center"
             py={1}
             className="dropdown-item"
-            onClick={() => setSubOpen(!subOpen)}
+            onClick={() => {
+              setSubOpen(!subOpen);
+              if (item.onClick) item.onClick();
+            }}
             cursor="pointer"
           >
             {item.icon && <Icon as={item.icon} mr={2} fontSize={'md'} />}

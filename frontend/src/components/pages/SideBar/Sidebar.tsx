@@ -45,7 +45,7 @@ const Sidebar = (props: Props) => {
     >
       <Avatar
         borderRadius="50%"
-        bg="gray"
+        bg="white"
         width="40px"
         height="40px"
         src={user?.profilePicture || undefined}
@@ -90,14 +90,6 @@ const Sidebar = (props: Props) => {
           <Stack mt={2} mb={2}>
             <NotificationPopover />
           </Stack>
-          <NavItem
-            navSize={navSize}
-            icon={IoBookmarkOutline}
-            title="Saved"
-            isActive={currentView === 'Saved'}
-            description={''}
-            onClick={() => setCurrentView('Saved')}
-          />
         </VStack>
       </Flex>
       <HStack className={`user`} pb={5} justifyContent={'center'}>

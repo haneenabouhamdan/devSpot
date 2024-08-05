@@ -16,12 +16,13 @@ import {
   HStack,
   Text,
   useToast,
+  useBreakpointValue,
 } from '@chakra-ui/react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { tomorrow as codeStyle } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import DOMPurify from 'dompurify';
 import RichTextEditor from '../../common/RichTextEditor';
-import StarRating from '../../common/StarRating'; // Assuming you have a StarRating component
+import StarRating from '../../common/StarRating';
 import {
   Submission,
   SubmissionStatus,
@@ -116,6 +117,11 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
     });
   };
 
+  const gridTemplateColumns = useBreakpointValue({
+    base: '1fr',
+    md: 'repeat(2, 1fr)',
+  });
+
   return (
     <Modal
       isOpen={isOpen}
@@ -129,7 +135,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
         <ModalCloseButton />
         <ModalBody>
           {showInput ? (
-            <Grid templateColumns="repeat(2, 1fr)" gap={8}>
+            <Grid templateColumns={gridTemplateColumns} gap={8}>
               <GridItem>
                 <Box
                   mb={2}
@@ -155,6 +161,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
                 <RichTextEditor
                   value={submissionText}
                   onChange={value => setSubmissionText(value)}
+                  placeholder={''}
                 />
 
                 {!!error && !submissionText && (
@@ -178,7 +185,7 @@ const ChallengeModal: React.FC<ChallengeModalProps> = ({
                 </HStack>
               </Flex>
               <Text fontSize="small" color="gray.500" fontWeight={'bold'}>
-                ({submissions?.length})submissions
+                ({submissions?.length}) submissions
               </Text>
             </>
           )}

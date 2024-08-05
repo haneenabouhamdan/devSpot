@@ -9,3 +9,18 @@ export interface UpdateUserInput {
   notificationPaused?: boolean;
   profilePicture?: string | null;
 }
+
+export interface User {
+  id: string;
+  createdAt: string;
+  deletedAt?: string;
+  username: string;
+  email: string;
+  phoneNumber: string;
+  status?: string;
+  bio?: string;
+  jobTitle?: string;
+  dateOfBirth: string;
+  notificationPaused: boolean;
+  profilePicture?: string;
+}

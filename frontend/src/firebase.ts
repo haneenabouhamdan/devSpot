@@ -1,6 +1,5 @@
 import { initializeApp } from 'firebase/app';
 import { getStorage } from 'firebase/storage';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_APP_API_KEY,
@@ -17,43 +16,5 @@ const app = initializeApp(firebaseConfig);
 
 const storage = getStorage(app);
 // const messaging = getMessaging(app);
-
-// const setupNotifications = async (
-//   saveTokenCallback: (userId: string, token: string) => Promise<void>
-// ) => {
-//   const userId = localStorage.getItem('uId');
-
-//   try {
-//     // Request permission for notifications
-//     const permission = await Notification.requestPermission();
-
-//     if (permission === 'granted') {
-//       console.log('Notification permission granted.');
-
-//       const token = await getToken(messaging, {
-//         vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
-//       });
-
-//       console.log('FCM Token:', token);
-//       if (userId) await saveTokenCallback(userId, token);
-//     } else {
-//       console.log('Notification permission denied.');
-//     }
-//   } catch (error) {
-//     console.error('Error setting up notifications:', error);
-//   }
-// };
-
-// const onForegroundMessage = () => {
-//   return new Promise((resolve, reject) => {
-//     onMessage(messaging, payload => {
-//       try {
-//         resolve(payload);
-//       } catch (error) {
-//         reject(error);
-//       }
-//     });
-//   });
-// };
 
 export { storage };

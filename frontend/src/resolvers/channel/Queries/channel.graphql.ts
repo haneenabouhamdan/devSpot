@@ -41,6 +41,7 @@ export const GET_CHANNEL_DETAILS = gql`
           profilePicture
           phoneNumber
           username
+          id
         }
       }
     }

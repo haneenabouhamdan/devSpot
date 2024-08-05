@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
-import { Box, HStack, Input, IconButton } from '@chakra-ui/react';
-import { ChatFilledIcon } from '../../common';
+import { Box, HStack, IconButton } from '@chakra-ui/react';
 import { IoMdSend } from 'react-icons/io';
 import './styles.scss';
 import RichTextEditor from '../../common/RichTextEditor';
 
 interface MessageInputProps {
   onSendMessage: (text: string) => void;
+  channelName?: string;
 }
 
-const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
+const MessageInput: React.FC<MessageInputProps> = ({
+  onSendMessage,
+  channelName,
+}) => {
   const [text, setText] = useState<string>('');
-
-  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setText(event.target.value);
-  // };
 
   const handleChange = (value: string) => {
     setText(value);
@@ -23,12 +22,13 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   const handleSubmit = () => {
     if (text.trim()) {
       onSendMessage(text);
-      setText(''); // Clear the input field after sending the message
+      setText('');
     }
   };
 
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter') {
+      event.preventDefault(); // Prevent newline on Enter key press
       handleSubmit();
     }
   };
@@ -36,20 +36,12 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
   return (
     <Box
       position="fixed"
-      display="flex"
-      justifyContent="center"
       className="message-input"
+      width={{ base: '100%', md: '75%' }}
+      bg="white"
+      p={{ base: 2, md: 4 }}
     >
-      <HStack alignItems="center" width="98%">
-        {/* <IconButton
-          aria-label="Chat"
-          icon={ChatFilledIcon}
-          bg={'transparent'}
-          border={0}
-          size="xl"
-          ml="10"
-        /> */}
-
+      <HStack alignItems="center" width="100%">
         <RichTextEditor
           style={{
             width: '100%',
@@ -59,32 +51,16 @@ const MessageInput: React.FC<MessageInputProps> = ({ onSendMessage }) => {
           }}
           value={text}
           handleKeyPress={handleKeyPress}
+          placeholder={`Message ${channelName ?? ''}...`}
           onChange={handleChange}
         />
-        {/* <Input
-          placeholder="Message Channel..."
-          height="80%"
-          border={0}
-          id="message-input"
-          name="message"
-          borderRadius={'5px'}
-          fontSize={'large'}
-          bgColor={'white'}
-          pl={5}
-          _placeholder={{ fontStyle: 'italic' }}
-          _focus={{ border: 'none', boxShadow: 'none' }}
-          flex="1"
-          value={text}
-          onChange={handleChange}
-          onKeyPress={handleKeyPress}
-        /> */}
         <IconButton
           aria-label="Send"
           icon={<IoMdSend className="send-icon" />}
           bg={'transparent'}
           border={0}
-          mt={'45px'}
-          ml={-55}
+          mt={{ base: '70px', md: '45px' }}
+          ml={'-55px'}
           onClick={handleSubmit}
         />
       </HStack>

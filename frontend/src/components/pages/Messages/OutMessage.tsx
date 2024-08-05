@@ -12,7 +12,7 @@ import { formatDate } from '../../../helpers';
 
 interface MessageCardProps {
   name: string;
-  avatarUrl: string;
+  avatarUrl?: string;
   time: string;
   message: string;
   attachments?: string[];
@@ -20,7 +20,7 @@ interface MessageCardProps {
 
 const OutMessageCard: React.FC<MessageCardProps> = ({
   name,
-  avatarUrl,
+  avatarUrl = 'https://bit.ly/broken-link',
   time,
   message,
   attachments,
@@ -38,6 +38,7 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
       );
     });
   };
+
   return (
     <HStack
       maxW={isMobile ? '100%' : '42%'}
@@ -59,22 +60,28 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
         {formatDate(new Date(time), 'HH:mm')}
       </Text>
       <Box
-        pr={isMobile ? '0' : '40px'}
+        pr={isMobile ? '20px' : '40px'}
         pt={0}
         w="100%"
         pl="10px"
         borderRadius="10px"
         className="bg-light-gray"
       >
-        <VStack alignItems="start" spacing={2} w="100%" pl={4}>
-          <Text fontWeight="bold" m={0} pt={2}>
+        <VStack alignItems="start" spacing={2} w="100%" pr={4}>
+          <Text
+            fontWeight="bold"
+            m={0}
+            pt={2}
+            pr={2}
+            fontSize={{ base: 'small', md: '14px' }}
+          >
             {name}
           </Text>
           <Text pt={0} pb={2} m={0} fontSize={'14px'}>
             {renderHTML(message)}
           </Text>
           {attachments && (
-            <HStack spacing={2} pb={2}>
+            <HStack spacing={2} pb={2} flexWrap="wrap">
               {attachments.map((imgUrl, index) => (
                 <Image
                   key={index}
@@ -93,11 +100,12 @@ const OutMessageCard: React.FC<MessageCardProps> = ({
         src={avatarUrl}
         position="absolute"
         borderRadius={'50%'}
+        bg="white"
         width="50px"
         height="50px"
-        top={isMobile ? '-30px' : '-10px'}
-        right={isMobile ? '50%' : '-30px'}
-        transform={isMobile ? 'translateX(50%)' : 'none'}
+        top={isMobile ? '8px' : '-10px'}
+        right={isMobile ? '-12px' : '-30px'}
+        transform={isMobile ? 'translateY(-50%)' : 'none'}
         border="2px solid white"
       />
     </HStack>

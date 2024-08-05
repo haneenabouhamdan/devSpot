@@ -1,15 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-
-interface MessagePayload {
-  id: string;
-  senderId: string;
-  channelId: string;
-  text: string;
-  attachments?: string[];
-  createdAt: string;
-  sender: { username: string; profilePicture: string; phoneNumber: string };
-  messageReactions: { emoji: string }[];
-}
+import { Message } from '../channel';
 
 class WebSocketService {
   socket: Socket;
@@ -42,11 +32,11 @@ class WebSocketService {
     this.socket.emit('joinChannel', { channelId });
   }
 
-  sendMessage(message: MessagePayload) {
+  sendMessage(message: Message) {
     this.socket.emit('msgToServer', message);
   }
 
-  onMessage(callback: (message: MessagePayload) => void) {
+  onMessage(callback: (message: Message) => void) {
     this.socket.on('msgToClient', callback);
   }
 

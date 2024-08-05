@@ -1,3 +1,5 @@
+import { User } from '../../user';
+
 export interface CreateChannelInput {
   createdBy: string;
   description?: string;
@@ -29,4 +31,21 @@ export interface Channel {
   isGroupChat: boolean;
   createdBy: string;
   photo?: string;
+}
+
+export interface MessageReaction {
+  emoji: string;
+}
+
+export interface Message {
+  id?: string;
+  senderId: string;
+  channelId: string;
+  text: string;
+  attachments?: string[];
+  createdAt: string;
+  status?: string;
+  updatedAt?: string;
+  messageReactions?: MessageReaction[];
+  sender: User;
 }
