@@ -44,3 +44,15 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
+
+
+## .env
+VITE_GRAPHQL_ENDPOINT=http://localhost:3000/graphql
+VITE_APP_AUTH_DOMAIN=
+VITE_APP_PROJECT_ID=
+VITE_APP_STORAGE_BUCKET=
+VITE_APP_MESSAGING_SENDER_ID=
+VITE_APP_APP_ID=
+VITE_APP_MEASUREMENT_ID=
+VITE_APP_API_KEY=
+VITE_APP_VAPID_KEY=

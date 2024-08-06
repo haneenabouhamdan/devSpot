@@ -62,6 +62,37 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+
+### .env variables
+
+# server configurations
+PORT= 8080
+HOST=localhost
+NODE_ENV=development
+APP_BASE_URL=http://localhost
+#POSTGRES
+POSTGRES_VERSION=15.4
+POSTGRES_USER_NAME=postgres
+POSTGRES_PASSWORD=
+POSTGRES_HOST=localhost
+# POSTGRES_HOST=127.0.0.1
+POSTGRES_PORT=5432
+POSTGRES_DATABASE_NAME=dev_spot
+#jwt
+JWT_SECRET=
+JWT_EXPIRATION=
+#redis
+REDIS_HOST=localhost
+# REDIS_HOST=127.0.0.1
+REDIS_PORT=6379
+REDIS_PASSWORD=
+REDIS_TTL=
+REDIS_PREFIX=dev_spot
+#super user
+SUPER_USER_EMAIL=
+SUPER_USER_PHONE=
+SUPER_USER_PASSWORD=
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
@@ -69,3 +100,5 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+

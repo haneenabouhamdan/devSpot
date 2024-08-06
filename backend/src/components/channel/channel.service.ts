@@ -94,14 +94,14 @@ export class ChannelService {
     await this.userChannelsRepository.save({
       userId: user.id,
       channelId: newCreatedChannel.id,
-      status: UserChannelSubscriptionStatus.ACTIVE,
+      status: UserChannelSubscriptionStatus.INACTIVE,
       roleId: adminRole?.id,
     });
 
     await this.userChannelsRepository.save({
       userId: allUsers[0]?.id,
       channelId: newCreatedChannel.id,
-      status: UserChannelSubscriptionStatus.ACTIVE,
+      status: UserChannelSubscriptionStatus.INACTIVE,
       roleId: adminRole?.id,
     });
 
@@ -172,11 +172,15 @@ export class ChannelService {
 
     const subscribedChannels = channelsIds
       ? await this.channelRepository.find({
-          where: { id: In(channelsIds), isPrivate: false },
+          where: { id: In(channelsIds), isPrivate: true, isGroupChat: true },
         })
       : [];
 
-    return [...subscribedChannels, ...publicChannels];
+    const allChannels = [...subscribedChannels, ...publicChannels].filter(
+      (channel) => this.isChannelMember(channel.id, userId),
+    );
+
+    return allChannels;
   }
 
   async inviteUsers(
@@ -234,13 +238,19 @@ export class ChannelService {
   }
 
   async acceptInvitation(userId: UUID, channelId: UUID) {
-    const invitation = await this.userChannelsRepository.findOne({
-      where: { userId, channelId },
+    const invitations = await this.userChannelsRepository.find({
+      where: { channelId },
     });
-    if (!invitation) throw new Error('Invitation not found');
+    if (!invitations) throw new Error('Invitation not found');
 
-    return await this.userChannelsRepository.update(invitation.id, {
-      status: UserChannelSubscriptionStatus.ACTIVE,
+    const channel = await this.findOneById(channelId);
+    const creator = channel?.createdBy;
+
+    return invitations.map(async (invitation) => {
+      if (invitation.userId === creator || invitation.userId === userId)
+        await this.userChannelsRepository.update(invitation.id, {
+          status: UserChannelSubscriptionStatus.ACTIVE,
+        });
     });
   }
 
@@ -255,13 +265,19 @@ export class ChannelService {
     });
   }
 
-  async getMembers(channelId: UUID) {
+  async getMembers(channelId: UUID, withCreator?: boolean) {
     const userChannels = await this.userChannelsRepository.find({
       where: { channelId },
     });
     const channel = await this.findOneById(channelId);
-    return userChannels
-      .filter((user) => user.userId !== channel?.createdBy)
-      .map((userChannel) => userChannel.userId);
+    if (!channel) return;
+
+    if (!withCreator) {
+      return userChannels
+        .filter((user) => user.userId !== channel.createdBy)
+        .map((userChannel) => userChannel.userId);
+    } else {
+      return userChannels.map((userChannel) => userChannel.userId);
+    }
   }
 }

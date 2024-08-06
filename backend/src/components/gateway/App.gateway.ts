@@ -40,12 +40,17 @@ export class AppGateway
     const message = await this.messageService.create(payload);
     this.server.emit('msgToClient', message);
 
-    const users = await this.channelService.getMembers(payload.channelId);
+    const users = await this.channelService.getMembers(
+      payload.channelId as UUID,
+      true,
+    );
 
-    users.map(async (userId) => {
+    if (!users) return;
+
+    users.map(async (userMemberId) => {
+      if (userMemberId === payload.senderId) return;
       const notificationPayload: CreateNotificationDto = {
-        userId,
-        messageId: message.id,
+        userId: userMemberId,
         title: 'New Message',
         text: `You have a new message`,
         channelId: payload.channelId,
@@ -66,9 +71,11 @@ export class AppGateway
       const users = await this.channelService.getMembers(
         payload.channelId as UUID,
       );
-      users.map(async (userId) => {
+
+      if (!users) return;
+      users.map(async (userMemberId) => {
         const notificationPayload: CreateNotificationDto = {
-          userId,
+          userId: userMemberId,
           title: payload.title,
           text: payload.text,
           channelId: payload.channelId,
