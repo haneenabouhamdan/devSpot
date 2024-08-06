@@ -1,9 +1,5 @@
 import { useMutation } from '@apollo/client';
-import {
-  CREATE_DM_CHANNEL,
-  CreateDMChannelInput,
-  GET_USER_CHANNELS,
-} from '../Queries';
+import { CREATE_DM_CHANNEL, CreateDMChannelInput } from '../Queries';
 import { clientOptionType } from '../../sharedTypes';
 
 interface CreateDMChannelResponse {
@@ -13,7 +9,7 @@ interface CreateDMChannelResponse {
 interface CreateDMChannelProps {
   payload: CreateDMChannelInput;
   onCompleted: (
-    data: { CreateDMChannel: CreateDMChannelResponse },
+    data: { createDmChannel: CreateDMChannelResponse },
     clientOptions?: clientOptionType
   ) => void;
   refetch?: boolean;
@@ -21,7 +17,7 @@ interface CreateDMChannelProps {
 
 export function useCreateDMChannelMutation() {
   const [mutate, { data, loading, error }] = useMutation<
-    { CreateDMChannel: CreateDMChannelResponse },
+    { createDmChannel: CreateDMChannelResponse },
     { createDmChannelDto: CreateDMChannelInput }
   >(CREATE_DM_CHANNEL);
 
@@ -32,13 +28,11 @@ export function useCreateDMChannelMutation() {
   }: CreateDMChannelProps) {
     await mutate({
       variables: { createDmChannelDto: payload },
-      onCompleted,
-      refetchQueries: [
-        {
-          query: GET_USER_CHANNELS,
-          variables: { userChannelsId: payload.createdBy },
-        },
-      ],
+      onCompleted: (data: any) => {
+        if (data) {
+          onCompleted(data);
+        }
+      },
     });
   }
 

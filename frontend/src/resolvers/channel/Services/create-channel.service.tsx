@@ -1,9 +1,5 @@
 import { useMutation } from '@apollo/client';
-import {
-  CREATE_CHANNEL,
-  CreateChannelInput,
-  GET_USER_CHANNELS,
-} from '../Queries';
+import { CREATE_CHANNEL, CreateChannelInput } from '../Queries';
 import { clientOptionType } from '../../sharedTypes';
 
 interface CreateChannelResponse {

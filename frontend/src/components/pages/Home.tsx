@@ -60,7 +60,7 @@ export default function Home() {
     <Flex w="100%" h="100vh" overflow="hidden">
       {!isMobile && (
         <>
-          <Flex borderRight={{ md: '0px solid #e6e6e6' }} zIndex={2000}>
+          <Flex borderRight={{ md: '0px solid #e6e6e6' }}>
             <Sidebar
               setCurrentView={setCurrentView}
               currentView={currentView}

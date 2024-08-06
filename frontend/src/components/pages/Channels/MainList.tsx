@@ -11,7 +11,6 @@ import {
   Flex,
   Text,
   Avatar,
-  VStack,
   HStack,
 } from '@chakra-ui/react';
 import { UserProfileModal } from '../../modals';

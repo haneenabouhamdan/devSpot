@@ -14,6 +14,8 @@ import {
   Flex,
   Tooltip,
   Button,
+  HStack,
+  VStack,
 } from '@chakra-ui/react';
 import { BsBell } from 'react-icons/bs';
 import './styles.scss';
@@ -99,17 +101,21 @@ const NotificationPopover: React.FC<Props> = (props: Props) => {
       channel.name,
       channel.description
     );
-  };
-
-  const handleAccept = (channelId: string, id: string) => {
-    acceptInvitation({ channelId, userId: String(userId) });
-    updateStatus(id, NotificationStatus.READ);
+    setNotifications([]);
     refetch();
   };
 
-  const handleIgnore = (channelId: string, id: string) => {
+  const handleAccept = async (channelId: string, id: string) => {
+    acceptInvitation({ channelId, userId: String(userId) });
+    await updateStatus(id, NotificationStatus.READ);
+    setNotifications([]);
+    refetch();
+  };
+
+  const handleIgnore = async (channelId: string, id: string) => {
     ignoreInvitation({ channelId, userId: String(userId) });
-    updateStatus(id, NotificationStatus.DISMISSED);
+    await updateStatus(id, NotificationStatus.DISMISSED);
+    setNotifications([]);
     refetch();
   };
 
@@ -157,7 +163,7 @@ const NotificationPopover: React.FC<Props> = (props: Props) => {
       >
         <PopoverCloseButton />
         <PopoverBody>
-          {!allNotifications.length ? (
+          {!allNotifications?.length ? (
             <Box
               display="flex"
               alignItems="center"
@@ -181,46 +187,64 @@ const NotificationPopover: React.FC<Props> = (props: Props) => {
                   return (
                     <ListItem
                       key={index}
-                      height="80px"
+                      height="100px"
                       borderBottomWidth={'1px'}
                       onClick={() => clickNotification(channel[0])}
                     >
-                      <Box>
-                        <Text fontWeight="bold" fontSize={'sm'}>
-                          {notification.title}
-                        </Text>
-                        <Text color="gray" fontSize={'sm'}>
-                          {notification.text}
-                        </Text>
-                      </Box>
-                      {notification.title.includes('Invitation') && (
-                        <Flex mt={2} justifyContent="right" gap={4}>
-                          <Button
-                            size="xs"
-                            colorScheme="green"
-                            onClick={() =>
-                              handleAccept(
-                                notification.channelId,
-                                String(notification.id)
-                              )
-                            }
+                      <HStack
+                        p={2}
+                        w="100%"
+                        alignItems="start"
+                        bgColor={
+                          notification.status === NotificationStatus.PENDING
+                            ? 'blue.100'
+                            : 'grey.300'
+                        }
+                      >
+                        <VStack align="start" spacing={1}>
+                          <Text
+                            fontSize="sm"
+                            fontWeight="bold"
+                            justifyContent={'left'}
                           >
-                            Accept
-                          </Button>
-                          <Button
-                            size="xs"
-                            colorScheme="red"
-                            onClick={() =>
-                              handleIgnore(
-                                notification.channelId,
-                                String(notification.id)
-                              )
-                            }
-                          >
-                            Ignore
-                          </Button>
-                        </Flex>
-                      )}
+                            {notification.title}
+                          </Text>
+                          <Text fontSize="xs">{notification.text}</Text>
+
+                          {notification.title.includes('Invitation') && (
+                            <HStack
+                              width="100%"
+                              justifyContent={'right'}
+                              pt={1}
+                            >
+                              <Button
+                                size="xs"
+                                colorScheme="green"
+                                onClick={() =>
+                                  handleAccept(
+                                    notification.channelId,
+                                    String(notification.id)
+                                  )
+                                }
+                              >
+                                Accept
+                              </Button>
+                              <Button
+                                size="xs"
+                                colorScheme={'gray'}
+                                onClick={() =>
+                                  handleIgnore(
+                                    notification.channelId,
+                                    String(notification.id)
+                                  )
+                                }
+                              >
+                                Dismiss
+                              </Button>
+                            </HStack>
+                          )}
+                        </VStack>
+                      </HStack>
                     </ListItem>
                   );
                 })}

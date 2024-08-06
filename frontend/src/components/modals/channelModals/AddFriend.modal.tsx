@@ -3,12 +3,15 @@ import { Box, Stack, useToast } from '@chakra-ui/react';
 import { CustomModal, FormInput } from '../../common';
 import {
   CreateDMChannelInput,
+  NotificationDto,
+  NotificationStatus,
   useCreateDMChannelMutation,
 } from '../../../resolvers';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
 import { dmChannelSchema } from '../../validations';
 import { InviteUsersForm } from './InviteUser.form';
+import WebSocketService from '../../../resolvers/websoket/websocket.service';
 
 interface CreateChannelModalProps {
   isOpen: boolean;
@@ -34,6 +37,15 @@ export const AddFriendModal: React.FC<CreateChannelModalProps> = ({
 
   const toast = useToast();
 
+  const handleSendNotifications = (notification: NotificationDto) => {
+    const message: NotificationDto = {
+      ...notification,
+      messageId: null,
+      createdAt: new Date().toISOString(),
+    };
+
+    WebSocketService.sendNotification(message);
+  };
   useEffect(() => {
     if (userId) setValue('createdBy', userId);
   }, [userId]);
@@ -53,13 +65,22 @@ export const AddFriendModal: React.FC<CreateChannelModalProps> = ({
       try {
         createDMChannel({
           payload,
-          onCompleted: () => {
+          onCompleted: data => {
             toast({
               description: 'DM created successfully',
               status: 'success',
               duration: 2000,
               position: 'top-right',
               isClosable: true,
+            });
+            handleSendNotifications({
+              text: `You have a new channel invitation`,
+              title: `New Invitation`,
+              channelId: data.createDmChannel.id,
+              userId,
+              messageId: null,
+              createdAt: new Date().toISOString(),
+              status: NotificationStatus.PENDING,
             });
             onClose();
           },

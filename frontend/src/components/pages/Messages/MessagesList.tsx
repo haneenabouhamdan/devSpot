@@ -1,5 +1,5 @@
-import React from 'react';
-import { VStack, Box } from '@chakra-ui/react';
+import React, { useEffect, useState } from 'react';
+import { VStack, Box, Spinner } from '@chakra-ui/react';
 import InMessageCard from './InMessage';
 import OutMessageCard from './OutMessage';
 import { Message } from '../../../resolvers';
@@ -10,6 +10,11 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages }) => {
   const userId = localStorage.getItem('uId');
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
+
+  useEffect(() => {
+    if (messages) setAllMessages(messages);
+  }, [messages]);
   return (
     <VStack
       w={{ base: '100%', md: '98%' }}
@@ -19,7 +24,8 @@ const MessageList: React.FC<MessageListProps> = ({ messages }) => {
       className="message-list"
       p={{ base: 2, md: 4 }}
     >
-      {messages.map((msg, index) => {
+      {!allMessages.length && <Spinner />}
+      {allMessages.map((msg, index) => {
         const isOutgoing = msg.sender.id === userId;
         return (
           <Box

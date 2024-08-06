@@ -42,7 +42,6 @@ class WebSocketService {
   }
 
   sendNotification(notification: NotificationDto) {
-    console.log({ notification });
     this.socket.emit('notify', notification);
   }
 
